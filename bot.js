@@ -3,6 +3,8 @@ const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
 const { prefix, token, gregorid } = require('./config.json');
+// Quick.db is an easy-to-use database manager built with better-sqlite3.
+const db = require('quick.db');
 // create a new Discord client
 const client = new Discord.Client();
 // a class that extend JS's native Map class and include more extensive, useful functionality.
@@ -38,6 +40,10 @@ const activities_list = [
     "Spacewar",
     "Hentai Furry"
     ]; // creates an arraylist containing phrases you want your bot to switch through.
+const ignoreList = [
+	'565330655915933696',
+	'439205512425504771'
+	]; // banned from image reactions.
 const culpables = [
     "fue el nacho",
     "Fue el Nacho",
@@ -90,6 +96,11 @@ client.once('ready', () => {
 	const ProfPic = client.user.displayAvatarURL(gregorid);
 	client.user.setAvatar(ProfPic)
 	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
+	// Setting the ammount of nuts.
+	if (db.has('gregoBot') == 0) {
+	db.set('gregoBot', { nuts: 0 });
+	console.log(`Se ha creado una nueva partida.`);
+	}
 });
 client.on('ready', function () { // Should do that when the client is ready.
 //    console.log(User); // Some user object.
@@ -106,19 +117,24 @@ client.on('message', message => {
 // If the message starts was sent by a bot, exit early.
 	
 	if (message.attachments.size > 0) {
-    if (message.attachments.every(attachIsImage)){
-		let random = Math.floor(Math.random() * 4);
-		message.react('750502194108956682')
-			.then(() => message.react('🔩'))
-			.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
-		if (message.channel.id === '441386860300730378') {
-			if (random == 0){
-			message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
-			.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
-		}
+		for (let i = 0; i < ignoreList.length; i++) {
+			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
+		};
+		if (message.attachments.every(attachIsImage)){
+			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
+			let random = Math.floor(Math.random() * 4);
+				message.react('750502194108956682')
+					.then(() => message.react('🔩'))
+					.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
+				// Add 1 to the nut counter.
+				db.add('gregoBot.nuts', 1);
+				console.log(`Ha aumentado la cantidad de nueces.`);
+				if (random === 0){
+					message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
+					.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
+				}
 			else console.log(`Me aguanté poner los emotes porque random es ${random}`);
 		}
-	}
 	}
 
 //	const mensaje = message.content.toLowerCase();
@@ -195,16 +211,7 @@ client.on('message', message => {
 		return message.reply('basta wn, por privado no');
 	}
 
-	if (command.args && !args.length) {
-		let reply = `ah? ${message.author}`;
 
-		if (command.usage) {
-			reply += `\nna que ver wn deberia decir: \`${prefix}${command.name} ${command.usage}\``;
-		}
-
-		return message.channel.send(reply);
-	}
-	
 	//added in order to verify that attachments are images and not videos
 	function attachIsImage(msgAttach) {
     var url = msgAttach.url;
@@ -219,4 +226,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);//(token)*
