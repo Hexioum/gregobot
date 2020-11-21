@@ -1,17 +1,56 @@
 const db = require('quick.db');
 // Array list of replies
 let relleno = ["aproximadamente unos", "aprox unos", "como", "creo que unos", "un total de"];
+let chamullo = ["lo que viene a ser", "osea", "es decir", "que vendria a ser", "lo que equivale a"]
 module.exports = {
 	name: 'pajas',
-	aliases: ['pallaringas','faps','manuelas'],
-	description: 'Gregorio proporciona el cum worth del canal.',
+	aliases: ['pallaringas','faps','manuelas','coom'],
+	description: 'Gregorio proporciona el coom worth del canal.',
 //	args: true,
-	usage: 'o grego faps/manuelas/pallaringas',
+	usage: 'o grego faps/manuelas/coom',
 	execute(message, args) {
-	let random = Math.floor(Math.random() * 5);
+	let random1 = Math.floor(Math.random() * 5);
+	let random2 = Math.floor(Math.random() * 5);
+	let coinflip = Math.floor(Math.random() * 2);
 	let total = (db.get('gregoBot.nuts') * 14.7868).toFixed(2);
+	let bathtub = Math.floor(total / 158987)
+	let barrels = Math.floor(total / 50000)
+	let confort = Math.floor((db.get('gregoBot.nuts')*55) / 4994)//nuts*90.8 = 1conf = 1342ml
+	let bottles = Math.floor(total / 1250)
+	let jars = Math.floor(total / 473.176)
+	let latas = Math.floor(total / 350)
+	//11cm * 5cuadros = nut. (el confort es de 5000cm) aprox 4994cm si fuesen cuadros perfectos.
 	if (args.length < 1) {
-		message.channel.send(`mmmm eso hacen ${relleno[random]} ${total}ml`)
+		message.channel.startTyping()
+		.then(() => message.channel.send(`mmmm eso hacen ${relleno[random1]} ${total}ml`))
+		.catch(() => console.error('Que onda?? No pude responder.'));
+	setTimeout(function(){
+		if ((bathtub > 1)&&(coinflip == 1)) {
+			message.channel.send(`${chamullo[random2]} ${bathtub} tinas.`);
+		} else if (bathtub == 1) {
+			message.channel.send(`${chamullo[random2]} una tina entera.`);
+		} else if ((barrels > 1)&&(coinflip == 1)) {
+			message.channel.send(`${chamullo[random2]} ${barrels} barriles de chela.`);
+		} else if (barrels == 1) {
+			message.channel.send(`${chamullo[random2]} un barril de chela`);
+		} else if ((confort > 1)&&(coinflip == 1)) {
+			message.channel.send(`${chamullo[random2]} ${confort} confores de 50 metros`);
+		} else if ((bottles > 1)&&(coinflip == 1)) {
+			message.channel.send(`${chamullo[random2]} ${bottles} botellas de austral.`);
+		} else if (bottles == 1) {
+			message.channel.send(`${chamullo[random2]} una botella retornable.`);
+		} else if ((jars > 1)&&(coinflip == 1)) {
+			message.channel.send(`${chamullo[random2]} ${jars} frascos para poner figuritas.`);
+		} else if (jars == 1) {
+			message.channel.send(`${chamullo[random2]} ${jars} frascos para poner figuritas.`);
+		} else if (latas > 1) {
+			message.channel.send(`${chamullo[random2]} ${latas} latas de chela.`);
+		} else if (latas == 1) {
+			message.channel.send(`${chamullo[random2]} suficiente para llenar una lata de chela`);
+		} else if (latas < 1) {
+			message.channel.send(`no alcanza ni para llenar una lata...`);
+		} return message.channel.stopTyping(true);
+	}, 200);
 	}	else {
 	if (args[0] === 'agregar') {
 		if (args.length < 2) {
