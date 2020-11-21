@@ -15,7 +15,7 @@ module.exports = {
 	let total = (db.get('gregoBot.nuts') * 14.7868).toFixed(2);
 	let bathtub = Math.floor(total / 158987)
 	let barrels = Math.floor(total / 50000)
-	let confort = Math.floor((db.get('gregoBot.nuts')*55) / 4994)//nuts*90.8 = 1conf = 1342ml
+	let confort = Math.ceil((db.get('gregoBot.nuts')*55) / 4994)//nuts*90.8 = 1conf = 1342ml
 	let bottles = Math.floor(total / 1250)
 	let jars = Math.floor(total / 473.176)
 	let latas = Math.floor(total / 350)
@@ -34,7 +34,7 @@ module.exports = {
 		} else if (barrels == 1) {
 			message.channel.send(`${chamullo[random2]} un barril de chela`);
 		} else if ((confort > 1)&&(coinflip == 1)) {
-			message.channel.send(`${chamullo[random2]} ${confort} confores de 50 metros`);
+			message.channel.send(`${chamullo[random2]} al menos ${confort} confores de 50 metros`);
 		} else if ((bottles > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} ${bottles} botellas de austral.`);
 		} else if (bottles == 1) {
