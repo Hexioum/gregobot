@@ -17,16 +17,17 @@ const activities_list = [
     "League of Legends",
     "Warframe",
     "Warframe",
+	"Warframe",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
     "Mortal Kombat 11",
-    "DRAGON BALL FighterZ",
-    "Borderlands 2",
+//    "DRAGON BALL FighterZ",
+//    "Borderlands 2",
     "Super Mario 64",
-    "Minecraft",
-    "Fortnite",
-    "osu!",
+//    "Minecraft",
+//    "Fortnite",
+//    "osu!",
     "Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
@@ -34,7 +35,7 @@ const activities_list = [
 	"Disc Jam",
 	"Multi Theft Auto",
 	"Grand Theft Auto: San Andreas",
-	"Shin Megami Tensei III: Nocturne",
+//	"Shin Megami Tensei III: Nocturne",
 	"Desert Bus",
 	"el 6 y el 7",
     "Spacewar",
@@ -79,6 +80,8 @@ const responseObject = {
 	"gRegO?": "qUe weA",
 	"GrEgo?": "QuE Wea",
 	"grEgO?": "quE WeA",
+	"grEGO?": "quE WEA",
+	"gREGO?": "qUE WEA",
 	"GREGO?": "QUE WEA"
 };
 
@@ -111,6 +114,10 @@ client.on('ready', function () { // Should do that when the client is ready.
 		.then(presence => console.log(`Activity set to ${presence.activities[0].name}`))
 		.catch(console.error);
     }, 240000); // Runs this every 240 seconds.
+});
+client.on('guildMemberAdd', member => {
+    member.guild.channels.get('438741858018000897').send("que chucha..."); 
+// If user joins, get Principal and send a message.
 });
 client.on('message', message => {
 	if (message.author.bot) return;
@@ -226,4 +233,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)*
+client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
