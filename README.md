@@ -1,2 +1,2 @@
 # gregobot
-Discord Bot
+Experimental Discord Bot for small servers.
