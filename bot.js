@@ -38,6 +38,7 @@ const activities_list = [
 //	"Shin Megami Tensei III: Nocturne",
 	"Desert Bus",
 	"el 6 y el 7",
+	"estar hecho mierda",
     "Spacewar",
     "Hentai Furry"
     ]; // creates an arraylist containing phrases you want your bot to switch through.
@@ -68,6 +69,7 @@ const culpables = [
     ]; // this arraylist is unused
 const responseObject = {
 	"ta el grego?": "no XD",
+	"mamala grego": "tonto weon ese ni siquiera es el comando",
 	"grego?": "que wea",
 	"Grego?": "Que wea",
 	"gregO?": "que weA",
@@ -129,7 +131,7 @@ client.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			let random = Math.floor(Math.random() * 4);
+			let random = Math.floor(Math.random() * 12);
 				message.react('750502194108956682')
 					.then(() => message.react('🔩'))
 					.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
@@ -139,6 +141,21 @@ client.on('message', message => {
 				if (random === 0){
 					message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
 					.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
+				} else if (random === 1){
+					message.channel.send({files: ['./memes/;asd;;grego;asd;.png']})
+					.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
+				} else if (random === 2){
+					message.channel.send({files: ['./memes/combo.gif']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 3){
+					message.channel.send({files: ['./memes/god_of_war_iii_hercules.gif']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 4){
+					message.channel.send({files: ['./memes/jaxqlo.gif']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 5){
+					message.channel.send({files: ['./memes/tekken.gif']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 				}
 			else console.log(`Me aguanté poner los emotes porque random es ${random}`);
 		}
@@ -222,8 +239,8 @@ client.on('message', message => {
 	//added in order to verify that attachments are images and not videos
 	function attachIsImage(msgAttach) {
     var url = msgAttach.url;
-    //True if this url is a png image.
-    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1;
+    //True if the url is not a gif image.
+    return url.indexOf("gif", url.length - "gif".length /*or 3*/) == -1;
 }
 	try {
 		command.execute(message, args);
