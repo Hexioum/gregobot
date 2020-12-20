@@ -100,6 +100,7 @@ client.once('ready', () => {
     const User = client.users.fetch(gregorid);
 	const ProfPic = client.user.displayAvatarURL(gregorid, { format: 'png', size: 256, dynamic: false });
 	client.user.setAvatar(ProfPic)
+	.then(() => console.log(`Avatar URL: ${ProfPic}`))
 	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
 	// Setting the ammount of nuts.
 	if (db.has('gregoBot') == 0) {
@@ -113,7 +114,7 @@ client.on('ready', function () { // Should do that when the client is ready.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
         client.user.setActivity(activities_list[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
-		.then(presence => console.log(`Activity set to ${presence.activities[0].name}`))
+		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
     }, 240000); // Runs this every 240 seconds.
 });
