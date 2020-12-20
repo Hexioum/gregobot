@@ -98,7 +98,7 @@ for (const file of commandFiles) {
 client.once('ready', () => {
 	console.log('REDIOOOOOOOOOOS!');
     const User = client.users.fetch(gregorid);
-	const ProfPic = client.user.displayAvatarURL(gregorid, { size: 2048, dynamic: true });
+	const ProfPic = client.user.displayAvatarURL(gregorid, { format: 'png', size: 256, dynamic: false });
 	client.user.setAvatar(ProfPic)
 	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
 	// Setting the ammount of nuts.
