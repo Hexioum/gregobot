@@ -80,6 +80,8 @@ const responseObject = {
 	"grEgo?": "quE Wea",
 	"GreGo?": "Que Wea",
 	"gRegO?": "qUe weA",
+	"GregO?": "Que weA",
+	"GREgo?": "QUE Wea",
 	"GrEgo?": "QuE Wea",
 	"grEgO?": "quE WeA",
 	"grEGO?": "quE WEA",
@@ -97,10 +99,10 @@ for (const file of commandFiles) {
 // this event will only trigger one time after logging in
 client.once('ready', () => {
 	console.log('REDIOOOOOOOOOOS!');
-    const User = client.users.fetch(gregorid);
-	const ProfPic = client.user.displayAvatarURL(gregorid, { format: 'png', size: 256, dynamic: false });
-	client.user.setAvatar(ProfPic)
-	.then(() => console.log(`Avatar URL: ${ProfPic}`))
+	// resolve(guildID) and get gregoID
+	client.users.fetch(gregorid).then(myUser => {
+    client.user.setAvatar(myUser.avatarURL())})
+	.then(() => console.log(myUser))
 	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
 	// Setting the ammount of nuts.
 	if (db.has('gregoBot') == 0) {
