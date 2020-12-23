@@ -217,8 +217,9 @@ client.on('message', message => {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`cual lucho?`);
-			} return message.channel.stopTyping(true);
+			return message.channel.stopTyping(true);
 		}, 210);
+		}
 	} else if (message.content.startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`Tu hermana`)) {
@@ -261,4 +262,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+client.login(token);//(token)/(process.env.BOT_TOKEN)
