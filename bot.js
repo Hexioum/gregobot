@@ -211,6 +211,14 @@ client.on('message', message => {
 		message.channel.send('no tomemos concluciones apresuradas');
 	} else if (message.content.startsWith(`Fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
+	} else if (message.content.includes(`lucho`)) {
+		let random = Math.floor(Math.random() * 3);
+		if (random == 0) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`cual lucho?`);
+			} return message.channel.stopTyping(true);
+		}, 210);
 	} else if (message.content.startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`Tu hermana`)) {
