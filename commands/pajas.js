@@ -13,12 +13,12 @@ module.exports = {
 	let random2 = Math.floor(Math.random() * 5);
 	let coinflip = Math.floor(Math.random() * 2);
 	let total = (db.get('gregoBot.nuts') * 14.7868).toFixed(2);
-	let bathtub = Math.floor(total / 158987)
-	let barrels = Math.floor(total / 50000)
-	let confort = Math.ceil((db.get('gregoBot.nuts')*55) / 4994)//nuts*90.8 = 1conf = 1342ml
-	let bottles = Math.floor(total / 1250)
-	let jars = Math.floor(total / 473.176)
-	let latas = Math.floor(total / 350)
+	let bathtub = Math.floor(total / 158987);
+	let barrels = Math.floor(total / 50000);
+	let confort = Math.ceil((db.get('gregoBot.nuts')*55) / 4994);//nuts*90.8 = 1conf = 1342ml
+	let bottles = Math.floor(total / 1250);
+	let jars = Math.floor(total / 473.176);
+	let latas = Math.floor(total / 350);
 	//11cm * 5cuadros = nut. (el confort es de 5000cm) aprox 4994cm si fuesen cuadros perfectos.
 	if (args.length < 1) {
 		message.channel.startTyping()
@@ -42,7 +42,7 @@ module.exports = {
 		} else if ((jars > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} ${jars} frascos para poner figuritas.`);
 		} else if (jars == 1) {
-			message.channel.send(`${chamullo[random2]} ${jars} frascos para poner figuritas.`);
+			message.channel.send(`${chamullo[random2]} ${jars} frasco para poner figuritas.`);
 		} else if (latas > 1) {
 			message.channel.send(`${chamullo[random2]} ${latas} latas de chela.`);
 		} else if (latas == 1) {
