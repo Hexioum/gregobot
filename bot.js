@@ -212,7 +212,7 @@ client.on('message', message => {
 	} else if (message.content.startsWith(`Fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
 	} else if (message.content.includes(`lucho`)) {
-		let random = Math.floor(Math.random() * 3);
+		let random = Math.floor(Math.random() * 5);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
