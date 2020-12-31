@@ -48,7 +48,7 @@ module.exports = {
 		} else if (latas == 1) {
 			message.channel.send(`${chamullo[random2]} suficiente para llenar una lata de chela`);
 		} else if (latas < 1) {
-			message.channel.send(`no alcanza ni para llenar una lata...`);
+			message.channel.send({files: ['./memes/nooooooooooooooo.mp4']});
 		} return message.channel.stopTyping(true);
 	}, 200);
 	}	else {

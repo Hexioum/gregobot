@@ -134,7 +134,7 @@ client.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			let random = Math.floor(Math.random() * 12);
+			let random = Math.floor(Math.random() * 15);
 				message.react('750502194108956682')
 					.then(() => message.react('🔩'))
 					.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
@@ -159,8 +159,14 @@ client.on('message', message => {
 				} else if (random === 5){
 					message.channel.send({files: ['./memes/tekken.gif']})
 					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 6){
+					message.channel.send({files: ['./memes/tenor_2.gif']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 7){
+					message.channel.send({files: ['./memes/forgiveme.jpg']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 				}
-			else console.log(`Me aguanté poner los emotes porque random es ${random}`);
+			else console.log(`Me aguanté mandar algo porque random es ${random}`);
 		}
 	}
 
@@ -212,7 +218,7 @@ client.on('message', message => {
 	} else if (message.content.startsWith(`Fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
 	} else if (message.content.includes(`lucho`)) {
-		let random = Math.floor(Math.random() * 5);
+		let random = Math.floor(Math.random() * 3);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
