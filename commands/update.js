@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
 module.exports = {
 	name: 'update',
 	aliases: ['actualiza el avatar','arregla el avatar','cambia el avatar','cambia la foto'],
