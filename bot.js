@@ -12,7 +12,7 @@ client.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
-const activities_list = [
+const activitiesList = [
     "League of Legends",
     "League of Legends",
     "Warframe",
@@ -42,6 +42,27 @@ const activities_list = [
     "Spacewar",
     "Hentai Furry"
     ]; // creates an arraylist containing phrases you want your bot to switch through.
+const topicList = [
+    "Guilty Gear XX Λ Core Plus R",
+    "Guilty Gear™ -Strive-",
+	"Pro Jumper! Guilty Gear Tangent!?",
+    "Killer Instinct",
+    "Garou: Mark of the Wolves",
+	"Pocket Rumble",
+	"RAID: Shadow Legends",
+	"Diablo® III",
+	"Kung Fu Panda: Showdown of Legendary Legends",
+	"Disc Jam",
+	"Summoners War",
+	"Shin Megami Tensei IV: Apocalypse",
+    "EA SPORTS™ FIFA 21",
+	"speedruns de Super Mario 64",
+	"que Nagato es la Linne",
+	"framedata",
+	"juegos de mesa",
+	"rollback netcode",
+    "Mudae"
+    ];
 const ignoreList = [
 	'565330655915933696',
 	'439205512425504771'
@@ -114,13 +135,52 @@ client.on('ready', function () { // Should do that when the client is ready.
 //    console.log(User); // Some user object.
     console.log(`${client.user.tag} has logged in.`);
 	setInterval(() => {
-        const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
-        client.user.setActivity(activities_list[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
+		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
+		client.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
+		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
+		.catch(console.error);
+
+    }, 12240000); // Runs this every 3.4 hours.
+	setInterval(() => {
+        const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
+        client.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
 		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
-    }, 240000); // Runs this every 240 seconds.
+
+    }, 300000); // Runs this every 300 seconds.
 });
+//	async member*
 client.on('guildMemberAdd', member => {
+	let channel = member.guild.channels.cache.find(ch => ch.name === 'principal');
+	if (!channel) return;
+    // Assuming we mention someone in the message, this will return the user
+    // Read more about mentions over at https://discord.js.org/#/docs/main/master/class/MessageMentions
+    if (gregorid) {
+      // Now we get the member from the user
+      let member = message.guild.members.resolve(gregorid);
+      // If the member is in the guild
+      if (member) {
+        member
+          .kick('Gregobot ha tomado acción.')
+          .then(() => {
+            console.log(`Successfully kicked ${user.tag}`);
+		})
+          .catch(err => {
+            // An error happened
+            // This is generally due to the bot not being able to kick the member,
+            // either due to missing permissions or role hierarchy
+            console.log('I was unable to kick the member');
+            // Log the error
+            console.error(err);
+		});
+      } else {
+        // The mentioned user isn't in this guild
+        console.log("That user isn't in this guild!");
+      }
+      // Otherwise, if no user was mentioned
+    } else {
+      console.log("You didn't mention the user to kick!");
+    }
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
 // If user joins, get Principal and send a message.
 });
