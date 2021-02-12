@@ -49,8 +49,11 @@ const topicList = [
     "Killer Instinct",
     "Garou: Mark of the Wolves",
 	"Pocket Rumble",
-	"RAID: Shadow Legends",
+	"Tobal 2",
+	"Duke Nukem Forever",
 	"Diablo® III",
+	"Boktai: The Sun is in Your Hand",
+	"VA-11 Hall-A: Cyberpunk Bartender Action",
 	"Kung Fu Panda: Showdown of Legendary Legends",
 	"Disc Jam",
 	"Summoners War",
@@ -61,7 +64,14 @@ const topicList = [
 	"framedata",
 	"juegos de mesa",
 	"rollback netcode",
+	"GGPO",
     "Mudae"
+    ];
+const reactList = [
+	"🔩",
+	"🔩",
+	"🙏",
+    "🍴"
     ];
 const ignoreList = [
 	'565330655915933696',
