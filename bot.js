@@ -6,8 +6,13 @@ const { prefix, token, gregorid } = require('./config.json');
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 // create a new Discord client
-const client = new Discord.Client();
-// a class that extend JS's native Map class and include more extensive, useful functionality.
+const client = new Discord.Client({ ws: { intents: [
+	'GUILDS',
+	'GUILD_PRESENCES',
+	'GUILD_MEMBERS',
+	'GUILD_MESSAGES',
+	'GUILD_MESSAGE_REACTIONS'] } });
+// a class that extend JS's native Map class and include more extensive functionality.
 client.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -22,12 +27,12 @@ const activitiesList = [
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
     "Mortal Kombat 11",
-//    "DRAGON BALL FighterZ",
-//    "Borderlands 2",
+	"DRAGON BALL FighterZ",
+	"Borderlands 2",
     "Super Mario 64",
-//    "Minecraft",
-//    "Fortnite",
-//    "osu!",
+//	"Minecraft",
+//	"Fortnite",
+//	"osu!",
     "Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
@@ -52,6 +57,7 @@ const topicList = [
 	"Tobal 2",
 	"Duke Nukem Forever",
 	"Diablo® III",
+	"BlazBlue Alternative: Dark War",
 	"Boktai: The Sun is in Your Hand",
 	"VA-11 Hall-A: Cyberpunk Bartender Action",
 	"Kung Fu Panda: Showdown of Legendary Legends",
@@ -77,27 +83,31 @@ const ignoreList = [
 	'565330655915933696',
 	'439205512425504771'
 	]; // banned from image reactions.
-const culpables = [
-    "fue el nacho",
-    "Fue el Nacho",
-    "Fue el nacho",
-    "fue el esteban",
-    "Fue el esteban",
-    "Fue el Esteban",
-    "Fue el Mati",
-    "Fue el mati",
-    "fue el mati",
-    "Fue el lucho",
-    "fue el lucho",
-    "Fue el Lucho",
-    "Fue el Octavio",
-    "fue el octavio",
-    "Fue el octavio",
-	"fue el mismo weon que ",
-	"fue el mismo wn que ",
-	"fueron los mismos c",
-    "Fueron los mismos c"
-    ]; // this arraylist is unused
+const bannedWords = [
+    "M4",
+    "m4",
+    "Sopmod",
+    "sopmod",
+    "SOPMOD",
+    "s0pm0d",
+    "SØPMØD",
+	"SOPMØD",
+    "SØPMOD",
+    "sØpmØd",
+    "søpmød",
+    "Søpmod",
+    "Søpmød",
+    "SOPMoD",
+    "SoPMoD",
+    "SoPMOD",
+    "Soppo",
+    "soppo",
+	"Soppu",
+	"Zopmod",
+	"Zandmod",
+	"ZANDMOD",
+    "Jillmod"
+    ]; // Don't ever say them out loud.
 const responseObject = {
 	"ta el grego?": "no XD",
 	"mamala grego": "tonto weon ese ni siquiera es el comando",
@@ -194,6 +204,23 @@ client.on('guildMemberAdd', member => {
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
 // If user joins, get Principal and send a message.
 });
+client.on('guildMemberUpdate', function(oldMember, newMember){
+	if (oldMember.nickname === newMember.nickname) return;
+	console.log(`Nickname antes: ${oldMember.nickname}`);
+	console.log(`Nickname ahora: ${newMember.nickname}`);
+	if (oldMember.id == '565330655915933696') {
+		console.log('Usuario coincide.');
+		//Add a wait function, since it doesn't seem to execute this chunk of code.
+		for (let i = 0; i < bannedWords.length; i++) {
+			if (newMember.nickname.toLowerCase().includes === bannedWords[i]) {
+				console.log('Intentando renombrar usuario...');
+				newMember.setNickname("Don Comedia")
+					.then(() => console.log('Se ha renombrado a Don Comedia'))
+					.catch(() => console.error('No se ha podido renombrar al payaso.'));
+			}
+		};
+	}	return console.log(`guildMemberUpdate checked.`);	// for Debugging
+});
 client.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
@@ -205,8 +232,9 @@ client.on('message', message => {
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 			let random = Math.floor(Math.random() * 15);
+			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 				message.react('750502194108956682')
-					.then(() => message.react('🔩'))
+					.then(() => message.react(`${reactList[randReaction]}`))
 					.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
 				// Add 1 to the nut counter.
 				db.add('gregoBot.nuts', 1);
