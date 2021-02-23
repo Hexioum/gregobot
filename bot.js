@@ -2,7 +2,7 @@
 const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
-const { prefix, token, gregorid } = require('./config.json');
+const { token, gregorid } = require('./config.json');
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 // create a new Discord client
@@ -189,7 +189,7 @@ client.on('guildMemberAdd', member => {
             // An error happened
             // This is generally due to the bot not being able to kick the member,
             // either due to missing permissions or role hierarchy
-            console.log('I was unable to kick the member');
+            console.log('I was unable to kick the member!');
             // Log the error
             console.error(err);
 		});
@@ -211,19 +211,26 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.id == '565330655915933696') {
 		console.log('Usuario coincide.');
 		//Add a wait function, since it doesn't seem to execute this chunk of code.
-		for (let i = 0; i < bannedWords.length; i++) {
-			if (newMember.nickname.toLowerCase().includes === bannedWords[i]) {
+		setTimeout(function(){ 
+		if( bannedWords.some(word => newMember.nickname.includes(word)) ) {
 				console.log('Intentando renombrar usuario...');
-				newMember.setNickname("Don Comedia")
+				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
 					.catch(() => console.error('No se ha podido renombrar al payaso.'));
-			}
 		};
-	}	return console.log(`guildMemberUpdate checked.`);	// for Debugging
+		}, 200);
+	}	
+	else return console.log(`Usuario no coincide.`);	// for Debugging
+});
+client.on('unhandledRejection', error => {
+	console.error('Unhandled promise rejection:', error);
 });
 client.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
+	const prefixes = ['Grego ', 'grego ', 'gr '];
+	const prefix = prefixes.find(p => message.content.startsWith(p));
+	if (!prefix) return;
 	
 	if (message.attachments.size > 0) {
 		for (let i = 0; i < ignoreList.length; i++) {
@@ -366,4 +373,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+client.login(token);//(token)/(process.env.BOT_TOKEN)
