@@ -228,10 +228,6 @@ client.on('unhandledRejection', error => {
 client.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	const prefixes = ['Grego ', 'grego ', 'gr '];
-	const prefix = prefixes.find(p => message.content.startsWith(p));
-	if (!prefix) return;
-	
 	if (message.attachments.size > 0) {
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
@@ -342,6 +338,10 @@ client.on('message', message => {
 	} else if (message.content.startsWith(`grego elige `)) {
 		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
 	}
+	
+	const prefixes = ['Grego ', 'grego ', 'gr '];
+	const prefix = prefixes.find(p => message.content.startsWith(p));
+//	if (!prefix) return;
 	
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
