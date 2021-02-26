@@ -327,7 +327,16 @@ client.on('message', message => {
 			return message.channel.stopTyping(true);
 		}, 210);
 		}
-	} else if (message.content.startsWith(`tu hermana`)) {
+	} else if (message.content.includes(`genshin`)) {
+		let random = Math.floor(Math.random() * 2);
+		if (random == 0) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`mas razones por odiar esa wea de juego`);
+			return message.channel.stopTyping(true);
+		}, 240);
+		}
+	}else if (message.content.startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`Tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
