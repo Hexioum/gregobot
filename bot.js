@@ -23,6 +23,8 @@ const activitiesList = [
     "Warframe",
     "Warframe",
 	"Warframe",
+	"Old School RuneScape",
+	"Old School RuneScape",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
@@ -30,9 +32,7 @@ const activitiesList = [
 	"DRAGON BALL FighterZ",
 	"Borderlands 2",
     "Super Mario 64",
-//	"Minecraft",
-//	"Fortnite",
-//	"osu!",
+	"Where's Waldo?",
     "Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
@@ -40,7 +40,6 @@ const activitiesList = [
 	"Disc Jam",
 	"Multi Theft Auto",
 	"Grand Theft Auto: San Andreas",
-//	"Shin Megami Tensei III: Nocturne",
 	"Desert Bus",
 	"el 6 y el 7",
 	"estar hecho mierda",
@@ -49,20 +48,23 @@ const activitiesList = [
     ]; // creates an arraylist containing phrases you want your bot to switch through.
 const topicList = [
     "Guilty Gear XX Λ Core Plus R",
-    "Guilty Gear™ -Strive-",
+    "GUILTY GEAR™ -STRIVE-",
 	"Pro Jumper! Guilty Gear Tangent!?",
     "Killer Instinct",
     "Garou: Mark of the Wolves",
 	"Pocket Rumble",
 	"Tobal 2",
+	"Tomba! 2: The Evil Swine Return",
 	"Duke Nukem Forever",
 	"Diablo® III",
 	"BlazBlue Alternative: Dark War",
 	"Boktai: The Sun is in Your Hand",
+	"Commander Keen",
 	"VA-11 Hall-A: Cyberpunk Bartender Action",
 	"Kung Fu Panda: Showdown of Legendary Legends",
 	"Disc Jam",
 	"Summoners War",
+	"Shrek Super Slam",
 	"Shin Megami Tensei IV: Apocalypse",
     "EA SPORTS™ FIFA 21",
 	"speedruns de Super Mario 64",
@@ -84,29 +86,24 @@ const ignoreList = [
 	'439205512425504771'
 	]; // banned from image reactions.
 const bannedWords = [
-    "M4",
     "m4",
-    "Sopmod",
     "sopmod",
-    "SOPMOD",
+    "sopm0d",
+    "s0pmod",
     "s0pm0d",
-    "SØPMØD",
-	"SOPMØD",
-    "SØPMOD",
     "sØpmØd",
     "søpmød",
-    "Søpmod",
-    "Søpmød",
-    "SOPMoD",
-    "SoPMoD",
-    "SoPMOD",
-    "Soppo",
+    "søpmod",
+    "sopmød",
+    "ambercita",
+    "amber",
     "soppo",
-	"Soppu",
+	"soppu",
 	"Zopmod",
-	"Zandmod",
-	"ZANDMOD",
-    "Jillmod"
+	"zandmod",
+    "jillmod",
+	"stingray",
+    "jill"
     ]; // Don't ever say them out loud.
 const responseObject = {
 	"ta el grego?": "no XD",
@@ -211,12 +208,12 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.id == '565330655915933696') {
 		console.log('Usuario coincide.');
 		//Add a wait function, since it doesn't seem to execute this chunk of code.
-		setTimeout(function(){ 
-		if( bannedWords.some(word => newMember.nickname.includes(word)) ) {
+		setTimeout(function(){
+		if( bannedWords.some(word => newMember.nickname.toLowerCase().includes(word)) ) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
-					.catch(() => console.error('No se ha podido renombrar al payaso.'));
+					.catch(console.error);
 		};
 		}, 200);
 	}	
@@ -234,7 +231,7 @@ client.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			let random = Math.floor(Math.random() * 15);
+			let random = Math.floor(Math.random() * 17);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 				message.react('750502194108956682')
 					.then(() => message.react(`${reactList[randReaction]}`))
@@ -265,6 +262,9 @@ client.on('message', message => {
 					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 				} else if (random === 7){
 					message.channel.send({files: ['./memes/forgiveme.jpg']})
+					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 8){
+					message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
 					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 				}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
@@ -382,4 +382,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+client.login(token);//(token)/(process.env.BOT_TOKEN)
