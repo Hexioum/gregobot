@@ -99,6 +99,9 @@ const bannedWords = [
     "amber",
     "soppo",
 	"soppu",
+	"spmd",
+	"spmod",
+	"sopmd",
 	"Zopmod",
 	"zandmod",
     "jillmod",
@@ -231,7 +234,7 @@ client.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			let random = Math.floor(Math.random() * 17);
+			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 				message.react('750502194108956682')
 					.then(() => message.react(`${reactList[randReaction]}`))
@@ -266,6 +269,15 @@ client.on('message', message => {
 				} else if (random === 8){
 					message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
 					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				} else if (random === 9){
+					message.channel.startTyping();
+					setTimeout(function(){
+						message.channel.send('ta wena igual')
+						.then(() => message.channel.send('le paso el pico por los rollos'))
+						.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
+						.catch(() => console.error('Que onda?? No pude responder.'));
+						return message.channel.stopTyping(true);
+					}, 420);
 				}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
 		}
@@ -275,72 +287,62 @@ client.on('message', message => {
 
 	if(responseObject[message.content]) {
 		message.channel.send(responseObject[message.content]);
-	} else if (message.content.startsWith(`ta el grgr`)) {
+	} else if (message.content.toLowerCase().startsWith(`ta el grgr`)) {
 		message.channel.send('no XD');
-	} else if (message.content.startsWith(`ah ta el gr`)) {
+	} else if (message.content.toLowerCase().startsWith(`ah ta el gr`)) {
 		message.channel.send('se wn');
-	} else if (message.content.startsWith(`ah esta el gr`)) {
+	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`)) {
 		message.channel.send('se wn');
-	} else if (message.content.startsWith(`Ah está el gr`)) {
+	} else if (message.content.toLowerCase().startsWith(`ah está el gr`)) {
 		message.channel.send('se wn');
-	} else if (message.content.startsWith(`buena grego`)) {
+	} else if (message.content.toLowerCase().startsWith(`buena grego`)) {
 		message.channel.send('wena');
-	} else if (message.content.startsWith(`hola grego`)) {
+	} else if (message.content.toLowerCase().startsWith(`hola grego`)) {
 		message.channel.send('wena');
-	} else if (message.content.startsWith(`wena grego`)) {
+	} else if (message.content.toLowerCase().startsWith(`wena grego`)) {
 		message.channel.send('wena wena')
 			.then(() => message.channel.send('quien su lol?'))
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.startsWith(`XD`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
-	} else if (message.content.startsWith(`mañana `)) {
+	} else if (message.content.toLowerCase().startsWith(`mañana `)) {
 		message.channel.send('no te creo nada')
 			.then(() => message.channel.send('mentiroso qlo'))
 			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
 			.catch(() => console.error('Que onda?? No pude responder.'));
-	} else if (message.content.startsWith(`weon ese `)) {
+	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
 		message.channel.send('Si.');
-	} else if (message.content.startsWith(`cierto grego`)) {
+	} else if (message.content.toLowerCase().startsWith(`cierto grego`)) {
 		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego:750502194108956682>", "<:Grego:750502194108956682>:interrobang:", "Si."];
 		let random = Math.floor(Math.random() * 5);
 		message.channel.send(replies[random]);
-	} else if (message.content.startsWith(`Cierto grego`)) {
-		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego:750502194108956682>"];
-		let random = Math.floor(Math.random() * 3);
-		message.channel.send(replies[random]);
-	} else if (message.content.includes(`fue el grego`)) {
+	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
 		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati"];
 		let random = Math.floor(Math.random() * 4);
 		message.channel.send('loco yo no fui')
 			.then(() => message.channel.send(replies[random]))
 			.catch(() => console.error('Que onda?? No pude responder.'));
-	} else if (message.content.startsWith(`fue el `)) {
+	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
-	} else if (message.content.startsWith(`Fue el `)) {
-		message.channel.send('no tomemos concluciones apresuradas');
-	} else if (message.content.includes(`lucho`)) {
+	} else if (message.content.toLowerCase().includes(`lucho`)) {
 		let random = Math.floor(Math.random() * 3);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`cual lucho?`);
 			return message.channel.stopTyping(true);
-		}, 210);
+		}, 240);
 		}
-	} else if (message.content.includes(`genshin`)) {
+	} else if (message.content.toLowerCase().includes(`genshin`)) {
 		let random = Math.floor(Math.random() * 2);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`mas razones por odiar esa wea de juego`);
 			return message.channel.stopTyping(true);
-		}, 240);
+		}, 360);
 		}
-	}else if (message.content.startsWith(`tu hermana`)) {
-		message.channel.send({files: ['./memes/;momopatas;.png']});
-	} else if (message.content.startsWith(`Tu hermana`)) {
-		message.channel.send({files: ['./memes/;momopatas;.png']});
-	} else if (message.content.startsWith(`TU HERMANA`)) {
+	}else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`grego decide `)) {
 		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
