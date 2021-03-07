@@ -95,14 +95,34 @@ const bannedWords = [
     "søpmød",
     "søpmod",
     "sopmød",
-    "ambercita",
-    "amber",
+	"sºpmod",
+	"sºpmºd",
+	"sopmºd",
+	"s°pm°d",
+	"sopm°d",
+	"s°pmod",
+	"sºpmºd",
+	"sºpmod",
+	"sopmºd",
+	"s°pmºd",
+	"sºpm°d",
+    "søpmºd",
+    "sºpmød",
+	"sоpmоd",
+    "$opmod",
+    "$oppo",
+    "$pmd",
     "soppo",
 	"soppu",
 	"spmd",
 	"spmod",
 	"sopmd",
-	"Zopmod",
+	"zopmod",
+    "ambercita",
+    "amber",
+    "4mber",
+    "amb3r",
+    "4mb3r",
 	"zandmod",
     "jillmod",
 	"stingray",
@@ -218,7 +238,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
 					.catch(console.error);
 		};
-		}, 200);
+		}, 250);
 	}	
 	else return console.log(`Usuario no coincide.`);	// for Debugging
 });
