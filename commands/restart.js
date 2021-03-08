@@ -12,10 +12,10 @@ module.exports = {
 
     try {
 		message.channel.send("volveré...").then(msg => {
-			msg.react('🆗');
 			setTimeout(function(){
 				msg.edit("toc toc!");
-			}, 9000);
+				msg.react('🆗');
+			}, 6000);
 		})
 		.then(client.destroy())
 		.then(client.login(process.env.BOT_TOKEN))
