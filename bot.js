@@ -7,7 +7,7 @@ const { token, gregorid } = require('./config.json');
 const db = require('quick.db');
 var pool = require ('./postgres.js');
 // create a new Discord client
-const client = new Discord.Client({ 
+const bot = new Discord.Client({ 
 ws: { intents: [
 	'GUILDS',
 	'GUILD_PRESENCES',
@@ -16,7 +16,7 @@ ws: { intents: [
 	'GUILD_MESSAGE_REACTIONS'] }
 });
 // a class that extend JS's native Map class and include more extensive functionality.
-client.commands = new Discord.Collection();
+bot.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
@@ -166,15 +166,15 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	// set a new item in the Collection
 	// with the key as the command name and the value as the exported module
-	client.commands.set(command.name, command);
+	bot.commands.set(command.name, command);
 }
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
-client.once('ready', () => {
+bot.once('ready', () => {
 	console.log('REDIOOOOOOOOOOS!');
 	// resolve(guildID) and get gregoID
-	client.users.fetch(gregorid).then(myUser => {
-    client.user.setAvatar(myUser.avatarURL())})
+	bot.users.fetch(gregorid).then(myUser => {
+    bot.user.setAvatar(myUser.avatarURL())})
 	.then(() => console.log(myUser))
 	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
 	// Setting the ammount of nuts.
@@ -183,36 +183,36 @@ client.once('ready', () => {
 	console.log(`Se ha creado una nueva partida.`);
 	}
 });
-client.on('ready', function () {
+bot.on('ready', function () {
 //	console.log(User); // Some user object.
-    console.log(`${client.user.tag} has logged in.`);
+    console.log(`${bot.user.tag} has logged in.`);
 //	Attempt to connect to postgres
-    pool.connect( (err, client, done) => {
-           client.query('create table if not exists users( \
-               id text primary key, \
-               name text, \
-               count integer default 0)', (err, result) => {
-//	disconnent from database on error
+	pool.connect( (err, client, done) => {
+			client.query('create table if not exists users( \
+				id text primary key, \
+				name text, \
+				count integer default 0)', (err, result) => {
+//	Disconnect on error
 				done(err);
             });
         });
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
-		client.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
+		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
 		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
 		.catch(console.error);
 
     }, 12240000); // Runs this every 3.4 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
-        client.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
+        bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
 		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
 
     }, 300000); // Runs this every 300 seconds.
 });
 //	async member*
-client.on('guildMemberAdd', member => {
+bot.on('guildMemberAdd', member => {
 	let channel = member.guild.channels.cache.find(ch => ch.name === 'principal');
 	if (!channel) return;
     // Assuming we mention someone in the message, this will return the user
@@ -246,7 +246,7 @@ client.on('guildMemberAdd', member => {
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
 // If user joins, get Principal and send a message.
 });
-client.on('guildMemberUpdate', function(oldMember, newMember){
+bot.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.nickname === newMember.nickname) return;
 	console.log(`Nickname antes: ${oldMember.nickname}`);
 	console.log(`Nickname ahora: ${newMember.nickname}`);
@@ -264,10 +264,10 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 	}	
 	else return console.log(`Usuario no coincide.`);	// for Debugging
 });
-client.on('unhandledRejection', error => {
+bot.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
-client.on('message', message => {
+bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
 	if (message.attachments.size > 0) {
@@ -419,8 +419,8 @@ client.on('message', message => {
 	//.split(/ +/g) will cut any ammount of spaces in between.
 	const commandName = args.shift().toLowerCase();
 	
-	const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command = bot.commands.get(commandName)
+		|| bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
 
@@ -443,4 +443,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+bot.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
