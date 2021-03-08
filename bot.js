@@ -5,13 +5,16 @@ const Discord = require('discord.js');
 const { token, gregorid } = require('./config.json');
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
+var pool = require ('./postgres.js');
 // create a new Discord client
-const client = new Discord.Client({ ws: { intents: [
+const client = new Discord.Client({ 
+ws: { intents: [
 	'GUILDS',
 	'GUILD_PRESENCES',
 	'GUILD_MEMBERS',
 	'GUILD_MESSAGES',
-	'GUILD_MESSAGE_REACTIONS'] } });
+	'GUILD_MESSAGE_REACTIONS'] }
+});
 // a class that extend JS's native Map class and include more extensive functionality.
 client.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
@@ -413,4 +416,4 @@ client.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-client.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+client.login(token);//(token)/(process.env.BOT_TOKEN)
