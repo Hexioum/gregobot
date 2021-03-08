@@ -206,16 +206,6 @@ bot.once('ready', () => {
 bot.on('ready', function () {
 //	console.log(User); // Some user object.
     console.log(`${bot.user.tag} has logged in.`);
-//	Attempt to connect to postgres
-	pool.connect( (err, client, done) => {
-			client.query('create table if not exists users( \
-				id text primary key, \
-				name text, \
-				count integer default 0)', (err, result) => {
-//	Disconnect on error
-				done(err);
-            });
-        });
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
