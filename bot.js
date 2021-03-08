@@ -195,6 +195,7 @@ client.on('ready', function () {
 //	disconnent from database on error
 				done(err);
             });
+        });
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		client.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
