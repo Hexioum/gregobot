@@ -304,18 +304,20 @@ bot.on('message', message => {
 				if(err) throw err; 
 				console.log('Connected to PostgresSQL');
 			})
-			let xp = 1
-			pool.query(`SELECT * FROM xp WHERE userid = '${message.author.id}'`, {useArray: true}, (err, rows) => {
-			const curlvl = Math.floor(0.1 * Math.sqrt(rows.xp + 0.1));
-			const xpgen = Math.floor(Math.random() * (20 - 5 + 1)) + 5;
-			if(err) throw err;
-				let sql;
-			if (!result.rows[0]){
-				sql = `INSERT INTO xp(userid, xp, level) VALUES('${message.author.id}', 0, 0)`
-			} else {
-				let xp = rows.xp;
-				sql = `UPDATE xp SET xp = ${xp + xpgen} WHERE userid = '${message.author.id}'`
-			}
+
+			pool.query('update users set count = count + 1 where id = $1',
+            [message.author.id], (err, result) => {
+
+                done(err);
+                //If user not in the database add them
+                if (result.rowCount == 0){
+                    client.query('insert into users (id, name, count) values ($1, $2, 1)',
+                    [message.author.id, message.author.username], (err, result) => {
+                        done(err);
+                        console.log(result.rowCount);
+                    });
+                }
+            });
 			pool.query(sql, console.log);
 			pool.end(err => {
 				if(err) throw err; 
