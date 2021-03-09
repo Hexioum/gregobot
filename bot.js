@@ -300,11 +300,6 @@ bot.on('message', message => {
 				ssl: false,
 			});
 
-			pool.connect(err => {
-				if(err) throw err; 
-				console.log('Connected to PostgresSQL');
-			})
-
 			pool.query('update users set count = count + 1 where id = $1',
             [message.author.id], (err, result) => {
 
