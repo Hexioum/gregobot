@@ -205,13 +205,21 @@ bot.once('ready', () => {
 });
 bot.on('ready', function () {
 //	console.log(User); // Some user object.
-    console.log(`${bot.user.tag} has logged in.`);
+	console.log(`${bot.user.tag} has logged in.`);
+	pool.connect( (err, client, done) => {
+		client.query('create table if not exists users( \
+			id text primary key, \
+			name text, \
+			count integer default 0)', (err, result) => {
+// Disconnect from database on error
+			done(err);
+		});
+	});
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
 		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
 		.catch(console.error);
-
     }, 12240000); // Runs this every 3.4 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
@@ -289,7 +297,23 @@ bot.on('message', message => {
 			if (message.content.toLowerCase().includes(`unknown.png`)) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
-
+	//		Connected to database
+			pool.connect( (err, client, done) => {
+			console.log(`Intentando conectar a la base de datos...`);
+	//		Increment users count by 1
+			client.query('update users set count = count + 1 where id = $1',
+			[message.author.id], (err, result) => {
+				done(err);
+	//		If user not in the database add them
+				if (result.rowCount == 0){
+					client.query('insert into users (id, name, count) values ($1, $2, 1)',
+					[message.author.id, message.author.username], (err, result) => {
+						done(err);
+						console.log(result.rowCount);
+						});
+					}
+				});
+			});
 			message.react('750502194108956682')
 				.then(() => message.react(`${reactList[randReaction]}`))
 				.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
