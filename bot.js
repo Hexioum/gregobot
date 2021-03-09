@@ -284,7 +284,7 @@ bot.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			if (message.content.toLowerCase().includes(`unknown.png`)) return console.log('Ví la imágen pero parece ser una captura');
+			if (message.content.toLowerCase().startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 //		Connected to database
@@ -306,6 +306,7 @@ bot.on('message', message => {
 			// Add 1 to the nut counter.
 			db.add('gregoBot.nuts', 1);
 			console.log(`Ha aumentado la cantidad de nueces.`);
+			setTimeout(function(){
 			if (random === 0){
 				message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
 				.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
@@ -341,8 +342,9 @@ bot.on('message', message => {
 					.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
 					.catch(() => console.error('Que onda?? No pude responder.'));
 					return message.channel.stopTyping(true);
-				}, 420);
+				}, 500);
 			}
+			}, 500);
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
 		}
 	}
