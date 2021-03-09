@@ -318,7 +318,6 @@ bot.on('message', message => {
                     });
                 }
             });
-			pool.query(sql, console.log);
 			pool.end(err => {
 				if(err) throw err; 
 				console.log('Not logged to PostgresSQL');
