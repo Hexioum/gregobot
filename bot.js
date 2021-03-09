@@ -300,23 +300,6 @@ bot.on('message', message => {
 				ssl: false,
 			});
 
-			pool.query('update users set count = count + 1 where id = $1',
-            [message.author.id], (err, result) => {
-
-                console.log(err);
-                //If user not in the database add them
-                if (result.rowCount == 0){
-                    client.query('insert into users (id, name, count) values ($1, $2, 1)',
-                    [message.author.id, message.author.username], (err, result) => {
-                        console.log(err);
-                        console.log(result.rowCount);
-                    });
-                }
-            });
-			pool.end(err => {
-				if(err) throw err; 
-				console.log('Not logged to PostgresSQL');
-			});
 			message.react('750502194108956682')
 				.then(() => message.react(`${reactList[randReaction]}`))
 				.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
