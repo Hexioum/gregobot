@@ -344,8 +344,8 @@ bot.on('message', message => {
 					return message.channel.stopTyping(true);
 				}, 500);
 			}
-			}, 500);
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
+			}, 500);
 		}
 	}
 
