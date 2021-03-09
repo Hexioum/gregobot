@@ -2,9 +2,9 @@ var pg = require('pg');
 
 var config = {
   user: process.env.DATABASE_USER,
-  database: 'd6gsu9s8kj5k1r',
+  database: process.env.DATABASE,
   password: process.env.DATABASE_PASSWORD,
-  host: 'ec2-50-19-247-157.compute-1.amazonaws.com',
+  host: process.env.DATABASE_HOST,
   port: 5432,
   max: 10,
   idleTimeoutMillis: 50000,
