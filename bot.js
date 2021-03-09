@@ -271,7 +271,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 					.catch(console.error);
 		};
 		}, 250);
-	}	
+	}
 	else return console.log(`Usuario no coincide.`);	// for Debugging
 });
 bot.on('unhandledRejection', error => {
@@ -289,65 +289,50 @@ bot.on('message', message => {
 			if (message.content.toLowerCase().includes(`unknown.png`)) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
-	//		Connected to database
-			pool.connect( (err, client, done) => {
-	//		Increment users count by 1
-			client.query('update users set count = count + 1 where id = $1',
-			[message.author.id], (err, result) => {
-				done(err);
-	//		If user not in the database add them
-				if (result.rowCount == 0){
-					client.query('insert into users (id, name, count) values ($1, $2, 1)',
-					[message.author.id, message.author.username], (err, result) => {
-						done(err);
-						console.log(result.rowCount);
-						});
-					}
-				});
-			});
-				message.react('750502194108956682')
-					.then(() => message.react(`${reactList[randReaction]}`))
-					.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
-				// Add 1 to the nut counter.
-				db.add('gregoBot.nuts', 1);
-				console.log(`Ha aumentado la cantidad de nueces.`);
-				if (random === 0){
-					message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
-					.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
-				} else if (random === 1){
-					message.channel.send({files: ['./memes/;asd;;grego;asd;.png']})
-					.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
-				} else if (random === 2){
-					message.channel.send({files: ['./memes/combo.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 3){
-					message.channel.send({files: ['./memes/god_of_war_iii_hercules.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 4){
-					message.channel.send({files: ['./memes/jaxqlo.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 5){
-					message.channel.send({files: ['./memes/tekken.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 6){
-					message.channel.send({files: ['./memes/tenor_2.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 7){
-					message.channel.send({files: ['./memes/forgiveme.jpg']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 8){
-					message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
-					.catch(() => console.error('Que onda?? No puedo mandar el gif'));
-				} else if (random === 9){
-					message.channel.startTyping();
-					setTimeout(function(){
-						message.channel.send('ta wena igual')
-						.then(() => message.channel.send('le paso el pico por los rollos'))
-						.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
-						.catch(() => console.error('Que onda?? No pude responder.'));
-						return message.channel.stopTyping(true);
-					}, 420);
-				}
+
+			message.react('750502194108956682')
+				.then(() => message.react(`${reactList[randReaction]}`))
+				.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
+			// Add 1 to the nut counter.
+			db.add('gregoBot.nuts', 1);
+			console.log(`Ha aumentado la cantidad de nueces.`);
+			if (random === 0){
+				message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
+				.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
+			} else if (random === 1){
+				message.channel.send({files: ['./memes/;asd;;grego;asd;.png']})
+				.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
+			} else if (random === 2){
+				message.channel.send({files: ['./memes/combo.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 3){
+				message.channel.send({files: ['./memes/god_of_war_iii_hercules.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 4){
+				message.channel.send({files: ['./memes/jaxqlo.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 5){
+				message.channel.send({files: ['./memes/tekken.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 6){
+				message.channel.send({files: ['./memes/tenor_2.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 7){
+				message.channel.send({files: ['./memes/forgiveme.jpg']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 8){
+				message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 9){
+				message.channel.startTyping();
+				setTimeout(function(){
+					message.channel.send('ta wena igual')
+					.then(() => message.channel.send('le paso el pico por los rollos'))
+					.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
+					.catch(() => console.error('Que onda?? No pude responder.'));
+					return message.channel.stopTyping(true);
+				}, 420);
+			}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
 		}
 	}
