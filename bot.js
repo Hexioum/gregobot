@@ -7,6 +7,7 @@ const { token, gregorid } = require('./config.json');
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 
+const { Pool, Client } = require('pg')
 const connectionString = process.env.DATABASE_URL
 const pool = new Pool({
   connectionString,
