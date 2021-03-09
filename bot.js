@@ -323,7 +323,6 @@ bot.on('message', message => {
 				if(err) throw err; 
 				console.log('Not logged to PostgresSQL');
 			});
-		});
 			message.react('750502194108956682')
 				.then(() => message.react(`${reactList[randReaction]}`))
 				.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
