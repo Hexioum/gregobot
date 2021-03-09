@@ -299,7 +299,7 @@ bot.on('message', message => {
 				database: process.env.DATABASE,
 				user: process.env.DATABASE_USER,
 				password: process.env.DATABASE_PASSWORD,
-				ssl: true,
+				ssl: false,
 			});
 
 			pool.connect(err => {
