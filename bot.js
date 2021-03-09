@@ -308,12 +308,12 @@ bot.on('message', message => {
 			pool.query('update users set count = count + 1 where id = $1',
             [message.author.id], (err, result) => {
 
-                done(err);
+                console.log(err);
                 //If user not in the database add them
                 if (result.rowCount == 0){
                     client.query('insert into users (id, name, count) values ($1, $2, 1)',
                     [message.author.id, message.author.username], (err, result) => {
-                        done(err);
+                        console.log(err);
                         console.log(result.rowCount);
                     });
                 }
