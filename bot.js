@@ -92,7 +92,6 @@ const ignoreList = [
 const bannedWords = [
     "m4",
     "sopmod",
-    "soppmod",
     "sopñod",
     "sipmid",
     "simpid",
@@ -104,7 +103,6 @@ const bannedWords = [
     "sopm0d",
     "s0pmod",
     "s0pm0d",
-    "sØpmØd",
     "søpmød",
     "søpmod",
     "sopmød",
@@ -115,20 +113,19 @@ const bannedWords = [
 	"sopm°d",
 	"s°pmod",
 	"sºpmºd",
-	"sºpmod",
-	"sopmºd",
-	"s°pmºd",
-	"sºpm°d",
     "søpmºd",
     "sºpmød",
-    "$opmod",
-    "$oppo",
-    "$pmd",
+    "opmod",
+    "ompod",
+    "dompo",
+    "oppo",
+    "pmd",
     "soppo",
 	"soppu",
 	"spmd",
 	"smpd",
 	"zpmd",
+	"zmpd",
 	"zópmd",
 	"zpmód",
 	"spmod",
@@ -146,19 +143,31 @@ const bannedWords = [
 	"hup tao",
 	"sop tao",
 	"hu mod",
-    "ambercita",
+    "mbercita",
     "amber",
-    "ámber",
+    "mber",
     "4mber",
     "amb3r",
     "4mb3r",
 	"zandmod",
+	"zandm0d",
     "jillmod",
+    "jillm0d",
 	"stingray",
+	"st1ngray",
+	"st1ngr4y",
+	"stingr4y",
     "shádowm",
     "shádówm",
     "shadówm",
     "shadowm",
+    "sh4dowm",
+    "sh4d0wm",
+    "shad0wm",
+    "hadowm",
+    "shdwm",
+    "j1ll",
+    "jll",
     "jill"
     ]; // Don't ever say them out loud.
 const responseObject = {
@@ -270,7 +279,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
-		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1/gi, '').toLowerCase().includes(word)) ) {
+		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
