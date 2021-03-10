@@ -110,6 +110,10 @@ const ignoreList = [
 const bannedWords = [
     "m4",
     "sopmod",
+    "soppmod",
+    "sopñod",
+    "sipmid",
+    "sipmid",
     "soópm",
     "sóopm",
     "sópm",
@@ -139,6 +143,10 @@ const bannedWords = [
     "soppo",
 	"soppu",
 	"spmd",
+	"smpd",
+	"zpmd",
+	"zópmd",
+	"zpmód",
 	"spmod",
 	"sopmd",
 	"sodmop",
@@ -271,11 +279,11 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.id == '565330655915933696') {
 		console.log('Usuario coincide.');
 		//	Removes characters outside of A-z and À-ú.
-		let checkMember = newMember.nickname.replace(/[^A-zÀ-ú\s]/gi, '')
-		setTimeout(function(){
+		var cleanMember = newMember.nickname.replace(/[^A-zÀ-ú\s]/gi, '')
+		if (typeof cleanMember === "function") {
 		//	Looks for repeated characters.
-			let checkMember = checkMember.replace(/[^\w\s]|(.)\1/gi, "");
-		}, 10);
+			var checkMember = cleanMember.replace(/[^\w\s]|(.)\1/gi, '');
+		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
 		if( bannedWords.some(word => checkMember.toLowerCase().includes(word)) ) {
