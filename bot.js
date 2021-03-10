@@ -446,4 +446,4 @@ bot.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-bot.login(token);//(token)/(process.env.BOT_TOKEN)
+bot.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
