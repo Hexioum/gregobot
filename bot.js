@@ -7,24 +7,6 @@ const { token, gregorid } = require('./config.json');
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 
-const { Pool, Client } = require('pg')
-const connectionString = process.env.DATABASE_URL
-const pool = new Pool({
-  connectionString,
-})
-pool.query('SELECT NOW()', (err, res) => {
-  console.log(err, res)
-  pool.end()
-})
-const client = new Client({
-  connectionString,
-})
-client.connect()
-client.query('SELECT NOW()', (err, res) => {
-  console.log(err, res)
-  client.end()
-})
-
 // create a new Discord client
 const bot = new Discord.Client({ 
 ws: { intents: [
@@ -113,7 +95,9 @@ const bannedWords = [
     "soppmod",
     "sopñod",
     "sipmid",
-    "sipmid",
+    "simpid",
+    "spmid",
+    "sipmd",
     "soópm",
     "sóopm",
     "sópm",
@@ -279,14 +263,14 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.id == '565330655915933696') {
 		console.log('Usuario coincide.');
 		//	Removes characters outside of A-z and À-ú.
-		var cleanMember = newMember.nickname.replace(/[^A-zÀ-ú\s]/gi, '')
+		var cleanMember = newMember.nickname.toLowerCase().replace(/[^A-zÀ-ú\s]/gi, '')
 		if (typeof cleanMember === "function") {
 		//	Looks for repeated characters.
 			var checkMember = cleanMember.replace(/[^\w\s]|(.)\1/gi, '');
 		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
-		if( bannedWords.some(word => checkMember.toLowerCase().includes(word)) ) {
+		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1/gi, '').toLowerCase().includes(word)) ) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
@@ -311,18 +295,6 @@ bot.on('message', message => {
 			if (message.content.startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
-//		Connected to database
-			const parse = require("pg-connection-string");
-			const { Pool } = require ('pg');
-			const pool = new Pool({
-				connectionString: process.env.DATABASE_URL.parse,
-				port: 5432,
-				host: process.env.DATABASE_HOST,
-				database: process.env.DATABASE,
-				user: process.env.DATABASE_USER,
-				password: process.env.DATABASE_PASSWORD,
-				ssl: false,
-			});
 
 			message.react('750502194108956682')
 				.then(() => message.react(`${reactList[randReaction]}`))
@@ -474,4 +446,4 @@ bot.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-bot.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+bot.login(token);//(token)/(process.env.BOT_TOKEN)
