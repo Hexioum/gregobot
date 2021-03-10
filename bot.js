@@ -110,6 +110,9 @@ const ignoreList = [
 const bannedWords = [
     "m4",
     "sopmod",
+    "soópm",
+    "sóopm",
+    "sópm",
     "sopm0d",
     "s0pmod",
     "s0pm0d",
@@ -130,7 +133,6 @@ const bannedWords = [
 	"sºpm°d",
     "søpmºd",
     "sºpmød",
-	"sоpmоd",
     "$opmod",
     "$oppo",
     "$pmd",
@@ -143,20 +145,28 @@ const bannedWords = [
 	"dompos",
 	"posmod",
 	"sompod",
+	"sópmód",
+	"sómpód",
 	"dompos",
 	"zompod",
 	"zopmod",
+	"dompoz",
 	"hup tao",
 	"sop tao",
 	"hu mod",
     "ambercita",
     "amber",
+    "ámber",
     "4mber",
     "amb3r",
     "4mb3r",
 	"zandmod",
     "jillmod",
 	"stingray",
+    "shádowm",
+    "shádówm",
+    "shadówm",
+    "shadowm",
     "jill"
     ]; // Don't ever say them out loud.
 const responseObject = {
@@ -260,9 +270,15 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 	console.log(`Nickname ahora: ${newMember.nickname}`);
 	if (oldMember.id == '565330655915933696') {
 		console.log('Usuario coincide.');
-		//Add a wait function, since it doesn't seem to execute this chunk of code.
+		//	Removes characters outside of A-z and À-ú.
+		let checkMember = newMember.nickname.replace(/[^A-zÀ-ú\s]/gi, '')
 		setTimeout(function(){
-		if( bannedWords.some(word => newMember.nickname.toLowerCase().includes(word)) ) {
+		//	Looks for repeated characters.
+			let checkMember = checkMember.replace(/[^\w\s]|(.)\1/gi, "");
+		}, 10);
+		//	Wait 250ms and then check if includes a bad word.
+		setTimeout(function(){
+		if( bannedWords.some(word => checkMember.toLowerCase().includes(word)) ) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
@@ -284,7 +300,7 @@ bot.on('message', message => {
 		};
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			if (message.content.toLowerCase().startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
+			if (message.content.startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 20);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 //		Connected to database
@@ -342,10 +358,10 @@ bot.on('message', message => {
 					.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
 					.catch(() => console.error('Que onda?? No pude responder.'));
 					return message.channel.stopTyping(true);
-				}, 500);
+				}, 520);
 			}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
-			}, 500);
+			}, 480);
 		}
 	}
 
