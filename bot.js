@@ -105,7 +105,7 @@ const bannedWords = [
 	"søpmød",
 	"sop",
 	"s☪️p",
-	"tosp"
+	"tosp",
 	"mod",
 	"andmd",
 	"mdand",
