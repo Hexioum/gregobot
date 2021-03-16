@@ -6,10 +6,12 @@ module.exports = {
 	usage: '<opcion1>, <opcion2>',
 	execute(message, args) {
 	message.channel.startTyping();
-	var oneRegex = / gay+| lgbt+/gi ;
+	var oneRegex = / gay+| homo+| trans+| lgbt+/gi ;
 	var oneMatch = args.some(e => oneRegex.test(e));
 	var twoRegex = / peruano+| venezolano+| venaco+| negro+| haitiano+/gi ;
 	var twoMatch = args.some(e => twoRegex.test(e));
+	var trdRegex = / furro+| furry+| fursuit+| zoofili+| zoofíli+/gi ;
+	var trdMatch = args.some(e => trdRegex.test(e));
 setTimeout(function(){
 	let pos = args.indexOf("o")
 	if (pos >= 0)
@@ -69,12 +71,16 @@ setTimeout(function(){
 			message.channel.send({files: ['./memes/momopatas.png']})
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
-		else if (oneMatch === true) {
-			message.channel.send('que asco 😦')
+		else if (trdMatch === true) {
+			message.channel.send('por ultima vez. SOY YIFFER')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (twoMatch === true) {
-			message.channel.send('antes muerto')
+			message.channel.send('mejor morir')
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (oneMatch === true) {
+			message.channel.send('que asco 😦')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		//	Removes special symbols.
