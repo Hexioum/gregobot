@@ -26,9 +26,11 @@ const activitiesList = [
     "League of Legends",
     "Warframe",
     "Warframe",
-	"Warframe",
 	"Old School RuneScape",
 	"Old School RuneScape",
+	"Old School RuneScape",
+    "Spacewar",
+    "Spacewar",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
@@ -47,7 +49,6 @@ const activitiesList = [
 	"Desert Bus",
 	"el 6 y el 7",
 	"estar hecho mierda",
-    "Spacewar",
     "Hentai Furry"
     ]; // creates an arraylist containing phrases you want your bot to switch through.
 const topicList = [
@@ -58,6 +59,7 @@ const topicList = [
     "Garou: Mark of the Wolves",
 	"Pocket Rumble",
 	"Tobal 2",
+	"Dengeki Bunko: Fighting Climax IGNITION",
 	"Tomba! 2: The Evil Swine Return",
 	"Duke Nukem Forever",
 	"Diablo® III",
@@ -77,13 +79,13 @@ const topicList = [
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
-    "Mudae"
+    "estrategias para el Mudae"
     ];
 const reactList = [
 	"🔩",
-	"🔩",
+	"🍴",
 	"🙏",
-    "🍴"
+    "🔩"
     ];
 const ignoreList = [
 	'565330655915933696',
@@ -97,26 +99,23 @@ const bannedWords = [
     "simpid",
     "spmid",
     "sipmd",
-    "soópm",
-    "sóopm",
-	"sopm0d",
-	"s0pmod",
-	"s0pm0d",
-	"søpmød",
-	"sop",
-	"s☪️p",
-	"tosp",
-	"mod",
-	"andmd",
-	"mdand",
-	"modand",
-	"andsop",
+    "sopm",
+    "sópm",
+    "sopm0d",
+    "s0pmod",
+    "s0pm0d",
+    "søpmød",
+    "søpmod",
+    "sopmød",
+	"sºpmod",
 	"sºpmºd",
+	"sopmºd",
 	"s°pm°d",
-	"spymd",
-	"mdysp",
-	"søpmºd",
-	"sºpmød",
+	"sopm°d",
+	"s°pmod",
+	"sºpmºd",
+    "søpmºd",
+    "sºpmød",
     "opmod",
     "ompod",
     "dompo",
@@ -124,15 +123,12 @@ const bannedWords = [
     "pmd",
     "soppo",
 	"soppu",
+	"spand",
+	"mdand",
+	"sp4nd",
+	"ndmd",
 	"spmd",
 	"smpd",
-	"smp",
-	"mpd",
-	"smd",
-	"pmd",
-	"spm",
-	"pd",
-	"dmp",
 	"zpmd",
 	"zmpd",
 	"zópmd",
@@ -149,9 +145,9 @@ const bannedWords = [
 	"zompod",
 	"zopmod",
 	"dompoz",
-	"huptao",
-	"soptao",
-	"humod",
+	"hup",
+	"spm",
+	"mod",
     "mbercita",
     "amber",
     "mber",
@@ -163,16 +159,16 @@ const bannedWords = [
     "jillmod",
     "jillm0d",
 	"stingray",
-	"st1ngray",
-	"st1ngr4y",
-	"stingr4y",
-    "shdowm",
-    "shadwm",
+	"stngray",
+	"stngry",
+	"stingry",
+    "shádowm",
+    "shádówm",
     "shadówm",
     "shadowm",
     "sh4dowm",
     "sh4d0wm",
-    "shad0wm",
+    "shadwm",
     "hadowm",
     "shdwm",
     "j1ll",
@@ -237,7 +233,7 @@ bot.on('ready', function () {
 		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
 
-    }, 300000); // Runs this every 300 seconds.
+    }, 360000); // Runs this every 360 seconds.
 });
 //	async member*
 bot.on('guildMemberAdd', member => {
@@ -311,7 +307,7 @@ bot.on('message', message => {
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 			if (message.content.startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
-			let random = Math.floor(Math.random() * 20);
+			let random = Math.floor(Math.random() * 22);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
 			message.react('750502194108956682')
@@ -331,8 +327,8 @@ bot.on('message', message => {
 				message.channel.send({files: ['./memes/combo.gif']})
 				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 			} else if (random === 3){
-				message.channel.send({files: ['./memes/god_of_war_iii_hercules.gif']})
-				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				message.channel.send({files: ['./memes/;tiversn;;fork_and_knife;.png']})
+				.catch(() => console.error('Que onda?? No puedo mandar mis emotes'));
 			} else if (random === 4){
 				message.channel.send({files: ['./memes/jaxqlo.gif']})
 				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
@@ -344,11 +340,14 @@ bot.on('message', message => {
 				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 			} else if (random === 7){
 				message.channel.send({files: ['./memes/forgiveme.jpg']})
-				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+				.catch(() => console.error('Que onda?? No puedo mandar la imagen'));
 			} else if (random === 8){
-				message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
+				message.channel.send({files: ['./memes/god_of_war_iii_hercules.gif']})
 				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 			} else if (random === 9){
+				message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
+				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
+			} else if (random === 10){
 				message.channel.startTyping();
 				setTimeout(function(){
 					message.channel.send('ta wena igual')

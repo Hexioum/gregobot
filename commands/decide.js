@@ -28,11 +28,26 @@ setTimeout(function(){
 		else if (args[random] === 'o') {
 			message.channel.send(`${args[0]}`);
 		}
-		else if (args[random] === 'instinct') {
-			message.channel.send('killer');
+		else if (args[random] === 'ki') {
+			message.channel.send('killer es');
 		}
-		else if (args[random] === 'blood') {
-			message.channel.send('melty');
+		else if (args[random] === 'mbaa') {
+			message.channel.send('melty es');
+		}
+		else if (args[random].includes === 'guilty gear') {
+			message.channel.send('guilty es');
+		}
+		else if (args[random].includes === 'lgbt') {
+			message.channel.send('que asco 🙁')
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (args[random] === 'ser gay') {
+			message.channel.send({files: ['./memes/grillos.png']})
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (args[random] === 'ser negro') {
+			message.channel.send('no sabria decirte')
+			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (args[random] === 'pico') {
 			message.channel.send({files: ['./memes/grillos.png']})
@@ -48,5 +63,5 @@ setTimeout(function(){
 		}
 		else message.channel.send(args[random])
 		return message.channel.stopTyping(true);
-	}, 200);
+	}, 250);
 }};
