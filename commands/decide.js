@@ -6,6 +6,8 @@ module.exports = {
 	usage: '<opcion1>, <opcion2>',
 	execute(message, args) {
 	message.channel.startTyping();
+	var theRegex = / gay+| lgbt+/gi ;
+	var oneMatch = args.some(e => theRegex.test(e));
 setTimeout(function(){
 	let pos = args.indexOf("o")
 	if (pos >= 0)
@@ -18,6 +20,7 @@ setTimeout(function(){
 		args.splice(pos3, 1);
 	let random = Math.floor(Math.random()*args.length)
 		console.log(args)
+		console.log(oneMatch)
 		console.log(`Se le han proporcionado a Grego ${args.length} opciones y eligió la número ${random}`)
 		if (args.length < 2) {
 			message.channel.send('faltan opciones');
@@ -34,31 +37,39 @@ setTimeout(function(){
 		else if (args[random] === 'mbaa') {
 			message.channel.send('melty es');
 		}
-		else if (args[random].includes === 'guilty gear') {
+		else if (args[random] === 'guilty gear') {
 			message.channel.send('guilty es');
 		}
-		else if (args[random].includes === 'lgbt') {
-			message.channel.send('que asco 🙁')
-			.catch(() => console.error('Que onda?? No pude responder.'));
-		}
-		else if (args[random] === 'ser gay') {
+		else if (args[random].toLowerCase() === 'ser gay') {
 			message.channel.send({files: ['./memes/grillos.png']})
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
-		else if (args[random] === 'ser negro') {
+		else if (args[random].toLowerCase() === 'ser negro') {
 			message.channel.send('no sabria decirte')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
-		else if (args[random] === 'pico') {
+		else if (args[random].toLowerCase() === 'pico') {
 			message.channel.send({files: ['./memes/grillos.png']})
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
-		else if (args[random] === 'pene') {
+		else if (args[random].toLowerCase() === 'pene') {
+			message.channel.send({files: ['./memes/grillos.png']})
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (args[random].toLowerCase() === 'tula') {
+			message.channel.send({files: ['./memes/grillos.png']})
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (args[random].toLowerCase() === 'pichula') {
 			message.channel.send({files: ['./memes/grillos.png']})
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (args[random] === 'patas') {
 			message.channel.send({files: ['./memes/momopatas.png']})
+			.catch(() => console.error('Que onda?? No pude responder.'));
+		}
+		else if (oneMatch === true) {
+			message.channel.send('que asco 😦')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else message.channel.send(args[random])
