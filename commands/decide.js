@@ -10,7 +10,7 @@ module.exports = {
 	var oneMatch = args.some(e => oneRegex.test(e));
 	var twoRegex = / peruano+| venezolano+| venaco+| negro+| haitiano+/gi ;
 	var twoMatch = args.some(e => twoRegex.test(e));
-	var trdRegex = / furro+| furry+| fursuit+| zoofili+| zoofíli+/gi ;
+	var trdRegex = / furro+| furry+| foorry+| fursuit+| zoofili+| zoofíli+/gi ;
 	var trdMatch = args.some(e => trdRegex.test(e));
 setTimeout(function(){
 	let pos = args.indexOf("o")
@@ -30,6 +30,10 @@ setTimeout(function(){
 		}
 		else if (args[0] === 'o') {
 			message.channel.send('!?!?!?!?!?');
+		}
+		else if (trdMatch === true) {
+			message.channel.send('por ultima vez. SOY YIFFER')
+			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (args[random] === 'o') {
 			message.channel.send(`${args[0]}`);
@@ -69,10 +73,6 @@ setTimeout(function(){
 		}
 		else if (args[random] === 'patas') {
 			message.channel.send({files: ['./memes/momopatas.png']})
-			.catch(() => console.error('Que onda?? No pude responder.'));
-		}
-		else if (trdMatch === true) {
-			message.channel.send('por ultima vez. SOY YIFFER')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (twoMatch === true) {
