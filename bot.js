@@ -60,7 +60,7 @@ const topicList = [
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
-	"Tomba! 2: The Evil Swine Return",
+	"Ganyu Leche",
 	"Duke Nukem Forever",
 	"Diablo® III",
 	"BlazBlue Alternative: Dark War",
