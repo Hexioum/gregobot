@@ -60,7 +60,7 @@ const topicList = [
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
-	"Ganyu Leche",
+	"Tomba! 2: The Evil Swine Return",
 	"Duke Nukem Forever",
 	"Diablo® III",
 	"BlazBlue Alternative: Dark War",
@@ -84,8 +84,10 @@ const topicList = [
 const reactList = [
 	"🔩",
 	"🍴",
+	"🔩",
 	"🙏",
-    "🔩"
+    "🔩",
+	"🍽"
     ];
 const ignoreList = [
 	'565330655915933696',
@@ -93,26 +95,17 @@ const ignoreList = [
 	]; // banned from image reactions.
 const bannedWords = [
     "m4",
-    "sopmod",
-    "sopñod",
-    "sipmid",
-    "simpid",
-    "spmid",
-    "sipmd",
-    "sopm",
-    "sópm",
-    "sopm0d",
-    "s0pmod",
+	"sopmod",
+	"sopñod",
+	"sipmid",
+	"simpid",
+	"spmid",
+	"sipmd",
+	"sopm",
+	"sópm",
     "s0pm0d",
     "søpmød",
-    "søpmod",
-    "sopmød",
-	"sºpmod",
-	"sºpmºd",
-	"sopmºd",
 	"s°pm°d",
-	"sopm°d",
-	"s°pmod",
 	"sºpmºd",
     "søpmºd",
     "sºpmød",
@@ -208,10 +201,10 @@ for (const file of commandFiles) {
 bot.once('ready', () => {
 	console.log('REDIOOOOOOOOOOS!');
 	// resolve(guildID) and get gregoID
-	bot.users.fetch(gregorid).then(myUser => {
+/*	bot.users.fetch(gregorid).then(myUser => {
     bot.user.setAvatar(myUser.avatarURL())})
 	.then(() => console.log(myUser))
-	.catch(() => console.log(`Cambié el avatar hace muy poco...`));
+	.catch((err) => console.log(`avatarURL:`+err));*/
 	// Setting the ammount of nuts.
 	if (db.has('gregoBot') == 0) {
 	db.set('gregoBot', { nuts: 0 });
@@ -300,7 +293,7 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	if (message.attachments.size > 0) {
+	if (message.attachments.size > 60000) {
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
@@ -396,37 +389,50 @@ bot.on('message', message => {
 		let random = Math.floor(Math.random() * 5);
 		message.channel.send(replies[random]);
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
-		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati"];
-		let random = Math.floor(Math.random() * 4);
+		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio"];
+		let random = Math.floor(Math.random() * 5);
 		message.channel.send('loco yo no fui')
 			.then(() => message.channel.send(replies[random]))
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
 	} else if (message.content.toLowerCase().includes(`lucho`)) {
-		let random = Math.floor(Math.random() * 3);
+		let random = Math.floor(Math.random() * 4);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`cual lucho?`);
 			return message.channel.stopTyping(true);
-		}, 240);
+			}, 250);
 		}
 	} else if (message.content.toLowerCase().includes(`genshin`)) {
-		let random = Math.floor(Math.random() * 2);
+		let random = Math.floor(Math.random() * 4);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`mas razones por odiar esa wea de juego`);
 			return message.channel.stopTyping(true);
+		}, 410);
+		} else if (random == 1) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`juego qlo malo aguante el gears`);
+			return message.channel.stopTyping(true);
 		}, 360);
 		}
-	}else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
+	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`grego decide `)) {
 		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
 	} else if (message.content.startsWith(`grego elige `)) {
 		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
+	} else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
+		try {
+			bot.commands.get('camiro').execute(message)
+		} catch (error) {
+			console.error(error);
+			message.reply('estoy hecho mierda weon!');
+		}
 	}
 	
 	const prefixes = ['Grego ', 'grego ', 'gr '];
@@ -435,7 +441,7 @@ bot.on('message', message => {
 	
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	var args = message.content.slice(prefix.length).trim().split(/, o | o |, /);
+	const args = message.content.slice(prefix.length).trim().split(/, o | o |, /);
 	//.split(/ +/g) will cut any ammount of spaces in between.
 	const commandName = args.shift().toLowerCase();
 	
