@@ -232,8 +232,7 @@ bot.on('ready', function () {
 bot.on('guildMemberAdd', member => {
 	let channel = member.guild.channels.cache.find(ch => ch.name === 'principal');
 	if (!channel) return;
-    // Assuming we mention someone in the message, this will return the user
-    // Read more about mentions over at https://discord.js.org/#/docs/main/master/class/MessageMentions
+    // Assuming we mention someone in the message, this will return the user.
     if (gregorid) {
       // Now we get the member from the user
       let member = message.guild.members.resolve(gregorid);
@@ -293,7 +292,7 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	if (message.attachments.size > 60000) {
+	if (message.attachments.size > 20000) {
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
