@@ -292,7 +292,7 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	if (message.attachments.size > 20000) {
+	if (message.attachments.size > 5500) {
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
