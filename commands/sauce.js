@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const sagiri = require("sagiri");
 // 430fabed3e4ae214ccd9806d15ab0aabdb9b71c6 process.env.SAUCE_TOKEN
 const client = sagiri("430fabed3e4ae214ccd9806d15ab0aabdb9b71c6", {
-  results: 5,
+  results: 4,
   excludeMask: [1]
-})
+});
 module.exports = {
 	name: 'saucenao',
 	aliases: ['source','sauce','fuente','search'],
@@ -39,9 +39,9 @@ module.exports = {
 			message.channel.stopTyping(true);
 			results = await client(url1);
 			for (let i = 0; i < results.length; i++) {
-				console.log(results[1].url)
+				console.log(results[i].url)
 			}
-			return message.channel.send(results[1].url);
+			return message.channel.send(results[0].url);
 		}
 	},
 };

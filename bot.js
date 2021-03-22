@@ -292,7 +292,8 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	if (message.attachments.size > 5500) {
+	if (message.attachments.size > 10) {
+		console.log(message.attachments.size);
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
@@ -434,7 +435,7 @@ bot.on('message', message => {
 		}
 	}
 	
-	const prefixes = ['Grego ', 'grego ', 'gr '];
+	const prefixes = ['Grego ', 'grego ', 'Gr ', 'gr '];
 	const prefix = prefixes.find(p => message.content.startsWith(p));
 //	if (!prefix) return;
 	

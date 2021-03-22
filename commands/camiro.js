@@ -10,15 +10,15 @@ module.exports = {
 		message.channel.send(replies[random]);
         if (message.member.hasPermission('ATTACH_FILES')) {
             try {
-                channel.setRateLimitPerUser(60);
+                channel.setRateLimitPerUser(90);
                 setTimeout(function(){
                     try {
                         channel.setRateLimitPerUser(0);
-                        return console.log("Ha pasado un minuto.")
+                        return console.log("Finalizando slow mode.")
                     } catch(err) {
                         return console.log("No puedo: "+err);
                     };
-                }, 60000);
+                }, 90000);
             } catch(err) {
                 return console.log("No puedo: "+err);
             };
