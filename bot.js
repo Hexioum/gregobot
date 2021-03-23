@@ -39,7 +39,7 @@ const activitiesList = [
 	"Borderlands 2",
     "Super Mario 64",
 	"Where's Waldo?",
-    "Girls' Frontline",
+	"Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
 	"Kung Fu Panda: Showdown of Legendary Legends",
@@ -292,7 +292,7 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
-	if (message.attachments.size > 10) {
+	if (message.attachments.size > 0) {
 		console.log(message.attachments.size);
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
