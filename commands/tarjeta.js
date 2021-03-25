@@ -35,7 +35,7 @@ module.exports = {
 	args: true,
 	usage: 'Alineación (numpad), Marco, Ángulo',
 	execute(message, args) {
-		if (message.channel.id != 742472922093846588) {
+		if (message.channel.id !== 742472922093846588) {
 			return message.channel.send('usa <#742472922093846588> po');
 		}
 
@@ -202,12 +202,8 @@ module.exports = {
 		async function deleteMessage(message) {
 			const emoji = await emojiMessage(message, ["🗑️", "📤"]);
 			await cardClear();
-			try {
-			message.reactions.removeAll();
-			} catch(err) {
-				console.log(err);
-			};
 			console.log("Terminando react detection.")
+
 			if (emoji === "🗑️") {
 				console.log("It's rewind time.")
 				if (message.deletable == true) {
@@ -221,6 +217,11 @@ module.exports = {
 			} else if (emoji === "📤") {
 				message.channel.send(`de ahi la subo a imgur 🙂`);
 				console.log("OK. A futuro la subiré a imgur.");
+				try {
+					message.reactions.removeAll();
+				} catch(err) {
+						console.log("Error al intentar remover los emojis.");
+				};
 				/*
 				*  Aqui despues borro el mensaje y redirijo a otra función async que subirá el archivo a imgur.
 				*/
