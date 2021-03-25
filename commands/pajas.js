@@ -27,25 +27,25 @@ module.exports = {
 	setTimeout(function(){
 		if ((bathtub > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} ${bathtub} tinas.`);
-		} else if (bathtub == 1) {
+		} else if (bathtub === 1) {
 			message.channel.send(`${chamullo[random2]} una tina entera.`);
 		} else if ((barrels > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} ${barrels} barriles de chela.`);
-		} else if (barrels == 1) {
+		} else if (barrels === 1) {
 			message.channel.send(`${chamullo[random2]} un barril de chela`);
 		} else if ((confort > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} al menos ${confort} confores de 50 metros`);
 		} else if ((bottles > 1)&&(coinflip == 1)) {
 			message.channel.send(`${chamullo[random2]} ${bottles} botellas de austral.`);
-		} else if (bottles == 1) {
+		} else if (bottles === 1) {
 			message.channel.send(`${chamullo[random2]} una botella retornable.`);
-		} else if ((jars > 1)&&(coinflip == 1)) {
+		} else if ((jars > 1)&&(coinflip === 1)) {
 			message.channel.send(`${chamullo[random2]} ${jars} frascos para poner figuritas.`);
-		} else if (jars == 1) {
+		} else if (jars === 1) {
 			message.channel.send(`${chamullo[random2]} ${jars} frasco para poner figuritas.`);
 		} else if (latas > 1) {
 			message.channel.send(`${chamullo[random2]} ${latas} latas de chela.`);
-		} else if (latas == 1) {
+		} else if (latas === 1) {
 			message.channel.send(`${chamullo[random2]} suficiente para llenar una lata de chela`);
 		} else if (latas < 1) {
 			message.channel.send({files: ['./memes/nooooooooooooooo.mp4']});

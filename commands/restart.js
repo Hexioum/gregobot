@@ -2,13 +2,13 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 module.exports = {
 	name: 'restart',
-	aliases: ['updatea','reinicia'],
+	aliases: ['update','reinicia'],
 	description: 'Gregorio volverá en breve.',
-	args: true,
+	args: false,
 	usage: 'grego reinicia',
-	execute(message, args) {
+	execute(message) {
 //	Check the server owner ID
-	if(message.author.id != "360892991499665408") return message.channel.send("no")
+	if(message.author.id != "360892991499665408") return message.channel.send("no");
 
     try {
 		message.channel.send("volveré...").then(msg => {
