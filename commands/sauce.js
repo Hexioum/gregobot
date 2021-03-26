@@ -1,13 +1,12 @@
 const Discord = require('discord.js');
 const sagiri = require("sagiri");
-// 430fabed3e4ae214ccd9806d15ab0aabdb9b71c6 process.env.SAUCE_TOKEN
-const client = sagiri("430fabed3e4ae214ccd9806d15ab0aabdb9b71c6", {
+const client = sagiri("process.env.SAUCE_TOKEN", {
   results: 4,
   excludeMask: [1]
 });
 module.exports = {
 	name: 'saucenao',
-	aliases: ['source','sauce','fuente','search'],
+	aliases: ['source','sauce','fuente','search','salsa'],
 	description: 'Gregorio obtiene el source mediante SauceNAO',
 	args: false,
 	usage: 'cantidad de resultados',
