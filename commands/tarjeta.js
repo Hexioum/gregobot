@@ -60,12 +60,16 @@ module.exports = {
 		if ((args[2] === 'undefined')||(isNaN(args[2]))||(args[2] > 9)) {
 			args[2] = 0;
 		}
-		if ((args[1] === 'undefined')||(isNaN(args[1]))||(args[1] > 9)) {
+		if ((args[1] === 'undefined')||(isNaN(args[1]))||(args[1] > 10)) {
 			args[1] = 0;
 		}
-		if ((args[0] === 'undefined')||(backgrounds.includes("bg_"+args[0].toLowerCase()+".png") === false)) {
+		if (args[0] === 'undefined') {
 			args[0] = 0;
 			console.log(args[0])
+		}
+		if (backgrounds.includes("bg_"+args[0].toLowerCase()+".png") === false) {
+			console.log(args[0]);
+			return message.channel.send('no tengo ese fondo');
 		}
 		
 		async function fetchMsg () {
