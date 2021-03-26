@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const sagiri = require("sagiri");
-const client = sagiri("process.env.SAUCE_TOKEN", {
+const client = sagiri(process.env.SAUCE_TOKEN, {
   results: 4,
   excludeMask: [1]
 });
