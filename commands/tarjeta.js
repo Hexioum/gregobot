@@ -35,7 +35,7 @@ module.exports = {
 	args: true,
 	usage: 'Alineación (numpad), Marco, Ángulo',
 	execute(message, args) {
-		if (message.channel.id != 742472922093846588) {
+		if (message.channel.id === 441386860300730378) {
 			return message.channel.send('usa <#742472922093846588> po');
 		}
 
