@@ -12,7 +12,7 @@ const { API, } = require('nhentai-api');
 
 module.exports = {
 	name: 'hentie',
-	aliases: ['hentai','manga','nh'],
+	aliases: ['hentai','manga','nh','nhentai','conocimiento'],
 	description: 'Gregorio hace la búsqueda por ti',
 	args: true,
 	usage: 'los números... que significan??',
@@ -22,9 +22,8 @@ module.exports = {
         if ((args.length === 0)||(isNaN(args[0]))) {
 			message.channel.send(`https://nhentai.to/g/${random}`);
 		}
-        if ((args[0] === 34)||(args[0] === 3434)||(args[0] === 343434)) {
+        if ((args[0] == 34)||(args[0] == 3434)||(args[0] == 343434)) {
             message.channel.send({files: ['./memes/;momopatas;.png']})
-            .then(() => message.channel.send(`https://nhentai.to/g/${args[0]}`))
             .catch(() => console.error('Que onda?? No pude responder.'));
 		}
         if (args[0].length > 6) {
@@ -49,9 +48,6 @@ module.exports = {
         //  TypeError: Converting circular structure to JSON
             var nhArray = Object.values(book);
         //  var nhTags = Object.values(nhArray[6]);
-        //  var nhTags = JSON.stringify(nhArray[6]);
-        //  console.log(nhTags);
-        //  console.log(require('util').inspect(nhArray[6]));
             var x = "";
             //let i = 0; i < ignoreList.length; i++
             for (let i = 0; i < book.tags.length; i++) {
