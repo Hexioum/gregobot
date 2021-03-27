@@ -101,7 +101,7 @@ const bannedWords = [
 	"simpid",
 	"spmid",
 	"sipmd",
-	"sopm",
+	"sop",
 	"sópm",
     "s0pm0d",
     "søpmød",
