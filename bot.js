@@ -49,14 +49,14 @@ const activitiesList = [
 	"Desert Bus",
 	"el 6 y el 7",
 	"estar hecho mierda",
-    "Hentai Furry"
+	"Hentai Furry"
     ]; // creates an arraylist containing phrases you want your bot to switch through.
 const topicList = [
-    "Guilty Gear XX Λ Core Plus R",
-    "GUILTY GEAR™ -STRIVE-",
+	"Guilty Gear XX Λ Core Plus R",
+	"GUILTY GEAR™ -STRIVE-",
 	"Pro Jumper! Guilty Gear Tangent!?",
-    "Killer Instinct",
-    "Garou: Mark of the Wolves",
+	"Killer Instinct",
+	"Garou: Mark of the Wolves",
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
@@ -72,14 +72,14 @@ const topicList = [
 	"Summoners War",
 	"Shrek Super Slam",
 	"Shin Megami Tensei IV: Apocalypse",
-    "EA SPORTS™ FIFA 21",
+	"EA SPORTS™ FIFA 21",
 	"speedruns de Super Mario 64",
 	"que Nagato es la Linne",
 	"framedata",
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
-    "estrategias para el Mudae"
+	"estrategias para el Mudae"
     ];
 const reactList = [
 	"🔩",
@@ -300,7 +300,7 @@ bot.on('message', message => {
 		if (message.attachments.every(attachIsImage)){
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 			if (message.content.startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
-			let random = Math.floor(Math.random() * 22);
+			let random = Math.floor(Math.random() * 30);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
 			message.react('750502194108956682')
