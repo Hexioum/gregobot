@@ -3,7 +3,7 @@ const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
 const { token, gregorid } = require('./config.json');
-
+// require('dotenv').config();
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 
@@ -39,7 +39,7 @@ const activitiesList = [
 	"Borderlands 2",
     "Super Mario 64",
 	"Where's Waldo?",
-	"Girls' Frontline",
+    "Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
 	"Kung Fu Panda: Showdown of Legendary Legends",
@@ -49,14 +49,14 @@ const activitiesList = [
 	"Desert Bus",
 	"el 6 y el 7",
 	"estar hecho mierda",
-	"Hentai Furry"
-    ]; // creates an arraylist containing phrases you want your bot to switch through.
+    "Hentai Furry"
+    ];
 const topicList = [
-	"Guilty Gear XX Λ Core Plus R",
-	"GUILTY GEAR™ -STRIVE-",
+    "Guilty Gear XX Λ Core Plus R",
+    "GUILTY GEAR™ -STRIVE-",
 	"Pro Jumper! Guilty Gear Tangent!?",
-	"Killer Instinct",
-	"Garou: Mark of the Wolves",
+    "Killer Instinct",
+    "Garou: Mark of the Wolves",
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
@@ -72,14 +72,14 @@ const topicList = [
 	"Summoners War",
 	"Shrek Super Slam",
 	"Shin Megami Tensei IV: Apocalypse",
-	"EA SPORTS™ FIFA 21",
+    "EA SPORTS™ FIFA 21",
 	"speedruns de Super Mario 64",
 	"que Nagato es la Linne",
 	"framedata",
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
-	"estrategias para el Mudae"
+    "estrategias para el Mudae"
     ];
 const reactList = [
 	"🔩",
@@ -101,7 +101,7 @@ const bannedWords = [
 	"simpid",
 	"spmid",
 	"sipmd",
-	"sop",
+	"sopm",
 	"sópm",
     "s0pm0d",
     "søpmød",
@@ -298,9 +298,11 @@ bot.on('message', message => {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
 		if (message.attachments.every(attachIsImage)){
+			console.log(message.attachments.name);
+			console.log(message.attachments.width);
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			if (message.content.startsWith(`unknown`)) return console.log('Ví la imágen pero parece ser una captura');
-			let random = Math.floor(Math.random() * 30);
+			if (message.attachments.name == `unknown.png`) return console.log('Ví la imágen pero parece ser una captura');
+			let random = Math.floor(Math.random() * 22);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
 			message.react('750502194108956682')
