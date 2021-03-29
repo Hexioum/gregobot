@@ -20,7 +20,7 @@ const helpEmbed = new Discord.MessageEmbed()
 	.setThumbnail('https://wiki.gbl.gg/images/8/88/Numpad.jpg')
 	.addFields(
 		{ name: 'Uso de el comando', value: 'Todos los valores son opcionales.\n*Ejemplos:*\n`gr mudacrop` Fondo blanco, marco blanco, sin zoom.\n`gr card, 1, 4, 8` Fondo azulado, marco amarillo (Amarillo!), acercamiento hacia arriba.\n`gr tarjeta, 0, 0, 5` Fondo y marco por defecto, acercamiento hacia el centro.' },
-		{ name: 'Fondo', value: '`  0` Blanco\n`  1` Azulado\n`  2` Verde Lima\n`  4` Naranja\n`GFL` GFrontline (gris)\n`KKA` Koikatsu 1\n`KKU` Koikatsu 2\n`PAT` Patronato\n`WXP` WinXP Bliss', inline: true },
+		{ name: 'Fondo', value: '`  0` Blanco\n`  1` Azulado\n`  2` Verde Lima\n`  4` Naranja\n`GFL` GFrontline (gris)\n`KKA` Koikatsu 1\n`KKU` Koikatsu 2\n`UM1` Uma Musume\n`UM2` Uma Musume (Hall)\n`PAT` Patronato\n`WXP` WinXP Bliss', inline: true },
 		{ name: 'Marco', value: '0) Blanco (Default)\n1) Negro\n2) Rojo\n3) Naranja\n4) Amarillo Amarillo\n5) Verde Radioactivo\n6) Celestito\n7) Azul\n8) Morita\n9) Gamer', inline: true },
 	)
 	.addField('Acercamiento', '`7 8 9`\n`4 5 6`\n`1 2 3`\n0 = Sin Zoom (Por defecto)', true)
