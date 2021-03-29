@@ -302,7 +302,7 @@ bot.on('message', message => {
 			console.log(message.attachments.width);
 			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 			if (message.attachments.name == `unknown.png`) return console.log('Ví la imágen pero parece ser una captura');
-			let random = Math.floor(Math.random() * 22);
+			let random = Math.floor(Math.random() * 30);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
 			message.react('750502194108956682')
