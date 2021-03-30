@@ -293,15 +293,22 @@ bot.on('message', message => {
 	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
 	if (message.attachments.size > 0) {
-		console.log(message.attachments.size);
+		if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 		for (let i = 0; i < ignoreList.length; i++) {
 			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
 		};
+		if ((message.attachments.first().name.toLowerCase().startsWith(`screenshot`))||(message.attachments.first().name.toLowerCase().startsWith(`unknown`))) {
+			return console.log('Ví la imágen pero parece ser una captura');
+		}
+		if (message.attachments.first().size < 60000) {
+			console.log(message.attachments.first().size);
+			return console.log('Ví la imágen pero es muy ligera y probablemente es un meme.');
+		}
+		if ((message.attachments.first().height < 510)||(message.attachments.first().width < 510)) {
+			console.log(message.attachments.first().size);
+			return console.log('Ví la imágen pero tiene baja resolución.');
+		}
 		if (message.attachments.every(attachIsImage)){
-			console.log(message.attachments.name);
-			console.log(message.attachments.width);
-			if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
-			if (message.attachments.name == `unknown.png`) return console.log('Ví la imágen pero parece ser una captura');
 			let random = Math.floor(Math.random() * 30);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
