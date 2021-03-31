@@ -58,7 +58,7 @@ module.exports = {
             const helpEmbed = new Discord.MessageEmbed()
             .setColor('#ED2553')
             .setTitle(nhArray[0].english)
-            .setURL(`https://nhentai.to/g/${nhArray[1]}`)
+            .setURL(`https://nhentai.net/g/${nhArray[1]}`)
             .setAuthor('Buscador de Conocimiento', 'https://i.imgur.com/ZmtGJgz.png')
             .setDescription(`**Tags:** ${nhTags}.`)
             .setThumbnail(api.getImageURL(book.cover))
