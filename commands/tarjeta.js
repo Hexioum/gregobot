@@ -66,8 +66,8 @@ module.exports = {
 		if (typeof args[0] === 'undefined') {
 			args[0] = 0;
 			console.log(args[0])
-		} else if (backgrounds.includes("bg_"+args[0].toLowerCase()+".png") === false) {
-			console.log(args[0]);
+		} else if (backgrounds.includes("bg_"+args[0]+".png") === false) {
+			console.log(args[0]);//Can't use args[0].toLowerCase() since it returns TypeError when args[0] is not specified.
 			return message.channel.send('no tengo ese fondo');
 		}
 		
