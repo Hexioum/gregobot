@@ -72,8 +72,11 @@ module.exports = {
 			return message.channel.send('no tengo ese fondo');
 			}
 		} catch {
-			console.log("args[0] no fue especificado y se ha cambiado a 0.")
-		}
+			args[0] = 0;
+			console.log("args[0] no fue especificado y se ha cambiado a 0.");
+		} finally {
+			fetchMsg();
+		};
 		
 		async function fetchMsg () {
 			try {
@@ -103,9 +106,9 @@ module.exports = {
 				return message.channel.stopTyping(true);
 			});
 		}
-		fetchMsg();
 		
 		async function imgResize () {
+
 			var crdAlign = args[2]
 			var rotAngle = args[3]
 			let fOutput = `card_${random}.png`
@@ -158,7 +161,7 @@ module.exports = {
 		}
 		async function cardMaker () {
 			const fOutput = `card_${random}.png`
-			console.log(`El fondo sería: bg_${args[0]}.png`)
+			console.log(`El fondo sería: bg_${args[0]}.png`);
 			let cBorder = `./mdcards/card_ol${args[1]}.png`
 			let chInput = await Jimp.read(fOutput)
 			let outline = await Jimp.read(cBorder)
