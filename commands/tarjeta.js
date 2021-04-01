@@ -151,7 +151,7 @@ module.exports = {
 			let cBorder = `./mdcards/card_ol${args[1]}.png`
 			let chInput = await Jimp.read(fOutput)
 			let outline = await Jimp.read(cBorder)
-			await Jimp.read(`./mdcards/bgs/bg_${args[0].toLowerCase()}.png`)
+			await Jimp.read(`./mdcards/bgs/bg_${args[0]}.png`)
 			.then(imgCard => {
 				return imgCard
 					.cover(225,350)			// resize
