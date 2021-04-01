@@ -89,8 +89,15 @@ module.exports = {
 			message.channel.messages.fetch().then((messages) => {
 				const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
 				url1 = lastMessage.attachments.first().url;
+				fileType = url1.substring(url1.lastIndexOf('.')+1, url1.length);
 				console.log(url1);
-				imgResize();
+				console.log("El archivo encontrado es un "+fileType);//gets file type
+				if ((fileType == "mp4")||(fileType == "mov")||(fileType == "avi")||(fileType == "3gp")) {
+					message.channel.send(`no puedo usar un video <@${member.id}>`)
+					return message.channel.stopTyping(true);
+				} else {
+					imgResize();
+				};
 			}).catch(err => {
 				console.log("chucha:"+err);
 				return message.channel.stopTyping(true);
