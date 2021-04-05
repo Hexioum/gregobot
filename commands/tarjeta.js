@@ -1,5 +1,13 @@
 const fs = require("fs");
 const Discord = require('discord.js');
+const dotenv = require('dotenv');
+dotenv.config();
+const { ImgurClient } = require('imgur');
+client = new ImgurClient({
+	username: process.env.IMGUR_USERNAME,
+	password: process.env.IMGUR_PASSWORD,
+	clientId: process.env.IMGUR_CLIENT,
+	});
 const bot = new Discord.Client({ 
 ws: { intents: [
 	'GUILDS',
@@ -99,7 +107,13 @@ module.exports = {
 					message.channel.send(`no puedo usar un video <@${member.id}>`)
 					return message.channel.stopTyping(true);
 				} else {
-					imgResize();
+					try {
+						imgResize();
+					} catch {
+						console.log("getURL:"+err);
+						message.channel.send(`intenta denuevo <@${member.id}>`)
+						return message.channel.stopTyping(true);
+					}
 				};
 			}).catch(err => {
 				console.log("chucha:"+err);
@@ -108,7 +122,6 @@ module.exports = {
 		}
 		
 		async function imgResize () {
-
 			var crdAlign = args[2]
 			var rotAngle = args[3]
 			let fOutput = `card_${random}.png`
@@ -199,7 +212,7 @@ module.exports = {
 				}	finally {
 					console.log("Mudacrop finalizado.")
 				}
-			}, 1000);
+			}, 3000);
 		}
 		// Interacciones con reacciones.
 		async function emojiMessage(message, validReactions) {
@@ -232,16 +245,30 @@ module.exports = {
 					"No puedo borrar el mensaje"
 				}
 			} else if (emoji === "📤") {
-				message.channel.send(`de ahi la subo a imgur 🙂`);
-				console.log("OK. A futuro la subiré a imgur.");
+				message.channel.send(`intentando subir a imgur`);
+				console.log("OK. Intentando subir.");
 				try {
 					message.reactions.removeAll();
+					cardUpload();
 				} catch(err) {
 						console.log("Error al intentar remover los emojis.");
 				};
 				/*
 				*  Aqui despues borro el mensaje y redirijo a otra función async que subirá el archivo a imgur.
 				*/
+			}
+		}
+			
+		async function cardUpload () {
+			//fOutput = `./card_${random}.png`
+			var response = ""
+			console.log(`Iniciando subida de ${fOutput}`);
+			try {
+				response = await client.upload(fOutput);
+				console.log(response.link);
+			} catch(err) {
+				message.channel.send(`no pude iniciar sesion 😦`);
+				return console.log("cardUpload: "+err);
 			}
 		}
 	},

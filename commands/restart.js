@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const dotenv = require('dotenv');
+dotenv.config();
 const client = new Discord.Client();
 module.exports = {
 	name: 'restart',
@@ -15,6 +17,7 @@ module.exports = {
 			setTimeout(function(){
 				msg.edit("toc toc!");
 				msg.react('🆗');
+				message.channel.stopTyping(true);
 			}, 6000);
 		})
 		.then(client.destroy())
