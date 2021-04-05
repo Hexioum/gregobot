@@ -14,7 +14,7 @@
     "discord.js-commando": "^0.12.2",
     "dotenv": "^8.2.0",
     "erlpack": "github:discord/erlpack",
-    "imgur": "^1.0.0",
+    "imgur": "^2.0.0-next.3",
     "jimp": "^0.16.1",
     "nhentai-api": "^3.0.2",
     "pg": "^8.5.1",
