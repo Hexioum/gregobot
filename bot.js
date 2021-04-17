@@ -249,6 +249,16 @@ bot.on('ready', function () {
 		true,
 		'America/Santiago'
 	);
+	var jobSat = new CronJob(
+		'0 0 0 * * 6',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los sábados.');//satanism,demons,succubus
+			bot.channels.cache.get('441386860300730378').send(`*SATANISM SATURDAY:* ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
 	var jobSun = new CronJob(
 		'0 0 0 * * 0',
 		function() {
