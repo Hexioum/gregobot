@@ -3,7 +3,9 @@ const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
 const { token, gregorid } = require('./config.json');
-// require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 
@@ -84,10 +86,13 @@ const topicList = [
 const reactList = [
 	"🔩",
 	"🍴",
-	"🔩",
+	"🥄",
 	"🙏",
     "🔩",
-	"🍽"
+    "🥛",
+    "🥃",
+    "🧻",
+	"👌"
     ];
 const ignoreList = [
 	'565330655915933696',
@@ -214,6 +219,46 @@ bot.once('ready', () => {
 bot.on('ready', function () {
 //	console.log(User); // Some user object.
 	console.log(`${bot.user.tag} has logged in.`);
+	var jobMon = new CronJob(
+		'0 0 0 * * 1',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal
+			bot.channels.cache.get('441386860300730378').send(`*MILKY MONDAY:* ¡Por cada post de 🐮 obtienes +6 🥛!`);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+/*	var jobWed = new CronJob(
+		'0 0 0 * * 1',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los lunes.');//watersports,wedding
+			bot.channels.cache.get('441386860300730378').send(`*WATERSPORTS WEDNESDAY:* ¡Los posts con trajes de baño obtienes +6 🥛!`);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);*/
+	var jobFri = new CronJob(
+		'0 0 0 * * 5',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los viernes.');//futa,furry,hardcore friday
+			bot.channels.cache.get('441386860300730378').send(`*FURRY FRIDAY:* ¡Los posts de furry otorgan el doble de 🥛!`);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var jobSun = new CronJob(
+		'0 0 0 * * 0',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblepen
+			bot.channels.cache.get('441386860300730378').send(`*CUNNY SUNDAY:* ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
@@ -300,16 +345,16 @@ bot.on('message', message => {
 		if ((message.attachments.first().name.toLowerCase().startsWith(`screenshot`))||(message.attachments.first().name.toLowerCase().startsWith(`unknown`))) {
 			return console.log('Ví la imágen pero parece ser una captura');
 		}
-		if (message.attachments.first().size < 60000) {
+		if (message.attachments.first().size < 70000) {
 			console.log(message.attachments.first().size);
 			return console.log('Ví la imágen pero es muy ligera y probablemente es un meme.');
 		}
-		if ((message.attachments.first().height < 510)||(message.attachments.first().width < 510)) {
+		if ((message.attachments.first().height < 512)||(message.attachments.first().width < 512)) {
 			console.log(message.attachments.first().size);
 			return console.log('Ví la imágen pero tiene baja resolución.');
 		}
 		if (message.attachments.every(attachIsImage)){
-			let random = Math.floor(Math.random() * 30);
+			let random = Math.floor(Math.random() * 36);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
 			message.react('750502194108956682')
@@ -350,6 +395,9 @@ bot.on('message', message => {
 				message.channel.send({files: ['./memes/68747470733a2f2f73332.gif']})
 				.catch(() => console.error('Que onda?? No puedo mandar el gif'));
 			} else if (random === 10){
+				message.channel.send('👌')
+				.catch(() => console.error('Que onda?? No puedo mandar mensajes'));
+			} else if (random === 11){
 				message.channel.startTyping();
 				setTimeout(function(){
 					message.channel.send('ta wena igual')
@@ -398,8 +446,8 @@ bot.on('message', message => {
 		let random = Math.floor(Math.random() * 5);
 		message.channel.send(replies[random]);
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
-		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio"];
-		let random = Math.floor(Math.random() * 5);
+		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio", "fue el moreira wn"];
+		let random = Math.floor(Math.random() * 6);
 		message.channel.send('loco yo no fui')
 			.then(() => message.channel.send(replies[random]))
 			.catch(() => console.error('Que onda?? No pude responder.'));
@@ -478,4 +526,4 @@ bot.on('message', message => {
 	}
 });
 // login to Discord with your app's token
-bot.login(process.env.BOT_TOKEN);//(token)/(process.env.BOT_TOKEN)
+bot.login(process.env.BOT_TOKEN);
