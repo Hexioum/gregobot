@@ -223,7 +223,7 @@ bot.on('ready', function () {
 		'0 0 0 * * 1',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal
-			bot.channels.cache.get('441386860300730378').send(`*MILKY MONDAY:* ¡Por cada post de 🐮 obtienes +6 🥛!`);
+			bot.channels.cache.get('441386860300730378').send(`**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`);
 		},
 		null,
 		true,
@@ -243,7 +243,7 @@ bot.on('ready', function () {
 		'0 0 0 * * 5',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los viernes.');//futa,furry,hardcore friday
-			bot.channels.cache.get('441386860300730378').send(`*FURRY FRIDAY:* ¡Los posts de furry otorgan el doble de 🥛!`);
+			bot.channels.cache.get('441386860300730378').send(`**FURRY FRIDAY:** ¡Los posts de furry otorgan el doble de 🥛!`);
 		},
 		null,
 		true,
@@ -253,7 +253,7 @@ bot.on('ready', function () {
 		'0 0 0 * * 6',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los sábados.');//satanism,demons,succubus
-			bot.channels.cache.get('441386860300730378').send(`*SATANISM SATURDAY:* ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`);
+			bot.channels.cache.get('441386860300730378').send(`**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`);
 		},
 		null,
 		true,
@@ -262,8 +262,8 @@ bot.on('ready', function () {
 	var jobSun = new CronJob(
 		'0 0 0 * * 0',
 		function() {
-			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblepen
-			bot.channels.cache.get('441386860300730378').send(`*CUNNY SUNDAY:* ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`);
+			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblepen,domingo de misa
+			bot.channels.cache.get('441386860300730378').send(`**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`);
 		},
 		null,
 		true,
