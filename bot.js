@@ -222,23 +222,27 @@ bot.on('ready', function () {
 	var jobMon = new CronJob(
 		'0 0 0 * * 1',
 		function() {
-			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal
+			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal,monster
+			let jobsSat = [ `**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`,
+							`**MONSTER MONDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de monstruos/chicas moco!`];
 			bot.channels.cache.get('441386860300730378').send(`**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`);
 		},
 		null,
 		true,
 		'America/Santiago'
 	);
-/*	var jobWed = new CronJob(
-		'0 0 0 * * 1',
+	var jobWed = new CronJob(
+		'0 0 0 * * 3',
 		function() {
-			console.log('Este mensaje aparecerá a media noche los lunes.');//watersports,wedding
-			bot.channels.cache.get('441386860300730378').send(`*WATERSPORTS WEDNESDAY:* ¡Los posts con trajes de baño obtienes +6 🥛!`);
+			console.log('Este mensaje aparecerá a media noche los miércoles.');//watersports,wedding
+			let jobsSat = [ `**WATERSPORTS WEDNESDAY:** ¡Los posts con trajes de baño obtienen x1.5 la cantidad de 🥛!`,
+							`**WEDDING WEDNESDAY:** ¡Los posts con trajes de boda obtienen x2.5 la cantidad de 🥛!`];
+			bot.channels.cache.get('441386860300730378').send(`**WATERSPORTS WEDNESDAY:** ¡Los posts con trajes de baño obtienen x2 la cantidad de 🥛!`);
 		},
 		null,
 		true,
 		'America/Santiago'
-	);*/
+	);
 	var jobFri = new CronJob(
 		'0 0 0 * * 5',
 		function() {
@@ -253,6 +257,9 @@ bot.on('ready', function () {
 		'0 0 0 * * 6',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los sábados.');//satanism,demons,succubus
+			let jobsSat = [ `**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`,
+							`"QUE GRANDE ESTE WEON"`,
+							"grande el pibe"];
 			bot.channels.cache.get('441386860300730378').send(`**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`);
 		},
 		null,
@@ -262,7 +269,10 @@ bot.on('ready', function () {
 	var jobSun = new CronJob(
 		'0 0 0 * * 0',
 		function() {
-			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblepen,domingo de misa
+			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblep,domingo de misa
+			let jobsSat = [ `**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`,
+							`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`,
+							"grande el pibe"];
 			bot.channels.cache.get('441386860300730378').send(`**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`);
 		},
 		null,
