@@ -271,9 +271,9 @@ bot.on('ready', function () {
 		function() {
 			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblep,domingo de misa
 			let jobsSat = [ `**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`,
-							`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`,
-							"grande el pibe"];
-			bot.channels.cache.get('441386860300730378').send(`**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`);
+							`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`];
+			let tofDay = Math.floor(Math.random() * 2);
+			bot.channels.cache.get('441386860300730378').send(`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`);
 		},
 		null,
 		true,
