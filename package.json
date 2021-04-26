@@ -7,6 +7,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "@jimp/gif": "^0.16.1",
+    "booru": "^2.4.0",
     "bufferutil": "^4.0.1",
     "cron": "^1.8.2",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",

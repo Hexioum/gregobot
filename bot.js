@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 const { token, gregorid } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
+const Booru = require('booru');
 var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
@@ -28,7 +29,7 @@ const activitiesList = [
     "League of Legends",
     "Warframe",
     "Warframe",
-	"Old School RuneScape",
+	"Warframe",
 	"Old School RuneScape",
 	"Old School RuneScape",
     "Spacewar",
@@ -62,7 +63,7 @@ const topicList = [
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
-	"Tomba! 2: The Evil Swine Return",
+	"Brawlhalla",
 	"Duke Nukem Forever",
 	"Diablo® III",
 	"BlazBlue Alternative: Dark War",
@@ -81,6 +82,7 @@ const topicList = [
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
+	"la paranoia y la venganza",
     "estrategias para el Mudae"
     ];
 const reactList = [
@@ -88,11 +90,11 @@ const reactList = [
 	"🍴",
 	"🥄",
 	"🙏",
-    "🔩",
+    "👌",
     "🥛",
     "🥃",
     "🧻",
-	"👌"
+	"🔩"
     ];
 const ignoreList = [
 	'565330655915933696',
@@ -219,13 +221,38 @@ bot.once('ready', () => {
 bot.on('ready', function () {
 //	console.log(User); // Some user object.
 	console.log(`${bot.user.tag} has logged in.`);
+	var day = 0;
 	var jobMon = new CronJob(
 		'0 0 0 * * 1',
 		function() {
-			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal,monster
-			let jobsSat = [ `**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`,
-							`**MONSTER MONDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de monstruos/chicas moco!`];
-			bot.channels.cache.get('441386860300730378').send(`**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`);
+			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal,monster,muscle,maid
+			let jobsMon = [ `**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`,
+							`**MONSTER MONDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de chicas monstruo!`];
+			day = 1;
+			bot.channels.cache.get('441386860300730378').send(`${jobsMon[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var jobTue = new CronJob(
+		'0 0 0 * * 2',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los martes.');//
+			let jobsTue = [ `**TAN TUESDAY:** Si no fuesen negras serían perfectas...`,
+							`**MAID MARTES:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de mucamas/sirvientas/nanas!`];
+			day = 2;
+			bot.channels.cache.get('441386860300730378').send(`${jobsTue[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
 		},
 		null,
 		true,
@@ -235,9 +262,33 @@ bot.on('ready', function () {
 		'0 0 0 * * 3',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los miércoles.');//watersports,wedding
-			let jobsSat = [ `**WATERSPORTS WEDNESDAY:** ¡Los posts con trajes de baño obtienen x1.5 la cantidad de 🥛!`,
+			let jobsWed = [ `**WET WEDNESDAY:** Sean posts con trajes de baño, están mojadas, sudorosas *SNIFF*... ¡Son todas bienvenidas!`,
 							`**WEDDING WEDNESDAY:** ¡Los posts con trajes de boda obtienen x2.5 la cantidad de 🥛!`];
-			bot.channels.cache.get('441386860300730378').send(`**WATERSPORTS WEDNESDAY:** ¡Los posts con trajes de baño obtienen x2 la cantidad de 🥛!`);
+			day = 3;
+			bot.channels.cache.get('441386860300730378').send(`${jobsWed[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var jobThu = new CronJob(
+		'0 0 0 * * 4',
+		function() {
+			console.log('Este mensaje aparecerá a media noche los jueves.');//thirsty,tan,japanese_clothes
+			let jobsThu = [ `**THIGH HIGHS THURSDAY:** AKA Jueves de tutos.`,
+							`**JUEVES JAPONÉS:** ¡Los posts con yukatas/kimonos obtienen el doble la cantidad de 🥛!`];
+			day = 4;
+			bot.channels.cache.get('441386860300730378').send(`${jobsThu[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
 		},
 		null,
 		true,
@@ -247,7 +298,16 @@ bot.on('ready', function () {
 		'0 0 0 * * 5',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los viernes.');//futa,furry,hardcore friday
-			bot.channels.cache.get('441386860300730378').send(`**FURRY FRIDAY:** ¡Los posts de furry otorgan el doble de 🥛!`);
+			let jobsFri = [ `**FURRY FRIDAY:** ¡Los posts de furry otorgan el doble de 🥛!`,
+							`**FUTA FRIDAY:** Si no fuesen negras serían perfectas...`,
+							`**HARDCORE FRIDAY:** ¡¡¡VEN AQUÍ AHORA!!! *PA! PA! PA!* <:grBliss:749880374213083227>💦`];
+			day = 5;
+			bot.channels.cache.get('441386860300730378').send(`${jobsFri[2]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
 		},
 		null,
 		true,
@@ -258,9 +318,14 @@ bot.on('ready', function () {
 		function() {
 			console.log('Este mensaje aparecerá a media noche los sábados.');//satanism,demons,succubus
 			let jobsSat = [ `**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`,
-							`"QUE GRANDE ESTE WEON"`,
-							"grande el pibe"];
-			bot.channels.cache.get('441386860300730378').send(`**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`);
+							`**SÁBADO DE REPORTAJES:** ¡!`];
+			day = 6;
+			bot.channels.cache.get('441386860300730378').send(`${jobsSat[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
 		},
 		null,
 		true,
@@ -270,28 +335,71 @@ bot.on('ready', function () {
 		'0 0 0 * * 0',
 		function() {
 			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblep,domingo de misa
-			let jobsSat = [ `**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`,
-							`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`];
-			let tofDay = Math.floor(Math.random() * 2);
-			bot.channels.cache.get('441386860300730378').send(`**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`);
+			let jobsSun = [ `**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`,
+							`**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`];
+			day = 7;
+			bot.channels.cache.get('441386860300730378').send(`${jobsSun[0]}`);
+			try {
+				imgoftheDay();
+			} catch (error) {
+				console.error("timerCronjob:"+error);
+			}
 		},
 		null,
 		true,
 		'America/Santiago'
 	);
+	
+	async function imgoftheDay () {
+		const tagofDay = [
+	        "cow_print",
+	        "tan",
+	        "wet",
+	        "thighhighs",
+	        "ahegao",
+	        "succubus",
+        	"nun"
+        ];
+		const tagofDayAlt = [
+	        "monster_girl",
+	        "maid",
+	        "wedding_dress",
+	        "japanese_clothes",
+	        "futanari",
+	        "demon_girl",
+        	"petite"
+        ];
+        const boorus = [
+            "danbooru",
+            "gelbooru",
+            "konachan.com",
+            "yande.re"
+        ];
+		let random = Math.floor(Math.random() * 4);
+        console.log(`Se buscó el tag ${tagofDay[Number(day)-1]} en ${boorus[Number(random)]}, para representar el día ${day}.`);
+
+        Booru.search(`${boorus[Number(random)]}`, [`${tagofDay[Number(day)-1]}`], { limit: 1, random: true })
+        .then(posts => { for (let post of posts)
+        //message.channel.send({files: [post.fileUrl]});
+        bot.channels.cache.get('441386860300730378').send({files: [post.fileUrl]});//test at 438754239494357004
+		})
+        .catch((err) => 
+        console.log(`Error al enviar imágen del día: `+err));
+	};
+
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
 		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
 		.catch(console.error);
-    }, 12240000); // Runs this every 3.4 hours.
+    }, 24480000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
         bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
 		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
 
-    }, 360000); // Runs this every 360 seconds.
+    }, 370000); // Runs this every 370 seconds.
 });
 //	async member*
 bot.on('guildMemberAdd', member => {
