@@ -5,7 +5,11 @@ const Discord = require('discord.js');
 const { token, gregorid } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
-const Booru = require('booru');
+//const Booru = require('booru');
+const { createWorker } = require('tesseract.js');
+const worker = createWorker({
+	logger: m => console.log(m)
+});
 var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
@@ -34,6 +38,7 @@ const activitiesList = [
 	"Old School RuneScape",
     "Spacewar",
     "Spacewar",
+	"World of Warcraft Classic",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
@@ -64,6 +69,7 @@ const topicList = [
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
 	"Brawlhalla",
+	"Def Jam: Fight for NY",
 	"Duke Nukem Forever",
 	"Diablo® III",
 	"BlazBlue Alternative: Dark War",
@@ -78,12 +84,17 @@ const topicList = [
     "EA SPORTS™ FIFA 21",
 	"speedruns de Super Mario 64",
 	"que Nagato es la Linne",
-	"framedata",
+	"frame data",
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
 	"la paranoia y la venganza",
     "estrategias para el Mudae"
+    ];
+const react1List = [
+	"750502194108956682",
+	"749880374213083227",
+	"804617300824948756"
     ];
 const reactList = [
 	"🔩",
@@ -92,13 +103,13 @@ const reactList = [
 	"🙏",
     "👌",
     "🥛",
-    "🥃",
     "🧻",
+    "🥃",
 	"🔩"
     ];
 const ignoreList = [
 	'565330655915933696',
-	'439205512425504771'
+	'164473940532527104'
 	]; // banned from image reactions.
 const bannedWords = [
     "m4",
@@ -125,13 +136,12 @@ const bannedWords = [
 	"soppu",
 	"spand",
 	"mdand",
-	"sp4nd",
+	"spnd",
 	"ndmd",
 	"spmd",
 	"smpd",
 	"zpmd",
 	"zmpd",
-	"zópmd",
 	"zpmód",
 	"spmod",
 	"sopmd",
@@ -139,9 +149,12 @@ const bannedWords = [
 	"dompos",
 	"posmod",
 	"sompod",
-	"sópmód",
-	"sómpód",
-	"dompos",
+	"splec",
+	"zplec",
+	"splch",
+    "lechemod",
+    "pleched",
+	"dleches",
 	"zompod",
 	"zopmod",
 	"dompoz",
@@ -155,20 +168,17 @@ const bannedWords = [
     "amb3r",
     "4mb3r",
 	"zandmod",
-	"zandm0d",
-    "jillmod",
-    "jillm0d",
+	"zandmd",
+    "jeell",
 	"stingray",
 	"stngray",
 	"stngry",
 	"stingry",
-    "shádowm",
-    "shádówm",
-    "shadówm",
     "shadowm",
     "sh4dowm",
     "sh4d0wm",
     "shadwm",
+    "shdowm",
     "hadowm",
     "shdwm",
     "j1ll",
@@ -176,8 +186,6 @@ const bannedWords = [
     "jill"
     ]; // Don't ever say them out loud.
 const responseObject = {
-	"ta el grego?": "no XD",
-	"mamala grego": "tonto weon ese ni siquiera es el comando",
 	"grego?": "que wea",
 	"Grego?": "Que wea",
 	"gregO?": "que weA",
@@ -222,127 +230,28 @@ bot.on('ready', function () {
 //	console.log(User); // Some user object.
 	console.log(`${bot.user.tag} has logged in.`);
 	var day = 0;
-	var jobMon = new CronJob(
-		'0 0 0 * * 1',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los lunes.');//milk,lunes de lactancia,moco monday,mammal,monster,muscle,maid
-			let jobsMon = [ `**MILKY MONDAY:** ¡Por cada post de 🐮 obtienes +6 🥛!`,
-							`**MONSTER MONDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de chicas monstruo!`];
-			day = 1;
-			bot.channels.cache.get('441386860300730378').send(`${jobsMon[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
-	var jobTue = new CronJob(
-		'0 0 0 * * 2',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los martes.');//
-			let jobsTue = [ `**TAN TUESDAY:** Si no fuesen negras serían perfectas...`,
-							`**MAID MARTES:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de mucamas/sirvientas/nanas!`];
-			day = 2;
-			bot.channels.cache.get('441386860300730378').send(`${jobsTue[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
-	var jobWed = new CronJob(
-		'0 0 0 * * 3',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los miércoles.');//watersports,wedding
-			let jobsWed = [ `**WET WEDNESDAY:** Sean posts con trajes de baño, están mojadas, sudorosas *SNIFF*... ¡Son todas bienvenidas!`,
-							`**WEDDING WEDNESDAY:** ¡Los posts con trajes de boda obtienen x2.5 la cantidad de 🥛!`];
-			day = 3;
-			bot.channels.cache.get('441386860300730378').send(`${jobsWed[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
-	var jobThu = new CronJob(
-		'0 0 0 * * 4',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los jueves.');//thirsty,tan,japanese_clothes
-			let jobsThu = [ `**THIGH HIGHS THURSDAY:** AKA Jueves de tutos.`,
-							`**JUEVES JAPONÉS:** ¡Los posts con yukatas/kimonos obtienen el doble la cantidad de 🥛!`];
-			day = 4;
-			bot.channels.cache.get('441386860300730378').send(`${jobsThu[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
+	var lockComment = 1;//Start locked to prevent spamming if bot restarted
+
 	var jobFri = new CronJob(
-		'0 0 0 * * 5',
+		'34 */6 22-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			console.log('Este mensaje aparecerá a media noche los viernes.');//futa,furry,hardcore friday
-			let jobsFri = [ `**FURRY FRIDAY:** ¡Los posts de furry otorgan el doble de 🥛!`,
-							`**FUTA FRIDAY:** Si no fuesen negras serían perfectas...`,
-							`**HARDCORE FRIDAY:** ¡¡¡VEN AQUÍ AHORA!!! *PA! PA! PA!* <:grBliss:749880374213083227>💦`];
-			day = 5;
-			bot.channels.cache.get('441386860300730378').send(`${jobsFri[2]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
-	var jobSat = new CronJob(
-		'0 0 0 * * 6',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los sábados.');//satanism,demons,succubus
-			let jobsSat = [ `**SATANISM SATURDAY:** ¡Obtienes -1h de espera entre cada eyaculación con los posts de demonios/súcubos!`,
-							`**SÁBADO DE REPORTAJES:** ¡!`];
-			day = 6;
-			bot.channels.cache.get('441386860300730378').send(`${jobsSat[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
-			}
-		},
-		null,
-		true,
-		'America/Santiago'
-	);
-	var jobSun = new CronJob(
-		'0 0 0 * * 0',
-		function() {
-			console.log('Este mensaje aparecerá a media noche los domingos.');//cunny,domingo de dump truck,dominatrix,doblep,domingo de misa
-			let jobsSun = [ `**DOMINGO DE MISA:** ¡Las reacciones a posts de monjas cuestan la mitad de 🥛!`,
-							`**CUNNY SUNDAY:** ¡Las reacciones a posts de cunny cuestan la mitad de 🥛!`];
-			day = 7;
-			bot.channels.cache.get('441386860300730378').send(`${jobsSun[0]}`);
-			try {
-				imgoftheDay();
-			} catch (error) {
-				console.error("timerCronjob:"+error);
+			let randomChance = Math.floor(Math.random()*12);
+			let randomComment = Math.floor(Math.random()*3);
+			if ((lockComment === 0)&&(randomChance === 2)) {
+				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
+				lockComment = 1
+				let jobsFri = [ `entonces nadie alguna wea?`,
+								`weon un viernes y no hay niun weon?`,
+								`quien un jugo?`,
+								`quien un nosgoth?`,
+								`alguien un nosgoth?`];
+				day = 5;
+				bot.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
+			/*	try {
+					imgoftheDay();
+				} catch (error) {
+					console.error("timerCronjob:"+error);
+				};*/
 			}
 		},
 		null,
@@ -350,56 +259,29 @@ bot.on('ready', function () {
 		'America/Santiago'
 	);
 	
-	async function imgoftheDay () {
-		const tagofDay = [
-	        "cow_print",
-	        "tan",
-	        "wet",
-	        "thighhighs",
-	        "ahegao",
-	        "succubus",
-        	"nun"
-        ];
-		const tagofDayAlt = [
-	        "monster_girl",
-	        "maid",
-	        "wedding_dress",
-	        "japanese_clothes",
-	        "futanari",
-	        "demon_girl",
-        	"petite"
-        ];
-        const boorus = [
-            "danbooru",
-            "gelbooru",
-            "konachan.com",
-            "yande.re"
-        ];
-		let random = Math.floor(Math.random() * 4);
-        console.log(`Se buscó el tag ${tagofDay[Number(day)-1]} en ${boorus[Number(random)]}, para representar el día ${day}.`);
-
-        Booru.search(`${boorus[Number(random)]}`, [`${tagofDay[Number(day)-1]}`], { limit: 1, random: true })
-        .then(posts => { for (let post of posts)
-        //message.channel.send({files: [post.fileUrl]});
-        bot.channels.cache.get('441386860300730378').send({files: [post.fileUrl]});//test at 438754239494357004
-		})
-        .catch((err) => 
-        console.log(`Error al enviar imágen del día: `+err));
-	};
+	var jobRestore = new CronJob(
+		'0 0 0,21 * * 4,5',//“At minute 0 past hour 0 and 21 on Thursday and Friday.”
+		function() {
+			lockComment = 0;
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
 
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
 		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
 		.catch(console.error);
-    }, 24480000); // Runs this every 6.8 hours.
+    }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
         bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
 		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
 		.catch(console.error);
 
-    }, 370000); // Runs this every 370 seconds.
+    }, 390000); // Runs this every 390 seconds.
 });
 //	async member*
 bot.on('guildMemberAdd', member => {
@@ -449,7 +331,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
-		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ) {
+		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ||(newMember.nickname.toLowerCase().startsWith('sp'))) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Don Comedia', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a Don Comedia'))
@@ -463,15 +345,51 @@ bot.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
 bot.on('message', message => {
-	if (message.author.bot) return;
 // If the message starts was sent by a bot, exit early.
+	if (message.author.bot) return;
+
+// If message channel is #tech
+	if (message.channel.id == 742579461714870353) {
+		console.log('Se ha enviado un mensaje a #tech.');
+		if ((message.attachments.size > 0)||(message.content.toLowerCase().startsWith(`http`))) {
+		console.log('El contenido enviado corresponde.');
+		} else {
+			try {
+				message.delete();
+				return console.log(`Se ha borrado el mensaje: ${message}`);
+			} catch {
+				return console.log(`No se ha borrado el mensaje: ${message}\nFaltan permisos?`);
+			};
+		};
+	}
+
+	var attachment = 'PIC1.PNG';
+// If message is an attachment
 	if (message.attachments.size > 0) {
 		if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 		for (let i = 0; i < ignoreList.length; i++) {
-			if (message.author.id === ignoreList[i]) return console.log('Alguien fue ignorado.');
+			if (message.author.id === ignoreList[i]) {
+				console.log('Nacho hizo algo.');
+				let random = Math.floor(Math.random() * 7);
+				if (random === 0) {
+					message.channel.send('andate a la mierda nacho');
+					esperarRespuesta();
+				} else if (random === 1) {
+					message.channel.send('chancho qlo ojala te salga un tumor');
+					esperarRespuesta();
+				};
+			}
 		};
 		if ((message.attachments.first().name.toLowerCase().startsWith(`screenshot`))||(message.attachments.first().name.toLowerCase().startsWith(`unknown`))) {
 			return console.log('Ví la imágen pero parece ser una captura');
+		/*	screenshot = message.attachments.first().url;
+			try {
+				readImage();
+			} catch(err) {
+				console.log(`Error en línea 379:\n`+err)
+			} finally {
+				return;
+			}*/
 		}
 		if (message.attachments.first().size < 70000) {
 			console.log(message.attachments.first().size);
@@ -483,9 +401,10 @@ bot.on('message', message => {
 		}
 		if (message.attachments.every(attachIsImage)){
 			let random = Math.floor(Math.random() * 36);
+			let rand1Reaction = Math.floor(Math.random() * (react1List.length - 1) + 1);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
-			message.react('750502194108956682')
+			message.react(`${react1List[rand1Reaction]}`)
 				.then(() => message.react(`${reactList[randReaction]}`))
 				.catch(() => console.error('No se ha podido apretar el botón de nuez.'));
 			// Add 1 to the nut counter.
@@ -540,21 +459,35 @@ bot.on('message', message => {
 		}
 	}
 
-//	const mensaje = message.content.toLowerCase();
+	let randomKps = Math.floor(Math.random()*200);//Random keystrokes per second (added ms).
 
 	if(responseObject[message.content]) {
 		message.channel.send(responseObject[message.content]);
-	} else if (message.content.toLowerCase().startsWith(`ta el grgr`)) {
-		message.channel.send('no XD');
-	} else if (message.content.toLowerCase().startsWith(`ah ta el gr`)) {
+	} else if ((message.channel.id === 742472922093846588)&&(message.content.toLowerCase().includes(`gracias grego`))) {
+		message.channel.send({files: ['./memes/;tinttulo;.png']})
+		.catch(() => console.error('Que onda?? No pude mandar la imágen.'));
+	} else if (message.content.startsWith(`$tu`)) {
+		try {
+			bot.commands.get('reclamar').execute(message)
+		} catch (error) {
+			console.error(error);
+			message.reply('estoy hecho mierda weon!');
+		}
+	} else if (message.content.toLowerCase().includes(`nosgoth`)) {
+		let replies = ["kabaltroteligero.gif", "UtY9sT39.gif"];
+		let random = Math.floor(Math.random() * 2);
+		if (random == 0) {
+			setTimeout(function(){
+			message.channel.send({files: [`./memes/UtY9sT39.gif`]});
+			}, Number(500));
+		} else {
+			message.channel.send('CTM go')
+				.then(() => message.channel.send({files: [`./memes/kabaltroteligero.gif`]}))
+				.catch(() => console.error('Que onda?? No pude responder.'));
+		};
+	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`) || message.content.toLowerCase().startsWith(`ah está el gr`)) {
 		message.channel.send('se wn');
-	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`)) {
-		message.channel.send('se wn');
-	} else if (message.content.toLowerCase().startsWith(`ah está el gr`)) {
-		message.channel.send('se wn');
-	} else if (message.content.toLowerCase().startsWith(`buena grego`)) {
-		message.channel.send('wena');
-	} else if (message.content.toLowerCase().startsWith(`hola grego`)) {
+	} else if (message.content.toLowerCase().startsWith(`buena grego`) || message.content.toLowerCase().startsWith(`hola grego`)) {
 		message.channel.send('wena');
 	} else if (message.content.toLowerCase().startsWith(`wena grego`)) {
 		message.channel.send('wena wena')
@@ -570,7 +503,7 @@ bot.on('message', message => {
 	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
 		message.channel.send('Si.');
 	} else if (message.content.toLowerCase().startsWith(`cierto grego`)) {
-		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego:750502194108956682>", "<:Grego:750502194108956682>:interrobang:", "Si."];
+		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego2:852589102804107264>", "<:Grego2:852589102804107264>:interrobang:", "Si."];
 		let random = Math.floor(Math.random() * 5);
 		message.channel.send(replies[random]);
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
@@ -582,29 +515,41 @@ bot.on('message', message => {
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
 	} else if (message.content.toLowerCase().includes(`lucho`)) {
-		let random = Math.floor(Math.random() * 4);
+		let random = Math.floor(Math.random() * 250);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`cual lucho?`);
 			return message.channel.stopTyping(true);
-			}, 250);
+			}, Number(550+randomKps));
 		}
 	} else if (message.content.toLowerCase().includes(`genshin`)) {
-		let random = Math.floor(Math.random() * 4);
+		let random = Math.floor(Math.random() * 5);
 		if (random == 0) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`mas razones por odiar esa wea de juego`);
 			return message.channel.stopTyping(true);
-		}, 410);
+		}, Number(1900+randomKps));//tomando en cuenta los keystrokes por segundo promedio de gr que seguramente es de 5.
 		} else if (random == 1) {
 			message.channel.startTyping();
 			setTimeout(function(){
 			message.channel.send(`juego qlo malo aguante el gears`);
 			return message.channel.stopTyping(true);
-		}, 360);
-		}
+		}, Number(1550+randomKps));
+		} else if (random == 2) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`mala la wea`);
+			return message.channel.stopTyping(true);
+		}, Number(550+randomKps));
+		} else if (random == 3) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`otra razon mas para no volver a la mierda`);
+			return message.channel.stopTyping(true);
+		}, Number(2000+randomKps));
+		};
 	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`grego decide `)) {
@@ -639,13 +584,79 @@ bot.on('message', message => {
 		return message.reply('basta wn, por privado no');
 	}
 
+	//Screenshot reading with TesseractOCR
+	async function readImage() {
+		await worker.load();
+		await worker.loadLanguage('eng+spa');
+		await worker.initialize('eng+spa');
+		const { data: { text } } = await worker.recognize(attachment);
+		console.log(text);
+		if (text.toLowerCase().includes(`genshin`)) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`juego qlo malo aguante el gears`);
+			return message.channel.stopTyping(true);
+			}, Number(1550));
+		} else if (text.toLowerCase().includes(`nekopara`)) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`la wea buena`);
+			return message.channel.stopTyping(true);
+			}, Number(600));
+		} else if (text.toLowerCase().includes(`sopmod`)) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`la wea mala oh`);
+			return message.channel.stopTyping(true);
+			}, Number(660));
+		} else if (text.toLowerCase().includes(`grego`)) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`<:Grego2:852589102804107264>⁉`);
+			return message.channel.stopTyping(true);
+			}, Number(360));
+		} else if (text.toLowerCase().includes(`notebook`) || text.toLowerCase().includes(`laptop`)) {
+			message.channel.startTyping();
+			setTimeout(function(){
+			message.channel.send(`en las mierdas que te gastai la plata`);
+			return message.channel.stopTyping(true);
+			}, Number(720));
+		};
+		await worker.terminate();
+	}
+
+	async function esperarRespuesta() {
+		let filter = m => m.author.id === message.author.id;
+		message.channel.awaitMessages(filter, {
+			max: 1,
+			time: 22000, // Wait 22 seconds
+			errors: ['time']
+		})
+		.then(message => {
+			message = message.first()
+			if (message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`culear`) || message.content.toLowerCase().includes(`culeo`) || message.content.toLowerCase().includes(`hermano`)) {
+				message.channel.send(`dare cuerpo y alma para que no vuelvas al mudae`)
+			} else if (message.content.toLowerCase().includes(`puta`) || message.content.toLowerCase().includes(`rachel`) || message.content.toLowerCase().includes(`wea mala`) || message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`inculto`) || message.content.toLowerCase().includes(`no cacha`)) {
+				message.channel.send({files: ['./memes/chubis/triste.png']})
+			} else if (message.content.toLowerCase().includes(`culiao`) || message.content.toLowerCase().includes(`qlo`) || message.content.toLowerCase().includes(`conchetumare`) || message.content.toLowerCase().includes(`ctm`) || message.content.toLowerCase().includes(`chupala`)) {
+				message.channel.send({files: ['./memes/chubis/atomar.jpg']})
+			} else if (message.content.toLowerCase().includes(`payaso`) || message.content.toLowerCase().includes(`maricon`) || message.content.toLowerCase().includes(`🤡`) || message.content.toLowerCase().includes(`puto`)) {
+				message.channel.send({files: ['./memes/chubis/avergonzao.jpg']})
+			} else {
+				return console.log('Supongo que no me insultaron...');
+			}
+		})
+		.catch(collected => {
+			return console.log('Se acabó el tiempo, nadie me insultó. Gané.');
+		});
+	};
 
 	//added in order to verify that attachments are images and not videos
 	function attachIsImage(msgAttach) {
     var url = msgAttach.url;
     //True if the url is not a gif image.
     return url.indexOf("gif", url.length - "gif".length /*or 3*/) == -1;
-}
+	}
 	try {
 		command.execute(message, args);
 	} catch (error) {
