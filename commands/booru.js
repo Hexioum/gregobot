@@ -343,13 +343,9 @@ module.exports = {
                                 } else {
                                     console.log("Esta está buena, la envío altiro.");
                                     url = posts[0].fileUrl;
-                                    if (fileSize > 2000) {
-                                        message.channel.send({files: [posts[0].fileUrl]})
-                                        .catch(() => imgReduce(url));
-                                        esperarRespuesta();
-                                    } else {
-                                        return console.log("Pesa demasiado poco el archivo.");
-                                    }
+                                    message.channel.send({files: [posts[0].fileUrl]})
+                                    .catch(() => imgReduce(url));
+                                    esperarRespuesta();
                                 };
                             }
                             catch(err) {
