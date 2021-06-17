@@ -6,7 +6,7 @@
   "author": "Hexioum",
   "engines": {
     "npm": "7.x"
-  }
+  },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
     "axios": "^0.21.1",
