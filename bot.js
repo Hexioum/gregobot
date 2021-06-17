@@ -6,10 +6,10 @@ const { token, gregorid } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
 //const Booru = require('booru');
-const { createWorker } = require('tesseract.js');
+/*const { createWorker } = require('tesseract.js');
 const worker = createWorker({
 	logger: m => console.log(m)
-});
+});*/
 var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
@@ -471,7 +471,14 @@ bot.on('message', message => {
 			bot.commands.get('reclamar').execute(message)
 		} catch (error) {
 			console.error(error);
-			message.reply('estoy hecho mierda weon!');
+			console.log('No puedo responder.');
+		}
+	} else if (message.content.startsWith(`$rolls`)) {
+		try {
+			message.react('✅');
+		} catch (error) {
+			console.error(error);
+			console.log('No puedo reaccionar.');
 		}
 	} else if (message.content.toLowerCase().includes(`nosgoth`)) {
 		let replies = ["kabaltroteligero.gif", "UtY9sT39.gif"];
@@ -556,7 +563,10 @@ bot.on('message', message => {
 		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
 	} else if (message.content.startsWith(`grego elige `)) {
 		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
-	} else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
+	} else if ((message.content.length > 899)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
+		message.channel.send(`increible`);
+		return message.delete();
+    } else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
 		try {
 			bot.commands.get('camiro').execute(message)
 		} catch (error) {
