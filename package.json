@@ -5,7 +5,7 @@
   "main": "bot.js",
   "author": "Hexioum",
   "engines": {
-    "node": "16.x"
+    "node": "15.x"
   },
   "dependencies": {
     "axios": "^0.21.1",
