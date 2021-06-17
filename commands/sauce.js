@@ -46,7 +46,8 @@ module.exports = {
 				console.log(filename);
 				console.log(`En caso de emergencia, veré `+url2);
 				//console.log(lastMessages.first(2));
-				if ((filename.indexOf(memes) != -1)&&(url1.substr(url1.length - 10) != "triste.png")&&(url1.substr(url1.length - 10) != "atomar.jpg")&&(url1.substr(url1.length - 14) != "avergonzao.jpg")) {
+				//(filename.indexOf(memes) != -1)&&
+				if ((url1.substr(url1.length - 10) != "triste.png")&&(url1.substr(url1.length - 10) != "atomar.jpg")&&(url1.substr(url1.length - 14) != "avergonzao.jpg")) {
 					//Si el filename de la url no coincide con los archivos en la carpeta de memes
 					console.log(filename.indexOf(memes));
 					try {

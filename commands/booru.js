@@ -3,6 +3,8 @@ const axios = require('axios');
 var gis = require('g-i-s');
 const db = require('quick.db');
 const Discord = require('discord.js');
+/*var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();*/
 const sharp = require('sharp');
 const client = new Discord.Client({ 
     ws: { intents: [
@@ -42,6 +44,8 @@ module.exports = {
         let retries = 0
         let nameIsflipped = false
 		let random = Math.floor(Math.random() * 2);
+        var url = "";
+        var fileSize = '';
         let posts = [""]
         var boorus = [
             "konachan.com",
@@ -81,8 +85,11 @@ module.exports = {
                     searchTerm: `${args[0]} hentai`,
                     queryStringAddition: '&tbs=isz:l',  // Large images only
                     filterOutDomains: [
-                    'sh-cdn.com',
-                    'hentaifox.com'
+                        'blogspot.com',
+                        'hentai-img.com',
+                        'thatpervert.com',
+                        'sh-cdn.com',
+                        'hentaifox.com'
                     ]
                 };
             };
@@ -129,10 +136,13 @@ module.exports = {
                 } else {
                     nameIsflipped = true;
                 };
-                if (sentence[1].startsWith('(')) return console.log("No hay nada que voltear.");
-                console.log(`Ahora es: `+sentence);
-                args[0] = sentence
-                return sentence;
+                if (sentence.startsWith('(')) {
+                    return console.log("No hay nada que voltear.");
+                } else {
+                    console.log(`Ahora es: `+sentence);
+                    args[0] = sentence
+                    return sentence;
+                };
             } else {
                 return console.log("No hay nada que voltear.")
             }
@@ -196,7 +206,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
             args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
-            args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(uniel\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
+            args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
             console.log(`Buscando ${args[0]}...`);
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
@@ -236,7 +246,7 @@ module.exports = {
             } else if (retries === 5) {
                 console.log("Buscando en Google Imágenes...");
                 try {
-                    gis(gisOptions, logResults);
+                    gis(gisOptions, gisResults);
                 } catch(err) {
                     retries = retries+1;
                     startBooru();
@@ -273,7 +283,7 @@ module.exports = {
                 
                 if ((typeof args[0] !== 'undefined')) {
                     // Pone underscores donde en el comando pusieron espacios.
-                    imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/[ ]/gi, '_');
+                    imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/[ :]/gi, '_');
                 }/* else {
                     poison[Number(randomPo)] = "rating:explicit"
                 }*/
@@ -320,7 +330,8 @@ module.exports = {
                             if (retries < 5) {
                                 startBooru();                       // Searches again
                             } else {
-                                gis(`${args[0]} hentai`, logResults);
+                                //getFileSize(url);
+                                gis(gisOptions, gisResults);
                             };
                         } else {
                             try {
@@ -331,8 +342,14 @@ module.exports = {
                                     startBooru(); // Searches again
                                 } else {
                                     console.log("Esta está buena, la envío altiro.");
-                                    message.channel.send({files: [posts[0].fileUrl]});
-                                    esperarRespuesta();
+                                    url = posts[0].fileUrl;
+                                    if (fileSize > 2000) {
+                                        message.channel.send({files: [posts[0].fileUrl]})
+                                        .catch(() => imgReduce(url));
+                                        esperarRespuesta();
+                                    } else {
+                                        return console.log("Pesa demasiado poco el archivo.");
+                                    }
                                 };
                             }
                             catch(err) {
@@ -345,7 +362,7 @@ module.exports = {
             }
         };
 
-        function logResults(error, results) {
+        function gisResults(error, results) {
             let random = Math.floor(Math.random() * Number(23-retries));
             if (error) {
                 console.log(error);
@@ -353,27 +370,31 @@ module.exports = {
                 console.log(JSON.stringify(results, null, '  '));
                 if (results[Number(random)].width > 639) {
                     try {
+                        console.log(`Enviando:\n${results[Number(random)].url}`);
                         message.channel.send({files: [results[Number(random)].url]});
                     } catch {
                         console.log("No puedo enviar el resultado de Google.");
                         retries = retries+1;
                         startBooru();
+                    } finally {
+                        message.channel.stopTyping(true);
                     }
                 } else {
-                    retries = retries+1
-                    if (retries < 9) {
-                        logResults();
+                    retries = retries+1;
+                    if (retries < 8) {
+                        gisResults();
                     } else {
                         console.log("Me rindo, no encuentro nada.");
                         message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                     }
-                }
+                };
             }
         };
         
         // Usar esta función para reducir el tamaño de archivo si es que este excede el límite de subida de discord (8Mb)
 		async function imgReduce () {
-			const imageResponse = await axios({url: posts[0].fileUrl, responseType: 'arraybuffer'});
+            console.log("Intentando reducir tamaño de archivo.");
+			const imageResponse = await axios({url: url, responseType: 'arraybuffer'});
 			theImage = Buffer.from(imageResponse.data, 'binary');
             await sharp(theImage)
             .jpeg({ mozjpeg: true })    // Use mozjpeg to reduce output JPEG file size (slower)
@@ -385,13 +406,45 @@ module.exports = {
             })
             .catch(err => {
                 message.channel.stopTyping(true);
-                message.channel.send(`pesa mucho la wea\nde ahi busco otra`);
+                message.channel.send(posts[0].fileUrl);
                 return console.error(`Bruh\n`+`*${err}*`);
             })
         };
+        
+		// Interacciones con reacciones.
+		async function emojiMessage(message, validReactions) {
+            for (const reaction of validReactions) await message.react(reaction);
+        const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && (!user.bot)
+		message.channel.stopTyping(true);
+
+        return message
+            .awaitReactions(filter, {
+                max: 1,
+                time: 25000
+            })
+            .then(collected => collected.first() && collected.first().emoji.name)
+			.then(() => message.reactions.remove(message.author.id))
+			.catch(err => console.log("Oh: "+err));
+		}
 
         async function esperarRespuesta() {
             let filter = m => m.author.id === message.author.id;
+		/*	const emoji = await emojiMessage(message, ["👍", "🗑️"]);
+            message.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
+            { max: 1, time: 30000 }).then(collected => {
+                    if (collected.first().emoji.name == '🗑️') {
+                        message.edit('*MENSAJE BORRADO*');
+                        console.log('Mensaje borrado.');
+                    }
+                    else
+                        console.log('Operation canceled.')
+                        .then(() => message.reactions.remove(message.author.id))
+                        .catch(err => console.log("Oh: "+err));
+            }).catch(() => {
+                console.log('No reaction after 30 seconds, operation canceled')
+                .then(() => message.reactions.removeAll())
+                .catch(err => console.log("Oh: "+err));
+            });*/
             message.channel.awaitMessages(filter, {
                 max: 1,
                 time: 21000, // Wait 21 seconds
@@ -414,6 +467,25 @@ module.exports = {
             .catch(collected => {
                 return console.log('Se acabó el tiempo, nadie me insultó. Gané.');
             });
+        };
+
+        function getFileSize(url) {
+            console.log(`Entrando a la función getFileSize de:\n${url}`);
+            fileSize = '';//var
+            var http = new XMLHttpRequest();
+            http.open('HEAD', url, true); // true = Asynchronous
+            http.onreadystatechange = function() {
+                if (this.readyState == this.DONE) {
+                    if (this.status === 200) {
+                        fileSize = this.getResponseHeader('content-length');
+                        console.log('fileSize = ' + fileSize);
+                        // ok here is the only place in the code where we have our request result and file size ...
+                        // the problem is that here we are in the middle of anonymous function nested into another function and it does not look pretty
+                    }
+                }
+            };
+            http.send(); // it will submit request and jump to the next line immediately, without even waiting for request result b/c we used ASYNC XHR call
+            return ('At this moment, we do not even have Request Results b/c we used ASYNC call to follow with stupid JavaScript patterns');
         };
 
     },

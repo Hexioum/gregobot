@@ -39,7 +39,8 @@ module.exports = {
                 mangaInfo(book);
             })
             .catch(err => {
-                console.error(err)
+                console.error(err);
+                return message.channel.send(`puta... intenta mas rato`);
             });
 		}
         return;

@@ -1,7 +1,9 @@
 const fs = require("fs");
+const axios = require('axios');
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
+const sharp = require('sharp');
 const { ImgurClient } = require('imgur');
 client = new ImgurClient({
 	username: process.env.IMGUR_USERNAME,
@@ -35,11 +37,10 @@ const helpEmbed = new Discord.MessageEmbed()
 	.setTimestamp()
 	.setFooter('gregobot® 2021');
 
-var Jimp = require('jimp');
 module.exports = {
 	name: 'tarjeta',
 	aliases: ['card','mudacrop'],
-	description: 'Gregorio te ayuda a cortar imágenes para su bot favorito.',
+	description: 'Gregorio te ayuda a cortar imágenes para su bot favorito (Usando Sharp).',
 	args: true,
 	usage: 'Alineación (numpad), Marco, Ángulo',
 	execute(message, args) {
@@ -54,11 +55,13 @@ module.exports = {
 			return message.channel.send(helpEmbed);
 		}
 		console.log(backgrounds);
+		let theImage = "PIC1.PNG";
 		var alignX = 0;
 		var alignY = 0;
 		let member = message.author
 		let random = Math.floor(Math.random()*100000000);
 		var url1 = "https://i.imgur.com/Fr6MFsI.png";
+		var outputBuffer = "PIC1.PNG"
 
 		//	Check args and fill invalid values with something else.
 		if ((typeof args[3] === 'undefined')||(isNaN(args[3]))) {
@@ -122,73 +125,100 @@ module.exports = {
 		}
 		
 		async function imgResize () {
+			const imageResponse = await axios({url: url1, responseType: 'arraybuffer'})
+			theImage = Buffer.from(imageResponse.data, 'binary');
+			let cBorder = `./mdcards/card_ol${args[1]}.png`;
 			var crdAlign = args[2]
 			var rotAngle = args[3]
-			let fOutput = `card_${random}.png`
+			let alignment = [
+				"centre",
+				"southwest",
+				"south",
+				"southeast",
+				"west",
+				"centre",
+				"east",
+				"northwest",
+				"north",
+				"northeast"
+			]
 			if (crdAlign > 0) {
-				await Jimp.read(url1)
-				.then(imgEdit => {
-					return imgEdit
-						.rotate(Number(rotAngle),false)			// set angle
-						.cover(450,700)	// resize
-						.write(fOutput)	// save
-					})
-					.then(() => {
+				if ((args[2] === '8')||(args[2] === '5')||(args[2] === '2')) {
+					alignX = 113;
+				};
+				if ((args[2] === '9')||(args[2] === '6')||(args[2] === '3')) {
+					alignX = 225;
+				};
+				if ((args[2] === '4')||(args[2] === '5')||(args[2] === '6')) {
+					alignY = 175;
+				};
+				if ((args[2] === '1')||(args[2] === '2')||(args[2] === '3')) {
+					alignY = 350;
+				};
+
+				await sharp(theImage)
+					.png()
+					.rotate(Number(rotAngle))
+					.resize(450,700)
+					.composite([{ input: cBorder, gravity: alignment[Number(args[2])] }])
+					.extract({ left: alignX, top: alignY, width: 225, height: 350 })
+					.toBuffer()
+					.then(function(outputBuffer) {
 						console.log(`Generando carta para ${member.username}, con alineación ${args[2]} y una rotación de ${args[3]} grados.`)
-						if ((args[2] === '8')||(args[2] === '5')||(args[2] === '2')) {
-							alignX = -113;
-						};
-						if ((args[2] === '9')||(args[2] === '6')||(args[2] === '3')) {
-							alignX = -225;
-						};
-						if ((args[2] === '4')||(args[2] === '5')||(args[2] === '6')) {
-							alignY = -175;
-						};
-						if ((args[2] === '1')||(args[2] === '2')||(args[2] === '3')) {
-							alignY = -350;
-						};
-						cardMaker();
+						cardMaker(outputBuffer);
 					})
 					.catch(err => {
 						message.channel.stopTyping(true);
-						return console.error(err);
+						return console.error(`Alignbruh\n`+`*${err}*`);
 					});
 				}
 			else {
-				await Jimp.read(url1)
-				.then(imgEdit => {
-					return imgEdit
-						.rotate(Number(rotAngle),false)			// set angle
-						.cover(225,350)	// resize
-						.write(fOutput)	// save
-					})
-					.then(() => {
+				await sharp(theImage)
+					.png()
+					.rotate(Number(rotAngle))	// set angle
+					.resize(225,350)
+					.composite([{ input: cBorder, gravity: alignment['north'] }])
+					.toBuffer()
+					.then(function(outputBuffer) {
 						console.log(`Generando carta para ${member.username}, con alineación ${args[2]} y una rotación de ${args[3]} grados.`)
-						cardMaker();
+						cardMaker(outputBuffer);
 					})
 					.catch(err => {
 						message.channel.stopTyping(true);
-						return console.error(`Deg = ${rotAngle}\n`+err);
+						message.channel.send(`ta en webp esta wea??\n`+err);
+						return console.error(`Bruh\n`+`*${err}*`);
 					});
 			};
 		}
-		async function cardMaker () {
-			const fOutput = `card_${random}.png`
+		async function cardMaker (x) {
 			console.log(`El fondo sería: bg_${args[0]}.png`);
-			let cBorder = `./mdcards/card_ol${args[1]}.png`
-			let chInput = await Jimp.read(fOutput)
-			let outline = await Jimp.read(cBorder)
-			await Jimp.read(`./mdcards/bgs/bg_${args[0]}.png`)
-			.then(imgCard => {
-				return imgCard
-					.cover(225,350)			// resize
-					.composite(chInput,Number(alignX),Number(alignY))	// composites another Jimp image over this image at X,Y
-					.composite(outline,0,0)
-					.write(fOutput)			// save
+			let alignment = [
+				"centre",
+				"southwest",
+				"south",
+				"southeast",
+				"west",
+				"centre",
+				"east",
+				"northwest",
+				"north",
+				"northeast"
+			]
+			await sharp(`./mdcards/bgs/bg_${args[0]}.png`)
+					.composite([{ input: x, gravity: alignment[Number(args[2])] }])
+					.png()
+					.toBuffer()
+					.then(function(outputBuffer) {
+					console.log(`Generando carta para ${member.username}, marco ${args[1]} y alineación ${alignment[Number(args[2])]}.`);
+					message.channel.stopTyping(true);
+					message.channel.send(`<@${member.id}> toma amigo :))))))))`, { files: [outputBuffer] })
+					.then((message) => deleteMessage(message))
+					.catch(err => {
+						message.channel.send(`estoy hecho mierda <@${member.id}>`)
+						message.channel.stopTyping(true)
+						console.error(err)
+					})
 				})
-				.then(() => console.log(`Generando carta para ${member.username}, marco ${args[1]} y alineación X${alignX} e Y${alignY}.`))
-				.then(() => message.channel.send(`<@${member.id}> toma amigo :))))))))`, { files: [fOutput] }))
-				.then((message) => deleteMessage(message))
 				.catch(err => {
 					message.channel.send(`no puedo <@${member.id}>`)
 					message.channel.stopTyping(true)
@@ -226,19 +256,18 @@ module.exports = {
                 time: 30000
             })
             .then(collected => collected.first() && collected.first().emoji.name)
+			.then(() => message.reactions.removeAll())
 			.catch(err => console.log("Oh: "+err));
 		}
 
 		async function deleteMessage(message) {
 			const emoji = await emojiMessage(message, ["🗑️", "📤"]);
-			await cardClear();
+		//	await cardClear();
 			console.log("Terminando react detection.")
-
 			if (emoji === "🗑️") {
 				console.log("It's rewind time.")
 				if (message.deletable == true) {
-					console.log("Se puede borrar el mensaje")
-					console.log("Borrando...")
+					console.log("Borrando el mensaje.")
 					message.delete()
 				}
 				if (!message.deletable == false) {
@@ -248,8 +277,8 @@ module.exports = {
 				message.channel.send(`intentando subir a imgur`);
 				console.log("OK. Intentando subir.");
 				try {
-					message.reactions.removeAll();
-					cardUpload();
+					return message.reactions.removeAll();
+				//	cardUpload();
 				} catch(err) {
 						console.log("Error al intentar remover los emojis.");
 				};
@@ -262,12 +291,12 @@ module.exports = {
 		async function cardUpload () {
 			//fOutput = `./card_${random}.png`
 			var response = ""
-			console.log(`Iniciando subida de ${fOutput}`);
+			console.log(`Iniciando subida a Imgur...`);
 			try {
 				response = await client.upload(fOutput);
 				console.log(response.link);
 			} catch(err) {
-				message.channel.send(`no pude iniciar sesion 😦`);
+				message.channel.edit(`no pude iniciar sesion 😦`);
 				return console.log("cardUpload: "+err);
 			}
 		}

@@ -4,7 +4,7 @@ let relleno = ["aproximadamente unos", "aprox unos", "como", "creo que unos", "u
 let chamullo = ["lo que viene a ser", "osea", "es decir", "que vendria a ser", "lo que equivale a"]
 module.exports = {
 	name: 'pajas',
-	aliases: ['pallaringas','faps','manuelas','manfinflas','manivelas','coom'],
+	aliases: ['pallaringas','faps','manuelas','manfinflas','manivelas','coom','cum','eyaculaciones'],
 	description: 'Gregorio proporciona el coom worth del canal.',
 //	args: true,
 	usage: 'o grego faps/manuelas/coom',
