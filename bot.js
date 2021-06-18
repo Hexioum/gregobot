@@ -235,8 +235,8 @@ bot.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 22-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*12);
-			let randomComment = Math.floor(Math.random()*3);
+			let randomChance = Math.floor(Math.random()*13);
+			let randomComment = Math.floor(Math.random()*6);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
 				lockComment = 1
@@ -244,7 +244,8 @@ bot.on('ready', function () {
 								`weon un viernes y no hay niun weon?`,
 								`quien un jugo?`,
 								`quien un nosgoth?`,
-								`alguien un nosgoth?`];
+								`alguien un nosgoth?`,
+								`quien apaña un nosgoth?`];
 				day = 5;
 				bot.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
 			/*	try {
