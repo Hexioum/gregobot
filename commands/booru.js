@@ -154,6 +154,8 @@ module.exports = {
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
             if (args[0].toLowerCase().startsWith('zelda')) {
                 args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
+            } else if (args[0].toLowerCase() === 'cp') {
+                args[0] = `loli`
             } else if (args[0].toLowerCase() === 'leche') {
                 args[0] = `lactation`
             } else if (args[0].toLowerCase() === 'rin tohsaka') {
@@ -201,12 +203,15 @@ module.exports = {
             } else if (args[0].toLowerCase() === 'sexo') {
                 args[0] = `sex`;
                 randomPo = 10;
+            } else if (args[0].toLowerCase() === 'porno') {
+                args[0] = `porno_(dohna_dohna)`
             };
             args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
             args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
             args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
+            args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
             console.log(`Buscando ${args[0]}...`);
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));

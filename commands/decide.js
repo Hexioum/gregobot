@@ -32,7 +32,7 @@ setTimeout(function(){
 			message.channel.send('!?!?!?!?!?');
 		}
 		else if (trdMatch === true) {
-			message.channel.send('por ultima vez. SOY YIFFER')
+			message.channel.send('por ultima vez... SOY YIFFER')
 			.catch(() => console.error('Que onda?? No pude responder.'));
 		}
 		else if (args[random] === 'o') {
@@ -86,5 +86,5 @@ setTimeout(function(){
 		//	Removes special symbols.
 		else message.channel.send(args[random].replace(/[^\w\s\xc0-\xff]/gi, ''))
 		return message.channel.stopTyping(true);
-	}, 250);
+	}, 1000);
 }};

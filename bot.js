@@ -34,14 +34,14 @@ const activitiesList = [
     "Warframe",
     "Warframe",
 	"Warframe",
-	"Old School RuneScape",
-	"Old School RuneScape",
     "Spacewar",
     "Spacewar",
+	"Old School RuneScape",
 	"World of Warcraft Classic",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
+	"Guilty Gear -Strive-",
     "Mortal Kombat 11",
 	"DRAGON BALL FighterZ",
 	"Borderlands 2",
@@ -186,6 +186,7 @@ const bannedWords = [
     "jill"
     ]; // Don't ever say them out loud.
 const responseObject = {
+	"$rtu": "¡$rt está disponible!",
 	"grego?": "que wea",
 	"Grego?": "Que wea",
 	"gregO?": "que weA",
@@ -233,9 +234,9 @@ bot.on('ready', function () {
 	var lockComment = 1;//Start locked to prevent spamming if bot restarted
 
 	var jobFri = new CronJob(
-		'34 */6 22-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
+		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*13);
+			let randomChance = Math.floor(Math.random()*14);
 			let randomComment = Math.floor(Math.random()*6);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
@@ -474,7 +475,7 @@ bot.on('message', message => {
 			console.error(error);
 			console.log('No puedo responder.');
 		}
-	} else if (message.content.startsWith(`$rolls`)) {
+	} else if (message.content.startsWith(`$rolls`)||message.content.startsWith(`$rt`)) {
 		try {
 			message.react('✅');
 		} catch (error) {
