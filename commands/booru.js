@@ -178,6 +178,10 @@ module.exports = {
                 args[0] = `xiangling_(genshin_impact)`;
                 poison.push('pubic_hair');
                 randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'klee meao') {
+                args[0] = `klee_(genshin_impact)`;
+                poison.push('urine');
+                randomPo = poison.length-1;
             } else if (args[0].toLowerCase() === 'bache') {
                 args[0] = `bache_(azur_lane)`
             } else if (args[0].toLowerCase() === 'super shorty') {
@@ -215,10 +219,12 @@ module.exports = {
             console.log(`Buscando ${args[0]}...`);
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+/gi ;
+            var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+| grego+| gregorio+/gi ;
             var twoMatch = args.some(e => twoRegex.test(e));
-            var thrRegex = / leche+| milk+| lechita+/gi ;
-            var thrMatch = args.some(e => thrRegex.test(e));
+            var trdRegex = / leche+| milk+| lechita+/gi ;
+            var trdMatch = args.some(e => trdRegex.test(e));
+            var fthRegex = / meao+| pichi+| pichí+/gi ;
+            var fthMatch = args.some(e => fthRegex.test(e));
             if (oneMatch === true) {
                 poison.push('ass');
                 randomPo = poison.length-1;
@@ -227,11 +233,14 @@ module.exports = {
             } else if (twoMatch === true) {
                 randomPo = 10;
                 args[0] = `warframe`;
-            } else if (thrMatch === true) {
+            } else if (trdMatch === true) {
                 poison.push('lactation');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ leche+| milk+| lechita+/gi, '');
-                // Para remover las palabras pero conservar el resto
+            } else if (fthMatch === true) {
+                poison.push('urine');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
             }
         };
 
