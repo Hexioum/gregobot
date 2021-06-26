@@ -212,6 +212,7 @@ module.exports = {
             };
             args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
             args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
+            args[0] = args[0].toLowerCase().replace(/\(fgo\)+/gi, '(fate/grand_order)');
             args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
