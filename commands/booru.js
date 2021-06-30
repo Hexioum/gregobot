@@ -37,7 +37,7 @@ module.exports = {
 	args: true,
 	usage: 'tags',
 	execute(message, args) {
-		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
+		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')||(args[0].length > 34)) {
 			return message.channel.send(helpEmbed);
 		};
 		let member = message.author
@@ -210,6 +210,7 @@ module.exports = {
             } else if (args[0].toLowerCase() === 'porno') {
                 args[0] = `porno_(dohna_dohna)`
             };
+            args[0] = args[0].toLowerCase().replace(/\(ak\)+/gi, '(arknights)');
             args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
             args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
             args[0] = args[0].toLowerCase().replace(/\(fgo\)+/gi, '(fate/grand_order)');
@@ -220,7 +221,7 @@ module.exports = {
             console.log(`Buscando ${args[0]}...`);
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+| grego+| gregorio+/gi ;
+            var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+| gore+| grego+| gregorio+/gi ;
             var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| milk+| lechita+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
