@@ -41,7 +41,7 @@ const activitiesList = [
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
-	"Guilty Gear -Strive-",
+	"GUILTY GEAR -STRIVE-",
     "Mortal Kombat 11",
 	"DRAGON BALL FighterZ",
 	"Borderlands 2",
