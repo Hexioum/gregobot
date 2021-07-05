@@ -283,7 +283,7 @@ module.exports = {
 					"No puedo borrar el mensaje"
 				}
 			} else if (emoji === "📤") {
-				message.edit(`subiendo a imgur *(Puede tardar hasta 20 segundos)*`);
+				message.edit(`subiendo a imgur`);
 				console.log("OK. Intentando subir.");
 				try {
 					message.reactions.removeAll();
@@ -297,33 +297,6 @@ module.exports = {
 				*/
 			}
 		}
-
-		async function cardUploadbeta () {
-			message.channel.messages.fetch().then((messages) => {
-				const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
-				url1 = lastMessage.attachments.first().url;
-				fileType = url1.substring(url1.lastIndexOf('.')+1, url1.length);
-				console.log(url1);
-				console.log("El archivo encontrado es un "+fileType);//gets file type
-				if ((fileType == "mp4")||(fileType == "mov")||(fileType == "avi")||(fileType == "3gp")) {
-					message.channel.send(`no puedo usar un video <@${member.id}>`)
-					return message.channel.stopTyping(true);
-				} else {
-					console.log(`Consiguiendo URL`);
-					try {
-						cardUpload(url1);
-					} catch(err) {
-						message.channel.send(`no pude subirla 😦`);
-						return console.log("cardUpload: "+err);
-					} finally {
-						return message.reactions.removeAll();
-					}
-				};
-			}).catch(err => {
-				console.log("chucha:"+err);
-				return message.channel.stopTyping(true);
-			});
-		}
 			
 		async function cardUpload () {
 			//fOutput = `./card_${random}.png`
@@ -333,7 +306,8 @@ module.exports = {
 			imgur.uploadBase64(finalResult.toString('base64'), albumId).then((json) => {
 				console.log(json.link);
 				message.channel.stopTyping(true);
-				return message.channel.send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${json.link}\`\`\``);
+				return message.channel.send(`<@${member.id}>\n$ai **NOMBRE** $${json.link}`);
+				// .send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${json.link}\`\`\``);
 			}).catch((err) => {
 				message.channel.stopTyping(true);
 				message.channel.send(`no pude subirla 😦`);
