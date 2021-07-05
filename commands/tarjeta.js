@@ -4,12 +4,20 @@ const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const sharp = require('sharp');
-const { ImgurClient } = require('imgur');
-client = new ImgurClient({
+// Imgur Pre V2
+const imgur = require('imgur');
+const clientId = process.env.IMGUR_CLIENTID;
+const albumId = process.env.IMGUR_ALBUMID;
+imgur.setClientId(clientId)
+imgur.setAPIUrl('https://api.imgur.com/3/')
+// Imgur V2
+/*const { ImgurClient } = require('imgur');
+//imgcli = new ImgurClient({ accessToken: process.env.IMGUR_SECRET });
+imgcli = new ImgurClient({
 	username: process.env.IMGUR_USERNAME,
 	password: process.env.IMGUR_PASSWORD,
-	clientId: process.env.IMGUR_CLIENT,
-	});
+	clientId: process.env.IMGUR_CLIENTID,
+  });*/
 const bot = new Discord.Client({ 
 ws: { intents: [
 	'GUILDS',
@@ -30,8 +38,8 @@ const helpEmbed = new Discord.MessageEmbed()
 	.setThumbnail('https://wiki.gbl.gg/images/8/88/Numpad.jpg')
 	.addFields(
 		{ name: 'Uso de el comando', value: 'Todos los valores son opcionales.\n*Ejemplos:*\n`gr mudacrop` Fondo blanco, marco blanco, sin zoom.\n`gr card, 1, 4, 8` Fondo azulado, marco amarillo (Amarillo!), acercamiento hacia arriba.\n`gr tarjeta, 0, 0, 5` Fondo y marco por defecto, acercamiento hacia el centro.' },
-		{ name: 'Fondo', value: '`  0` Blanco\n`  1` Azulado\n`  2` Verde Lima\n`  4` Naranja\n`GFL` GFrontline (gris)\n`KKA` Koikatsu 1\n`KKU` Koikatsu 2\n`UM1` Uma Musume\n`UM2` Uma Musume (Hall)\n`PAT` Patronato\n`WXP` WinXP Bliss', inline: true },
-		{ name: 'Marco', value: '0) Blanco (Default)\n1) Negro\n2) Rojo\n3) Naranja\n4) Amarillo Amarillo\n5) Verde Radioactivo\n6) Celestito\n7) Azul\n8) Morita\n9) Gamer', inline: true },
+		{ name: 'Fondo', value: '`  0` Blanco\n`  1` Negro\n`  2` Azulado\n`  3` Verde Lima\n`  4` Amarillo\n`  5` Naranja\n`  6` Rojo\n`  7` Morado\n`  8` Dorado\n`DGN` Líneas Diagonales\n`GFL` GFrontline (gris)\n`KKA` Koikatsu 1\n`KKU` Koikatsu 2\n`PAT` Patronato\n`UM1` Uma Musume\n`UM2` Uma Musume (Hall)\n`WXP` WinXP Bliss', inline: true },
+		{ name: 'Marco', value: '0) Blanco (Default)\n1) Negro\n2) Rojo\n3) Naranja\n4) Amarillo 2077\n5) Verde Radioactivo\n6) Celestito\n7) Azul\n8) Morita\n9) Gamer', inline: true },
 	)
 	.addField('Acercamiento', '`7 8 9`\n`4 5 6`\n`1 2 3`\n0 = Sin Zoom (Por defecto)', true)
 	.setTimestamp()
@@ -59,9 +67,9 @@ module.exports = {
 		var alignX = 0;
 		var alignY = 0;
 		let member = message.author
-		let random = Math.floor(Math.random()*100000000);
+		const random = Math.floor(Math.random()*1000000000000);
 		var url1 = "https://i.imgur.com/Fr6MFsI.png";
-		var outputBuffer = "PIC1.PNG"
+		var finalResult;
 
 		//	Check args and fill invalid values with something else.
 		if ((typeof args[3] === 'undefined')||(isNaN(args[3]))) {
@@ -157,7 +165,7 @@ module.exports = {
 				};
 
 				await sharp(theImage)
-					.png()
+					.png()//.jpeg({ mozjpeg: true })
 					.rotate(Number(rotAngle))
 					.resize(450,700)
 					.composite([{ input: cBorder, gravity: alignment[Number(args[2])] }])
@@ -211,8 +219,9 @@ module.exports = {
 					.then(function(outputBuffer) {
 					console.log(`Generando carta para ${member.username}, marco ${args[1]} y alineación ${alignment[Number(args[2])]}.`);
 					message.channel.stopTyping(true);
+					finalResult = outputBuffer;
 					message.channel.send(`<@${member.id}> toma amigo :))))))))`, { files: [outputBuffer] })
-					.then((message) => deleteMessage(message))
+					.then((message) => deleteMessage(message, outputBuffer))
 					.catch(err => {
 						message.channel.send(`estoy hecho mierda <@${member.id}>`)
 						message.channel.stopTyping(true)
@@ -248,6 +257,7 @@ module.exports = {
 		async function emojiMessage(message, validReactions) {
             for (const reaction of validReactions) await message.react(reaction);
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && (!user.bot)
+		console.log(`user: ${message.author.username}`);
 		message.channel.stopTyping(true);
 
         return message
@@ -256,7 +266,6 @@ module.exports = {
                 time: 30000
             })
             .then(collected => collected.first() && collected.first().emoji.name)
-			.then(() => message.reactions.removeAll())
 			.catch(err => console.log("Oh: "+err));
 		}
 
@@ -274,11 +283,12 @@ module.exports = {
 					"No puedo borrar el mensaje"
 				}
 			} else if (emoji === "📤") {
-				message.channel.send(`intentando subir a imgur`);
+				message.edit(`subiendo a imgur *(Puede tardar hasta 20 segundos)*`);
 				console.log("OK. Intentando subir.");
 				try {
-					return message.reactions.removeAll();
-				//	cardUpload();
+					message.reactions.removeAll();
+					//hay que convertir el buffer de finalResult a base64
+					await cardUpload(finalResult);
 				} catch(err) {
 						console.log("Error al intentar remover los emojis.");
 				};
@@ -287,18 +297,65 @@ module.exports = {
 				*/
 			}
 		}
+
+		async function cardUploadbeta () {
+			message.channel.messages.fetch().then((messages) => {
+				const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
+				url1 = lastMessage.attachments.first().url;
+				fileType = url1.substring(url1.lastIndexOf('.')+1, url1.length);
+				console.log(url1);
+				console.log("El archivo encontrado es un "+fileType);//gets file type
+				if ((fileType == "mp4")||(fileType == "mov")||(fileType == "avi")||(fileType == "3gp")) {
+					message.channel.send(`no puedo usar un video <@${member.id}>`)
+					return message.channel.stopTyping(true);
+				} else {
+					console.log(`Consiguiendo URL`);
+					try {
+						cardUpload(url1);
+					} catch(err) {
+						message.channel.send(`no pude subirla 😦`);
+						return console.log("cardUpload: "+err);
+					} finally {
+						return message.reactions.removeAll();
+					}
+				};
+			}).catch(err => {
+				console.log("chucha:"+err);
+				return message.channel.stopTyping(true);
+			});
+		}
 			
 		async function cardUpload () {
 			//fOutput = `./card_${random}.png`
-			var response = ""
-			console.log(`Iniciando subida a Imgur...`);
-			try {
-				response = await client.upload(fOutput);
-				console.log(response.link);
-			} catch(err) {
-				message.channel.edit(`no pude iniciar sesion 😦`);
+			message.channel.startTyping();
+			console.log(`Iniciando subida a Imgur...\nArchivo: ${finalResult.toString('base64').substring(0,64)}`);
+			imgur.setCredentials(process.env.IMGUR_USERNAME, process.env.IMGUR_PASSWORD, process.env.IMGUR_CLIENTID);
+			imgur.uploadBase64(finalResult.toString('base64'), albumId).then((json) => {
+				console.log(json.link);
+				message.channel.stopTyping(true);
+				return message.channel.send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${json.link}\`\`\``);
+			}).catch((err) => {
+				message.channel.stopTyping(true);
+				message.channel.send(`no pude subirla 😦`);
 				return console.log("cardUpload: "+err);
-			}
+			});
+			
+			/*try {
+				//imgcli.on('uploadProgress', (progress) => console.log(progress));
+				const response = await imgcli.upload({
+					image: `${finalResult.toString('base64')}`,
+					album: 'xf1t75w',
+					type: 'base64',
+					title: 'Mudacrop',
+					description: `Requested by ${message.author.username}`,
+				});
+				console.log(response.data.link);
+				message.channel.send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${response.data.link}\`\`\``)
+			} catch(err) {
+				//message.react(`⚠`);
+				message.channel.send(`no pude subirla 😦`);
+				return console.log("cardUpload: "+err);
+			}*/
 		}
 	},
 };

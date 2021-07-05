@@ -37,10 +37,13 @@ module.exports = {
 	args: true,
 	usage: 'tags',
 	execute(message, args) {
-		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')||(args[0].length > 34)) {
+		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
 			return message.channel.send(helpEmbed);
 		};
 		let member = message.author
+        let usos = db.get(`booru_cd.${message.author.id}`)
+        const date = new Date(); // for reference, PST is UTC-8
+        var minutos = date.getMinutes();
         let retries = 0
         let nameIsflipped = false
 		let random = Math.floor(Math.random() * 2);
@@ -77,8 +80,8 @@ module.exports = {
         ];
         
         if ((typeof args[0] !== 'undefined')) {
-            if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))) {
-                return message.channel.send('andate a la mierda nacho');
+            if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 34)) {
+                return message.channel.send('meh');
             } else {
                 tagsFix(args[0]);    
                 var gisOptions = {
@@ -99,8 +102,13 @@ module.exports = {
 			return message.channel.send('en <#441386860300730378> si');
         } else {
             shuffle(boorus);
-            boorus.push("paheal"); // Add rule34 at the end of the array
-            startBooru();
+            boorus.push("paheal");                      // Add rule34 at the end of the array
+			db.add(`booru_cd.${message.author.id}`, 1); // Adds one to the counter of the user
+            if (Number(usos) < 2) {
+                startBooru();
+            } else {
+                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 2 usos cada 2 horas (la hora punta). **${60-minutos}** min restante(s).`);
+            };
         };
 
         function shuffle(array) {
@@ -149,7 +157,7 @@ module.exports = {
         }
 
         async function tagsFix() {
-		    if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('chancho qlo ojala te salga un tumor');
+		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
             if (args[0].toLowerCase().startsWith('m4_sop')) return message.channel.send('no');
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
             if (args[0].toLowerCase().startsWith('zelda')) {
