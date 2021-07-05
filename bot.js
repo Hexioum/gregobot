@@ -25,6 +25,7 @@ ws: { intents: [
 });
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
+const cooldowns = new Map();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
@@ -271,6 +272,17 @@ bot.on('ready', function () {
 		'America/Santiago'
 	);
 
+	var resetCd = new CronJob(
+		'0 0 */2 * * *',//“Every 2 hours”
+		function() {
+			db.delete(`booru_cd`);
+			console.log('Se ha reiniciado el cooldown.');
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
@@ -335,8 +347,8 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 		setTimeout(function(){
 		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ||(newMember.nickname.toLowerCase().startsWith('sp'))) {
 				console.log('Intentando renombrar usuario...');
-				oldMember.setNickname('Don Comedia', ['Bad words.'])
-					.then(() => console.log('Se ha renombrado a Don Comedia'))
+				oldMember.setNickname('Furro', ['Bad words.'])
+					.then(() => console.log('Se ha renombrado a alguien.'))
 					.catch(console.error);
 		};
 		}, 250);
@@ -669,6 +681,19 @@ bot.on('message', message => {
     //True if the url is not a gif image.
     return url.indexOf("gif", url.length - "gif".length /*or 3*/) == -1;
 	}
+/*
+    //If cooldowns map doesn't have a command.name key then create one.
+    if(!cooldowns.has(command.name)){
+        cooldowns.set(command.name, new Discord.Collection());
+    }
+    const current_time = Date.now();
+    const time_stamps = cooldowns.get(command.name);
+    const cooldown_amount = (command.cooldown) * 1000;
+    //If the author's id is not in time_stamps then add them with the current time.
+    time_stamps.set(message.author.id, current_time);
+    //Delete the user's id once the cooldown is over.
+    setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
+*/
 	try {
 		command.execute(message, args);
 	} catch (error) {
