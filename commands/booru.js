@@ -3,8 +3,6 @@ const axios = require('axios');
 var gis = require('g-i-s');
 const db = require('quick.db');
 const Discord = require('discord.js');
-/*var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var xhr = new XMLHttpRequest();*/
 const sharp = require('sharp');
 const client = new Discord.Client({ 
     ws: { intents: [
@@ -26,13 +24,13 @@ const helpEmbed = new Discord.MessageEmbed()
 	.addFields(
 		{ name: 'Uso del comando', value: '**Ejemplo**: `Grego sacate uno`\nDa una imagen aleatoria buscando en 5 sitios booru distintos.\n\nSe puede especificar el personaje a buscar.\n**Ejemplo**: `gr postea, zelda`\n\nSi no se encuentra, intentar buscar con nombres de serie en paréntesis.\n**Ejemplo**: `gr aporta, type 95 (gfl)`\nO si es un nombre y apellido, intercambiarlos.\n**Ejemplo**: `gr busca, sakurai momoka`' }
 	)
-	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, dame, postea, sacate uno, skt1', false)
+	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, postea, sacate uno, skt1', false)
 	.setTimestamp()
 	.setFooter('gregobot® 2021');
     
 module.exports = {
 	name: 'booru',
-	aliases: ['aporta','busca','busqueda','colabora','comparte','dame','postea','sacate uno','skt1'],
+	aliases: ['aporta','busca','busqueda','colabora','comparte','postea','sacate uno','skt1'],
 	description: 'Gregorio busca imágenes en distintas boorus por tí',
 	args: true,
 	usage: 'tags',
@@ -41,7 +39,8 @@ module.exports = {
 			return message.channel.send(helpEmbed);
 		};
 		let member = message.author
-        let usos = db.get(`booru_cd.${message.author.id}`)
+        var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
+        //db.add(`booru_cd.${message.author.id}`, 1);
         const date = new Date(); // for reference, PST is UTC-8
         var minutos = date.getMinutes();
         let retries = 0
@@ -92,19 +91,22 @@ module.exports = {
                         'hentai-img.com',
                         'thatpervert.com',
                         'sh-cdn.com',
+                        'preview.redd.it',
+                        'external-preview.redd.it',
                         'hentaifox.com'
                     ]
                 };
             };
         };
-
+        
+        console.log(db.get(`booru_cd.${member.id}.rolls`));
+        
 		if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
 			return message.channel.send('en <#441386860300730378> si');
         } else {
             shuffle(boorus);
             boorus.push("paheal");                      // Add rule34 at the end of the array
-			db.add(`booru_cd.${message.author.id}`, 1); // Adds one to the counter of the user
-            if (Number(usos) < 2) {
+            if (db.get(`booru_cd.${member.id}.rolls`) < 3) {
                 startBooru();
             } else {
                 message.channel.send(`**${message.author.username}**, la ruleta está limitada a 2 usos cada 2 horas (la hora punta). **${60-minutos}** min restante(s).`);
