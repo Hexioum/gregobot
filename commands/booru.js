@@ -4,15 +4,6 @@ var gis = require('g-i-s');
 const db = require('quick.db');
 const Discord = require('discord.js');
 const sharp = require('sharp');
-const client = new Discord.Client({ 
-    ws: { intents: [
-        'GUILDS',
-        'GUILD_PRESENCES',
-        'GUILD_MEMBERS',
-        'GUILD_MESSAGES',
-        'GUILD_MESSAGE_REACTIONS'] }
-    });
-client.commands = new Discord.Collection();
 
 const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#00B0F4')
