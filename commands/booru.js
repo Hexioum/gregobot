@@ -4,15 +4,6 @@ var gis = require('g-i-s');
 const db = require('quick.db');
 const Discord = require('discord.js');
 const sharp = require('sharp');
-/*const client = new Discord.Client({ 
-    ws: { intents: [
-        'GUILDS',
-        'GUILD_PRESENCES',
-        'GUILD_MEMBERS',
-        'GUILD_MESSAGES',
-        'GUILD_MESSAGE_REACTIONS'] }
-    });*/
-//client.commands = new Discord.Collection();
 
 const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#00B0F4')
@@ -27,6 +18,47 @@ const helpEmbed = new Discord.MessageEmbed()
 	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, postea, sacate uno, skt1', false)
 	.setTimestamp()
 	.setFooter('gregobot® 2021');
+
+const gflChars = [
+    "43m", "6p62", "9a-91",
+    "a-91", "aa-12", "aat-52", "ads", "aek-999", "ak-12", "ak-15", "ak-47", "ak-74u", "ak-alfa",
+    "ameli", "an94", "ar70", "art556", "arx-160", "as val", "ash-12.7", "astra", "aug",
+    "ballista", "bren ten", "bren",
+    "c-93", "c-ms", "c96", "carcano m1891", "carcano m91/38", "caws", "cf05",
+    "contender", "cr-21", "cz-52", "cz-805", "cz2000", "cz75",
+    "dp-12", "dp28", "dsr-50",
+    "em-2", "evo 3",
+    "f1", "f2000", "fal", "falcon", "famas", "fg42", "five-seven",
+    "fmg-9", "fnc", "fnp9", "fp-6",
+    "g11", "g17", "g28", "g3", "g36", "g36c", "g41", "g43",
+    "galil", "gepard m1", "gr hk45", "grizzly", "gsh-18",
+    "hk33", "hk416", "hmg21", "honey badger", "howa 89", "hp-35", "hs2000",
+    "idw", "ingram", "ithaca m37", "iws-2000", "jericho", "js 9", "js05",
+    "k11", "k2", "k3", "k31", "k5", "kac-pdw", "kar98k", "klin", "ks-23", "ksg", "ksvk",
+    "l85a1", "lee-enfield", "lewis gun", "liberator", "lwmmg",
+    "m1 garand", "m1014", "m12", "m14", "m16a1", "m1887", "m1895 cb", "m1895", "m1897", "m1911", "m1918 bar", "m1919a4", "m1a1",
+    "m200", "m21", "m249 saw", "m2hb", "m3", "m38", "m45", "m4a1", "m500", "m590", "m60",
+    "m82", "m82a1", "m870", "m9", "m950a", "m99", "magal", "makarov", "mdr",
+    "mg23", "mg3", "mg34", "mg36", "mg4", "mg42", "mg5", "micro uzi", "mk 12", "mk23", "mk46", "mk48",
+    "model l", "mosin-nagant", "mp-443", "mp-446", "mp-448", "mp40", "mp5", "mp7", "mt-9", "mz75",
+    "negev", "ns2000", "ntw-20",
+    "ots-12", "ots-14", "ots-39", "ots-44",
+    "p08", "p22", "p226", "p30", "p38", "p7", "p90", "p99", "pa-15", "pk", "pkp",
+    "pp-19", "pp-19-01", "pp-2000", "pp-90", "ppk", "pps-41", "ppsh-41", "psg-1", "psm", "ptrd", "px4 storm", "python", "pzb39",
+    "qjy-88",
+    "r5", "r93", "rfb", "ribeyrolles", "rmb-93", "ro635", "rpd", "rpk-16", "rt-20", "s.a.t.8", "saa", "saf", "saiga-12", "sar-21",
+    "scw", "scarecrow", "serdyukov", "shipka", "sig-510", "sig-556", "six12", "skorpion", "sks", "sl8",
+    "spas-12", "spectre-m4", "spitfire", "spp-1", "spr a3g", "springfield", "sr-3mp", "srs", "ssg 69",
+    "st ar-15", "stechkin", "sten mkii", "steyr scout", "stg44", "suomi", "super sass", "super-shorty",
+    "sv-98", "svd", "svt-38", "t-5000", "t-cms", "t65", "t77", "t91", "tabuk", "tac-50", "tar-21", "tec-9",
+    "thompson", "thunder", "tmp", "tokarev", "type 56-1", "type 56r", "type 59", "type 62", "type 63", "type 64",
+    "type 79", "type 80", "type 81", "type 88", "type 95", "type 92", "type 97", "type 97 shotgun", "type 100",
+    "ukm-2000", "ump40", "ump45", "ump9", "usas-12", "usp compact",
+    "vector", "vm59",
+    "wa2000", "webley", "welrod mk2", "welrod mkii", "wz.29",
+    "x95", "xm3", "xm8",
+    "z-62", "zas m21", "zas m76", "zb-26"
+]
     
 module.exports = {
 	name: 'booru',
@@ -196,18 +228,12 @@ module.exports = {
                 args[0] = `bache_(azur_lane)`
             } else if (args[0].toLowerCase() === 'super shorty') {
                 args[0] = `super_shorty_(girls_frontline)`
-            } else if ((args[0].toLowerCase() === 'aa-12')||(args[0].toLowerCase() === 'aa12')) {
-                args[0] = `aa-12_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'hk416') {
-                args[0] = `hk416_(girls_frontline)`
-            } else if ((args[0].toLowerCase() === 'pa-15')||(args[0].toLowerCase() === 'pa15')) {
-                args[0] = `pa-15_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'calico m950a') {
+                args[0] = `m950a_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'p90') {
                 args[0] = `p90_(girls_frontline)`
             } else if ((args[0].toLowerCase() === 'ro635')||(args[0].toLowerCase() === 'ro')) {
                 args[0] = `ro635_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'ump9') {
-                args[0] = `ump9_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'nyto') {
                 if (random === 0) {
                     args[0] = `nyto_black_(girls_frontline)`
@@ -219,7 +245,10 @@ module.exports = {
                 randomPo = 10;
             } else if (args[0].toLowerCase() === 'porno') {
                 args[0] = `porno_(dohna_dohna)`
+            } else if (gflChars.indexOf(args[0]) > -1) {
+                args[0] = `${args[0]}_(girls_frontline)`
             };
+            args[0] = args[0].toLowerCase().replace(/100%+/gi, '100_percent');
             args[0] = args[0].toLowerCase().replace(/\(ak\)+/gi, '(arknights)');
             args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
             args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
