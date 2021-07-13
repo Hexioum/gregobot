@@ -72,7 +72,6 @@ module.exports = {
 		};
 		let member = message.author
         var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
-        //db.add(`booru_cd.${message.author.id}`, 1);
         const date = new Date(); // for reference, PST is UTC-8
         var minutos = date.getMinutes();
         let retries = 0
@@ -315,7 +314,6 @@ module.exports = {
         };
 
 		async function searchBoorus () {
-        
 
         let cooldown = 300000; // 5 minutes in ms
         let lastSearch = await db.fetch(`grSearch_${message.author.id}`);
