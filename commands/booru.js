@@ -202,6 +202,8 @@ module.exports = {
                 args[0] = `lactation`
             } else if (args[0].toLowerCase() === 'rin tohsaka') {
                 args[0] = `toosaka_rin`
+            } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
+                args[0] = `jujutsu_kaisen`
             } else if (args[0].toLowerCase() === 'misty') {
                 args[0] = `kasumi_(pokemon)`
             } else if (args[0].toLowerCase() === 'lisa') {
@@ -230,8 +232,6 @@ module.exports = {
                 args[0] = `super_shorty_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'calico m950a') {
                 args[0] = `m950a_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'p90') {
-                args[0] = `p90_(girls_frontline)`
             } else if ((args[0].toLowerCase() === 'ro635')||(args[0].toLowerCase() === 'ro')) {
                 args[0] = `ro635_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'nyto') {
