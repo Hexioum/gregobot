@@ -7,14 +7,21 @@ module.exports = {
 	name: 'restart',
 	aliases: ['update','reinicia'],
 	description: 'Gregorio volverá en breve.',
-	args: false,
+	args: true,
 	usage: 'grego reinicia',
-	execute(message) {
+	execute(message, args) {
 //	Check the server owner ID
 	if(message.author.id != "360892991499665408") return message.channel.send("no");
 
     try {
-		db.delete(`booru_cd`);
+		if (args[0] === "booru") {
+			db.delete(`booru_cd`);
+			db.delete(`booruLastfind`);
+		} else if (args[0] === "booru cooldown") {
+			db.delete(`booru_cd`);
+		} else if (args[0] === "booru memory") {
+			db.delete(`booruLastfind`);
+		};
 		message.channel.send("volveré...").then(msg => {
 			setTimeout(function(){
 				msg.edit("toc toc!");

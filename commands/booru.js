@@ -1,6 +1,7 @@
 const Booru = require('booru');
 const axios = require('axios');
 var gis = require('g-i-s');
+var md5 = require('md5');
 const db = require('quick.db');
 const Discord = require('discord.js');
 const sharp = require('sharp');
@@ -41,9 +42,8 @@ const gflChars = [
     "m82", "m82a1", "m870", "m9", "m950a", "m99", "magal", "makarov", "mdr",
     "mg23", "mg3", "mg34", "mg36", "mg4", "mg42", "mg5", "micro uzi", "mk 12", "mk23", "mk46", "mk48",
     "model l", "mosin-nagant", "mp-443", "mp-446", "mp-448", "mp40", "mp5", "mp7", "mt-9", "mz75",
-    "negev", "ns2000", "ntw-20",
-    "ots-12", "ots-14", "ots-39", "ots-44",
-    "p08", "p22", "p226", "p30", "p38", "p7", "p90", "p99", "pa-15", "pk", "pkp",
+    "negev", "ns2000", "ntw-20", "nyto black", "nyto polaroid",
+    "ots-12", "ots-14", "ots-39", "ots-44", "p08", "p22", "p226", "p30", "p38", "p7", "p90", "p99", "pa-15", "pk", "pkp",
     "pp-19", "pp-19-01", "pp-2000", "pp-90", "ppk", "pps-41", "ppsh-41", "psg-1", "psm", "ptrd", "px4 storm", "python", "pzb39",
     "qjy-88",
     "r5", "r93", "rfb", "ribeyrolles", "rmb-93", "ro635", "rpd", "rpk-16", "rt-20", "s.a.t.8", "saa", "saf", "saiga-12", "sar-21",
@@ -53,11 +53,26 @@ const gflChars = [
     "sv-98", "svd", "svt-38", "t-5000", "t-cms", "t65", "t77", "t91", "tabuk", "tac-50", "tar-21", "tec-9",
     "thompson", "thunder", "tmp", "tokarev", "type 56-1", "type 56r", "type 59", "type 62", "type 63", "type 64",
     "type 79", "type 80", "type 81", "type 88", "type 95", "type 92", "type 97", "type 97 shotgun", "type 100",
-    "ukm-2000", "ump40", "ump45", "ump9", "usas-12", "usp compact",
-    "vector", "vm59",
-    "wa2000", "webley", "welrod mk2", "welrod mkii", "wz.29",
-    "x95", "xm3", "xm8",
+    "ukm-2000", "ump40", "ump45", "ump9", "usas-12", "usp compact", "vector", "vm59",
+    "wa2000", "webley", "welrod mk2", "welrod mkii", "wz.29", "x95", "xm3", "xm8",
     "z-62", "zas m21", "zas m76", "zb-26"
+]
+
+const giChars = [
+    "amber", "barbara", "beidou", "cloud retainer", "collei",
+    "diona", "eula", "fischl", "ganyu", "hu tao", "iansan",
+    "jean", "kamisato ayaka", "katheryne", "keqing", "klee",
+    "la signora", "lisa", "lumine", "lynette", "mona",
+    "ningguang", "noelle", "paimon", "qiqi", "rosaria", "sucrose",
+    "vennessa", "xiangling", "xinyan", "yanfei", "yaoyao"
+]
+
+const pkmnChars = [
+    "anzu", "ariana", "atena", "ayumi", "bea", "caitlin", "cattleya", "cynthia",
+    "elaine", "erika", "gloria", "haruka", "hilda", "jessie",
+    "kanna", "karen", "karin", "kasumi", "katorea", "kotone", "kris",
+    "lorelei", "lyra", "may", "mei", "melony", "mizuki", "musashi", "natsume",
+    "olivia", "rurina", "saitou", "selene", "serena", "shirona", "touko"
 ]
     
 module.exports = {
@@ -72,6 +87,7 @@ module.exports = {
 		};
 		let member = message.author
         var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
+        var lastFind = db.get('booruLastfind');
         const date = new Date(); // for reference, PST is UTC-8
         var minutos = date.getMinutes();
         let retries = 0
@@ -92,6 +108,7 @@ module.exports = {
             "ass",
             "breasts",
             "bikini",
+            "cameltoe",
             "censored",
             "nipples",
             "pantsu",
@@ -131,6 +148,7 @@ module.exports = {
         };
         
         console.log(db.get(`booru_cd.${member.id}.rolls`));
+        console.log(`Memory: Is array? ${Array.isArray(lastFind)}\n${lastFind}`);
         
 		if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
 			return message.channel.send('en <#441386860300730378> si');
@@ -205,18 +223,16 @@ module.exports = {
                 args[0] = `jujutsu_kaisen`
             } else if (args[0].toLowerCase() === 'misty') {
                 args[0] = `kasumi_(pokemon)`
-            } else if (args[0].toLowerCase() === 'lisa') {
-                args[0] = `lisa_(genshin_impact)`
-            } else if (args[0].toLowerCase() === 'ganyu') {
-                args[0] = `ganyu_(genshin_impact)`
+            } else if (args[0].toLowerCase() === 'sabrina') {
+                args[0] = `natsume_(pokemon)`
+            } else if (args[0].toLowerCase() === 'whitney') {
+                args[0] = `akane_(pokemon)`
+            } else if (args[0].toLowerCase() === 'nessa') {
+                args[0] = `rurina_(pokemon)`
             } else if (args[0].toLowerCase() === 'ganyu leche') {
                 args[0] = `ganyu_(genshin_impact)`;
                 poison.push('lactation');
                 randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'keqing') {
-                args[0] = `keqing_(genshin_impact)`
-            } else if (args[0].toLowerCase() === 'xiangling') {
-                args[0] = `xiangling_(genshin_impact)`
             } else if (args[0].toLowerCase() === 'xiangling zorra pelua') {
                 args[0] = `xiangling_(genshin_impact)`;
                 poison.push('pubic_hair');
@@ -225,6 +241,8 @@ module.exports = {
                 args[0] = `klee_(genshin_impact)`;
                 poison.push('urine');
                 randomPo = poison.length-1;
+            } else if (giChars.indexOf(args[0]) > -1) {     //FILTER
+                args[0] = `${args[0]}_(genshin_impact)`
             } else if (args[0].toLowerCase() === 'bache') {
                 args[0] = `bache_(azur_lane)`
             } else if (args[0].toLowerCase() === 'super shorty') {
@@ -241,11 +259,13 @@ module.exports = {
                 }
             } else if (args[0].toLowerCase() === 'sexo') {
                 args[0] = `sex`;
-                randomPo = 10;
+                randomPo = 1;
             } else if (args[0].toLowerCase() === 'porno') {
                 args[0] = `porno_(dohna_dohna)`
-            } else if (gflChars.indexOf(args[0]) > -1) {
+            } else if (gflChars.indexOf(args[0]) > -1) {    //FILTER
                 args[0] = `${args[0]}_(girls_frontline)`
+            } else if (pkmnChars.indexOf(args[0]) > -1) {   //FILTER
+                args[0] = `${args[0]}_(pokemon)`
             };
             args[0] = args[0].toLowerCase().replace(/100%+/gi, '100_percent');
             args[0] = args[0].toLowerCase().replace(/\(ak\)+/gi, '(arknights)');
@@ -271,7 +291,7 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/ poto+| culo+| ass+| raja+| posaderas+/gi, '');
                 // Para remover las palabras pero conservar el resto
             } else if (twoMatch === true) {
-                randomPo = 10;
+                //randomPo = 10;
                 args[0] = `warframe`;
             } else if (trdMatch === true) {
                 poison.push('lactation');
@@ -358,7 +378,7 @@ module.exports = {
                 // Check if the character exists
                 let posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
                 
-                if (typeof posts[0] === 'undefined') {
+                if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(posts[0].fileUrl) > -1)) {
                     console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
                     if (nameIsflipped === true || !(args[0].includes("_"))) {
                         var booruRemoved = boorus.shift();  // Removes the first booru if the name was already flipped
@@ -396,6 +416,7 @@ module.exports = {
                                 } else {
                                     console.log("Esta está buena, la envío altiro.");
                                     url = posts[0].fileUrl;
+                                    db.push('booruLastfind', md5(posts[0].fileUrl));
                                     message.channel.send({files: [posts[0].fileUrl]})
                                     .catch(() => imgReduce(url));
                                     esperarRespuesta();
@@ -419,6 +440,7 @@ module.exports = {
                 console.log(JSON.stringify(results, null, '  '));
                 if (results[Number(random)].width > 639) {
                     try {
+                        db.push('booruLastfind', md5(results[Number(random)].url));
                         console.log(`Enviando:\n${results[Number(random)].url}`);
                         message.channel.send({files: [results[Number(random)].url]});
                     } catch {
@@ -434,6 +456,7 @@ module.exports = {
                         gisResults();
                     } else {
                         console.log("Me rindo, no encuentro nada.");
+                        db.subtract(`booru_cd.${member.id}.rolls`, 1);
                         message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                     }
                 };
