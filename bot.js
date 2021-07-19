@@ -392,6 +392,13 @@ bot.on('message', message => {
 					message.channel.send('chancho qlo ojala te salga un tumor');
 					esperarRespuesta();
 				};
+				if (message.content.toLowerCase().includes(`w_arknig`)) {
+					try {
+						return message.delete();
+					} catch(err) {
+						console.log("No pude borrar el mensaje.")
+					}
+				}
 			}
 		};
 		if ((message.attachments.first().name.toLowerCase().startsWith(`screenshot`))||(message.attachments.first().name.toLowerCase().startsWith(`unknown`))) {

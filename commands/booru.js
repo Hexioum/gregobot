@@ -89,6 +89,7 @@ module.exports = {
         var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
         var lastFind = db.get('booruLastfind');
         const date = new Date(); // for reference, PST is UTC-8
+        var hours = date.getHours();
         var minutos = date.getMinutes();
         let retries = 0
         let nameIsflipped = false
@@ -123,11 +124,11 @@ module.exports = {
             "nipples",//thong thursday, japanese_clothes
             "nopan",//animal_ears, thong
             "sex",//demon_girl, succubus, horns
-            "petite"//nun
+            "pantsu"//nun,petite
         ];
         
         if ((typeof args[0] !== 'undefined')) {
-            if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 34)) {
+            if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 32)) {
                 return message.channel.send('meh');
             } else {
                 tagsFix(args[0]);    
@@ -241,7 +242,7 @@ module.exports = {
                 args[0] = `klee_(genshin_impact)`;
                 poison.push('urine');
                 randomPo = poison.length-1;
-            } else if (giChars.indexOf(args[0]) > -1) {     //FILTER
+            } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {     //FILTER
                 args[0] = `${args[0]}_(genshin_impact)`
             } else if (args[0].toLowerCase() === 'bache') {
                 args[0] = `bache_(azur_lane)`
@@ -262,9 +263,11 @@ module.exports = {
                 randomPo = 1;
             } else if (args[0].toLowerCase() === 'porno') {
                 args[0] = `porno_(dohna_dohna)`
-            } else if (gflChars.indexOf(args[0]) > -1) {    //FILTER
+            } else if (args[0].toLowerCase() === 'satanichia') {
+                args[0] = `satanichia_kurumizawa_mcdowell`
+            } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {    //FILTER
                 args[0] = `${args[0]}_(girls_frontline)`
-            } else if (pkmnChars.indexOf(args[0]) > -1) {   //FILTER
+            } else if (pkmnChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
                 args[0] = `${args[0]}_(pokemon)`
             };
             args[0] = args[0].toLowerCase().replace(/100%+/gi, '100_percent');
@@ -274,6 +277,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(fgo\)+/gi, '(fate/grand_order)');
             args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
+            args[0] = args[0].toLowerCase().replace(/\(hi\)+/gi, '(honkai_impact)');
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
             args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
             console.log(`Buscando ${args[0]}...`);
@@ -393,7 +397,7 @@ module.exports = {
                         message.channel.stopTyping(true);
                         esperarRespuesta();
                     } else {
-                        let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true })
+                        let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
                         console.log(`Encontré esto: ${posts[0].fileUrl}\nScore: ${posts[0].score}\nRating: ${posts[0].rating}`);
 
                         if (typeof posts[0] === 'undefined') {
@@ -417,7 +421,7 @@ module.exports = {
                                     console.log("Esta está buena, la envío altiro.");
                                     url = posts[0].fileUrl;
                                     db.push('booruLastfind', md5(posts[0].fileUrl));
-                                    message.channel.send({files: [posts[0].fileUrl]})
+                                    const msg = message.channel.send({files: [posts[0].fileUrl]})
                                     .catch(() => imgReduce(url));
                                     esperarRespuesta();
                                 };
