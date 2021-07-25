@@ -237,7 +237,7 @@ bot.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*14);
+			let randomChance = Math.floor(Math.random()*15);
 			let randomComment = Math.floor(Math.random()*6);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');

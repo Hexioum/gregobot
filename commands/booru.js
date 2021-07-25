@@ -1,5 +1,6 @@
 const Booru = require('booru');
 const axios = require('axios');
+const parser = require('cron-parser');
 var gis = require('g-i-s');
 var md5 = require('md5');
 const db = require('quick.db');
@@ -19,6 +20,55 @@ const helpEmbed = new Discord.MessageEmbed()
 	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, postea, sacate uno, skt1', false)
 	.setTimestamp()
 	.setFooter('gregobot® 2021');
+
+const alChars = [
+    "amagi",
+    "atago",
+    "bache",
+    "baltimore",
+    "belfast",
+    "bismarck",
+    "bremerton",
+    "dido",
+    "enterprise",
+    "essex",
+    "formidable",
+    "illustrious",
+    "honolulu",
+    "kawakaze",
+    "laffey",
+    "sirius",
+    "south dakota",
+    "st. louis",
+    "washington",
+]
+
+const fateChars = [
+    "benienma",
+    "francis drake",
+    "helena blavatsky",
+    "ibaraki douji",
+    "minamoto no raikou",
+    "minamoto no yorimitsu",
+    "nero claudius",
+    "shuten douji",
+    "tamamo no mae"
+]
+
+const fategoChars = [
+    "abigail williams",
+    "cleopatra",
+    "kiyohime",
+    "mashu",
+    "mata hari",
+    "miyamoto musashi",
+    "nitocris",
+    "tiamat"
+]
+
+const fateexChars = [
+    "alice", "caster", "nursery rhyme"
+]
 
 const gflChars = [
     "43m", "6p62", "9a-91",
@@ -42,7 +92,7 @@ const gflChars = [
     "m82", "m82a1", "m870", "m9", "m950a", "m99", "magal", "makarov", "mdr",
     "mg23", "mg3", "mg34", "mg36", "mg4", "mg42", "mg5", "micro uzi", "mk 12", "mk23", "mk46", "mk48",
     "model l", "mosin-nagant", "mp-443", "mp-446", "mp-448", "mp40", "mp5", "mp7", "mt-9", "mz75",
-    "negev", "ns2000", "ntw-20", "nyto black", "nyto polaroid",
+    "negev", "ns2000", "ntw-20", "nyto black", "nyto mercurows", "nyto nimogen", "nyto polaroid",
     "ots-12", "ots-14", "ots-39", "ots-44", "p08", "p22", "p226", "p30", "p38", "p7", "p90", "p99", "pa-15", "pk", "pkp",
     "pp-19", "pp-19-01", "pp-2000", "pp-90", "ppk", "pps-41", "ppsh-41", "psg-1", "psm", "ptrd", "px4 storm", "python", "pzb39",
     "qjy-88",
@@ -89,8 +139,35 @@ module.exports = {
         var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
         var lastFind = db.get('booruLastfind');
         const date = new Date(); // for reference, PST is UTC-8
-        var hours = date.getHours();
-        var minutos = date.getMinutes();
+        var hours = "";
+        var minutes = "";
+
+        var cnOptions = {
+            currentDate: date,
+            tz: 'America/Santiago'
+        };
+        const cronExpression = '0 0 */2 * * *';
+        
+        try {
+        const interval = parser.parseExpression(cronExpression, cnOptions);
+        const dateDiff = interval.next(); // Date:  01:00:00 GMT+0200
+        difference = ddMinutes(dateDiff, date);
+        hours = `${Math.floor(difference/60)}h `;
+        minutes = `${difference%60}`;
+        if (hours === '0h') {
+            console.log("Menos de una hora restante");
+            hours = ""
+        }
+        } catch (err) {
+        console.log('Error: '+err.message);
+        }
+
+        function ddMinutes(dateDiff, date) {
+        var difference =(dateDiff.getTime() - date.getTime()) / 1000;
+        difference /= 60;
+        return Math.abs(Math.round(difference));
+        }
+
         let retries = 0
         let nameIsflipped = false
 		let random = Math.floor(Math.random() * 2);
@@ -149,7 +226,7 @@ module.exports = {
         };
         
         console.log(db.get(`booru_cd.${member.id}.rolls`));
-        console.log(`Memory: Is array? ${Array.isArray(lastFind)}\n${lastFind}`);
+        console.log(`Memory: ${lastFind.length}`);
         
 		if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
 			return message.channel.send('en <#441386860300730378> si');
@@ -159,7 +236,8 @@ module.exports = {
             if (db.get(`booru_cd.${member.id}.rolls`) < 3) {
                 startBooru();
             } else {
-                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 2 usos cada 2 horas (la hora punta). **${60-minutos}** min restante(s).`);
+                difference = hours+minutes;
+                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 2 usos cada 2 horas (la hora punta). **${difference}** min restante(s).`);
             };
         };
 
@@ -212,75 +290,7 @@ module.exports = {
 		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
             if (args[0].toLowerCase().startsWith('m4_sop')) return message.channel.send('no');
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
-            if (args[0].toLowerCase().startsWith('zelda')) {
-                args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
-            } else if (args[0].toLowerCase() === 'cp') {
-                args[0] = `loli`
-            } else if (args[0].toLowerCase() === 'leche') {
-                args[0] = `lactation`
-            } else if (args[0].toLowerCase() === 'rin tohsaka') {
-                args[0] = `toosaka_rin`
-            } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
-                args[0] = `jujutsu_kaisen`
-            } else if (args[0].toLowerCase() === 'misty') {
-                args[0] = `kasumi_(pokemon)`
-            } else if (args[0].toLowerCase() === 'sabrina') {
-                args[0] = `natsume_(pokemon)`
-            } else if (args[0].toLowerCase() === 'whitney') {
-                args[0] = `akane_(pokemon)`
-            } else if (args[0].toLowerCase() === 'nessa') {
-                args[0] = `rurina_(pokemon)`
-            } else if (args[0].toLowerCase() === 'ganyu leche') {
-                args[0] = `ganyu_(genshin_impact)`;
-                poison.push('lactation');
-                randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'xiangling zorra pelua') {
-                args[0] = `xiangling_(genshin_impact)`;
-                poison.push('pubic_hair');
-                randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'klee meao') {
-                args[0] = `klee_(genshin_impact)`;
-                poison.push('urine');
-                randomPo = poison.length-1;
-            } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {     //FILTER
-                args[0] = `${args[0]}_(genshin_impact)`
-            } else if (args[0].toLowerCase() === 'bache') {
-                args[0] = `bache_(azur_lane)`
-            } else if (args[0].toLowerCase() === 'super shorty') {
-                args[0] = `super_shorty_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'calico m950a') {
-                args[0] = `m950a_(girls_frontline)`
-            } else if ((args[0].toLowerCase() === 'ro635')||(args[0].toLowerCase() === 'ro')) {
-                args[0] = `ro635_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'nyto') {
-                if (random === 0) {
-                    args[0] = `nyto_black_(girls_frontline)`
-                } else {
-                    args[0] = `nyto_polarday_(girls_frontline)`
-                }
-            } else if (args[0].toLowerCase() === 'sexo') {
-                args[0] = `sex`;
-                randomPo = 1;
-            } else if (args[0].toLowerCase() === 'porno') {
-                args[0] = `porno_(dohna_dohna)`
-            } else if (args[0].toLowerCase() === 'satanichia') {
-                args[0] = `satanichia_kurumizawa_mcdowell`
-            } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {    //FILTER
-                args[0] = `${args[0]}_(girls_frontline)`
-            } else if (pkmnChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
-                args[0] = `${args[0]}_(pokemon)`
-            };
-            args[0] = args[0].toLowerCase().replace(/100%+/gi, '100_percent');
-            args[0] = args[0].toLowerCase().replace(/\(ak\)+/gi, '(arknights)');
-            args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
-            args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
-            args[0] = args[0].toLowerCase().replace(/\(fgo\)+/gi, '(fate/grand_order)');
-            args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
-            args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
-            args[0] = args[0].toLowerCase().replace(/\(hi\)+/gi, '(honkai_impact)');
-            args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
-            args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
-            console.log(`Buscando ${args[0]}...`);
+
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
             var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+| gore+| grego+| gregorio+/gi ;
@@ -306,6 +316,92 @@ module.exports = {
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
             }
+
+            if (args[0].toLowerCase().startsWith('zelda')) {
+                args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
+            } else if ((args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cunny')) {
+                args[0] = `loli`
+            } else if (args[0].toLowerCase() === 'leche') {
+                args[0] = `lactation`
+            } else if (args[0].toLowerCase() === 'rin tohsaka') {
+                args[0] = `toosaka_rin`
+            } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
+                args[0] = `jujutsu_kaisen`
+            } else if ((args[0].toLowerCase() === 'mash')||(args[0].toLowerCase() === 'mashu')) {
+                args[0] = `mash_kyrielight`
+            } else if (args[0].toLowerCase() === 'beni-enma') {
+                args[0] = `benienma_(fate)`
+            } else if (args[0].toLowerCase() === 'misty') {
+                args[0] = `kasumi_(pokemon)`
+            } else if (args[0].toLowerCase() === 'sabrina') {
+                args[0] = `natsume_(pokemon)`
+            } else if (args[0].toLowerCase() === 'whitney') {
+                args[0] = `akane_(pokemon)`
+            } else if (args[0].toLowerCase() === 'nessa') {
+                args[0] = `rurina_(pokemon)`
+            } else if (args[0].toLowerCase() === 'ganyu leche') {
+                args[0] = `ganyu_(genshin_impact)`;
+                poison.push('lactation');
+                randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'xiangling zorra pelua') {
+                args[0] = `xiangling_(genshin_impact)`;
+                poison.push('pubic_hair');
+                randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'klee meao') {
+                args[0] = `klee_(genshin_impact)`;
+                poison.push('urine');
+                randomPo = poison.length-1;
+            } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {     //FILTER
+                args[0] = `${args[0]}_(genshin_impact)`
+            } else if (args[0].toLowerCase() === 'super shorty') {
+                args[0] = `super_shorty_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'calico m950a') {
+                args[0] = `m950a_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'nimogen') {
+                args[0] = `nyto_nimogen_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'mercurows') {
+                args[0] = `nyto_mercurows_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'nyto') {
+                if (random === 0) {
+                    args[0] = `nyto_black_(girls_frontline)`
+                } else {
+                    args[0] = `nyto_polarday_(girls_frontline)`
+                }
+            } else if (args[0].toLowerCase().startsWith('sexo')) {
+                args[0] = ``;
+                poison.push('sex');
+                randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'porno') {
+                args[0] = `porno_(dohna_dohna)`
+            } else if (args[0].toLowerCase() === 'satanichia') {
+                args[0] = `satanichia_kurumizawa_mcdowell`
+            } else if (alChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
+                args[0] = `${args[0]}_(azur_lane)`
+            } else if (fateChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(fate)`
+            } else if (fategoChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(fate/grand_order)`
+            } else if (fateexChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(fate/extra)`
+            } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(girls_frontline)`
+            } else if (pkmnChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(pokemon)`
+            };
+            args[0] = args[0].toLowerCase().replace(/100%+/gi, '100_percent');
+            args[0] = args[0].toLowerCase().replace(/\(ak\)+/gi, '(arknights)');
+            args[0] = args[0].toLowerCase().replace(/\(al\)+/gi, '(azur_lane)');
+            args[0] = args[0].toLowerCase().replace(/\(ba\)+/gi, '(blue_archive)');
+            args[0] = args[0].toLowerCase().replace(/\(fex\)+|\(f\/ex\)+/gi, '(fate/extra)');
+            args[0] = args[0].toLowerCase().replace(/\(fgo\)+/gi, '(fate/grand_order)');
+            args[0] = args[0].toLowerCase().replace(/\(gbf\)+/gi, '(granblue_fantasy)');
+            args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
+            args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
+            args[0] = args[0].toLowerCase().replace(/\(hi\)+/gi, '(honkai_impact)');
+            args[0] = args[0].toLowerCase().replace(/\(kc\)+/gi, '(kancolle)');//(kantai_collection)
+            args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
+            args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
+            console.log(`Buscando ${args[0]}...`);
         };
 
 		async function startBooru () {
@@ -371,6 +467,9 @@ module.exports = {
                 var tags = [imgofDay[Number(day)-1],poison[Number(randomPo)]];
 
                 if ((boorus[0] === "danbooru")||(retries > 4)) {
+                    args[0] = args[0].toLowerCase().replace(/\(fate\/grand_order+/gi, '(fate');
+                    args[0] = args[0].toLowerCase().replace(/\(fate\/extra+/gi, '(fate');
+                    args[0] = args[0].toLowerCase().replace(/girls_frontline+/gi, `girls'_frontline`);
                     //Removes topic if it's danbooru because they limit their tag search, also remove if He ain't finding anything?
                     tags.splice(1,1);
                     //var booruRemoved = boorus.shift(); // Removes the first booru
@@ -423,7 +522,7 @@ module.exports = {
                                     db.push('booruLastfind', md5(posts[0].fileUrl));
                                     const msg = message.channel.send({files: [posts[0].fileUrl]})
                                     .catch(() => imgReduce(url));
-                                    esperarRespuesta();
+                                    esperarRespuesta(msg);
                                 };
                             }
                             catch(err) {
@@ -556,12 +655,12 @@ module.exports = {
                         fileSize = this.getResponseHeader('content-length');
                         console.log('fileSize = ' + fileSize);
                         // ok here is the only place in the code where we have our request result and file size ...
-                        // the problem is that here we are in the middle of anonymous function nested into another function and it does not look pretty
+                        // the problem is that here we are in the middle of anonymous function nested into another function
                     }
                 }
             };
             http.send(); // it will submit request and jump to the next line immediately, without even waiting for request result b/c we used ASYNC XHR call
-            return ('At this moment, we do not even have Request Results b/c we used ASYNC call to follow with stupid JavaScript patterns');
+            return ('At this moment, we do not even have Request Results b/c we used ASYNC call to follow');
         };
 
     },
