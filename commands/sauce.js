@@ -14,6 +14,7 @@ module.exports = {
 	args: false,
 	usage: 'cantidad de resultados',
 	execute(message) {
+		let member = message.author
 		var memes = fs.readdirSync('./memes');
 		var url1 = "https://cdn.discordapp.com/attachments/441386860300730378/822114125638795334/20210318_112702.jpg";
 		var url2 = "https://cdn.discordapp.com/attachments/441386860300730378/822114125638795334/20210318_112702.jpg";
@@ -93,23 +94,32 @@ module.exports = {
 				}
 			});
 		}
-		fetchMsg();
+		try {
+			fetchMsg();
+		} catch(err) {
+			return console.log(`fetchMsg: ${err}`);
+		};
 		
 		async function sauceGet () {
 			console.log(`Buscando el source de `+url1.substring(url1.lastIndexOf('/')+1))
 			message.channel.stopTyping(true);
 			results = await client(url1);
 			for (let i = 0; i < results.length; i++) {
-				if (results[i].url.startsWith("https://anidb.net/")) {
-					results.splice(i,1);
-				};
-				console.log(results[i].url);
-				//console.log(results[i].url.includes(deviantart))
+				try {
+					if ((results[i].url.startsWith("https://anidb.net/"))||(results[i].url.startsWith("https://deviantart.com/"))) {
+						results.splice(i,1);
+					};
+					console.log(results[i].url);
+					//console.log(results[i].url.includes(deviantart))
+				} catch {
+					console.log('No tengo mas URLs');
+					break;
+				}
 			}
-			if (results[1].url.startsWith("https://danbooru.donmai.us/")) {
+		/*	if (results[1].url.startsWith("https://danbooru.donmai.us/")) {
 				return message.channel.send(results[1].url);
-			}
-			return message.channel.send(results[0].url);
+			}*/
+			return message.channel.send(`<@${member.id}> ${results[0].url}`);
 		}
 	},
 };
