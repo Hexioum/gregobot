@@ -139,6 +139,8 @@ module.exports = {
         var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
         var lastFind = db.get('booruLastfind');
         const date = new Date(); // for reference, PST is UTC-8
+        let day = date.getDay();
+        const dayHours = date.getHours();
         var hours = "";
         var minutes = "";
 
@@ -154,7 +156,7 @@ module.exports = {
         difference = ddMinutes(dateDiff, date);
         hours = `${Math.floor(difference/60)}h `;
         minutes = `${difference%60}`;
-        if (hours === '0h') {
+        if (hours === '0h ') {
             console.log("Menos de una hora restante");
             hours = ""
         }
@@ -204,6 +206,8 @@ module.exports = {
             "pantsu"//nun,petite
         ];
         
+        let randomTopic = Math.floor(Math.random() * (imgofDay.length - 1) + 1);
+        
         if ((typeof args[0] !== 'undefined')) {
             if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 32)) {
                 return message.channel.send('meh');
@@ -223,17 +227,27 @@ module.exports = {
                     ]
                 };
             };
+        } else {
+            if (random === 0) {
+                args[0] = imgofDay[Number(randomTopic)];
+            } else {
+                args[0] = '-rating:safe';
+            };
         };
         
         console.log(db.get(`booru_cd.${member.id}.rolls`));
-        console.log(`Memory: ${lastFind.length}`);
+        try {
+            console.log(`Memory: ${lastFind.length}`);
+        } catch {
+            console.log(`Memory: 0`);
+        };
         
 		if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
 			return message.channel.send('en <#441386860300730378> si');
         } else {
-            shuffle(boorus);
-            boorus.push("paheal");                      // Add rule34 at the end of the array
             if (db.get(`booru_cd.${member.id}.rolls`) < 3) {
+                shuffle(boorus);
+                boorus.push("paheal");                      // Add rule34 at the end of the array
                 startBooru();
             } else {
                 difference = hours+minutes;
@@ -321,6 +335,14 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
             } else if ((args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cunny')) {
                 args[0] = `loli`
+            } else if (args[0].toLowerCase() === 'pendejas rubias') {
+                if (random === 0) {
+                    args[0] = `loli`
+                } else {
+                    args[0] = `small_breasts`
+                };
+                poison.push('blonde_hair');
+                randomPo = poison.length-1;
             } else if (args[0].toLowerCase() === 'leche') {
                 args[0] = `lactation`
             } else if (args[0].toLowerCase() === 'rin tohsaka') {
@@ -402,6 +424,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
             args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
             console.log(`Buscando ${args[0]}...`);
+            return args[0];
         };
 
 		async function startBooru () {
@@ -427,6 +450,7 @@ module.exports = {
                     console.log("chucha:"+err+"\nReintentando...");
                 };
             } else {
+                db.subtract(`booru_cd.${member.id}.rolls`, 1);
                 message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                 message.channel.stopTyping(true);
                 return console.log("chucha: No encontré nada.");
@@ -434,105 +458,88 @@ module.exports = {
         };
 
 		async function searchBoorus () {
-
-        let cooldown = 300000; // 5 minutes in ms
-        let lastSearch = await db.fetch(`grSearch_${message.author.id}`);
-
-            //if (!message.member.hasPermission('ADMINISTRATOR')) {
-            if (lastSearch !== null && cooldown - (Date.now() - lastSearch) > 0) {
-                // If user still has a cooldown
-                let timeObj = ms(cooldown - (Date.now() - lastSearch)); // timeObj.hours = 12
-                // Await response from message author
-                message.channel.send(`nah`).then(() => {
-                    return message.channel.stopTyping(true);
-                });
-            } else {
-                // Picks a random tag
-
-                const channel = message.client.channels.cache.get('438754239494357004');
-                const now = new Date(); // for reference, PST is UTC-8
-                let day = now.getDay();
-                const dayHours = now.getHours();
-                
-                if ((typeof args[0] !== 'undefined')) {
-                    // Pone underscores donde en el comando pusieron espacios.
-                    imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/[ :]/gi, '_');
-                }/* else {
-                    poison[Number(randomPo)] = "rating:explicit"
-                }*/
-                if ((retries > 0)||(poison.length < 9)) {    // If not a forced tag
-                    shuffle(poison);
-                };
-                
+            // Picks a random tag
+            const channel = message.client.channels.cache.get('438754239494357004');
+            
+            if ((typeof args[0] !== 'undefined')) {
+                // Pone underscores donde en el comando pusieron espacios.
+                imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/[ ]/gi, '_');
                 var tags = [imgofDay[Number(day)-1],poison[Number(randomPo)]];
+            } else {
+                var tags = [poison[Number(randomPo)]];
+            };
 
-                if ((boorus[0] === "danbooru")||(retries > 4)) {
-                    args[0] = args[0].toLowerCase().replace(/\(fate\/grand_order+/gi, '(fate');
-                    args[0] = args[0].toLowerCase().replace(/\(fate\/extra+/gi, '(fate');
-                    args[0] = args[0].toLowerCase().replace(/girls_frontline+/gi, `girls'_frontline`);
-                    //Removes topic if it's danbooru because they limit their tag search, also remove if He ain't finding anything?
-                    tags.splice(1,1);
-                    //var booruRemoved = boorus.shift(); // Removes the first booru
-                }
-                console.log(tags);
-                
-                console.log(`Se buscó el tag ${imgofDay[Number(day)-1]} y ${poison[Number(randomPo)]} en ${boorus[Number(0)]}, para representar el día ${day}. Se supone que son las ${dayHours} hrs.`);
-                
-                // Check if the character exists
-                let posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
-                
-                if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(posts[0].fileUrl) > -1)) {
-                    console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
-                    if (nameIsflipped === true || !(args[0].includes("_"))) {
-                        var booruRemoved = boorus.shift();  // Removes the first booru if the name was already flipped
-                    };
-                    await flipName(args[0]);                // Flip the name
-                    retries = retries+1;
-                    startBooru();                           // Searches again
+            if ((retries > 0)||(poison.length < 9)) {    // If not a forced tag
+                shuffle(poison);
+            };
+            
+
+            if ((boorus[0] === "danbooru")||(retries > 4)) {
+                args[0] = args[0].toLowerCase().replace(/\(fate\/grand_order+/gi, '(fate');
+                args[0] = args[0].toLowerCase().replace(/\(fate\/extra+/gi, '(fate');
+                args[0] = args[0].toLowerCase().replace(/girls_frontline+/gi, `girls'_frontline`);
+                //Removes topic if it's danbooru because they limit their tag search, also remove if He ain't finding anything?
+                tags.splice(1,1);
+                //var booruRemoved = boorus.shift(); // Removes the first booru
+            }
+            console.log(tags);
+            
+            console.log(`Se buscó el tag ${imgofDay[Number(day)-1]} y ${poison[Number(1)]} en ${boorus[Number(0)]}, para representar el día ${day}. Se supone que son las ${dayHours} hrs.`);
+            
+            // Check if the character exists
+            let posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
+            
+            if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(posts[0].fileUrl) > -1)) {
+                console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                if (nameIsflipped === true || !(args[0].includes("_"))) {
+                    var booruRemoved = boorus.shift();  // Removes the first booru if the name was already flipped
+                };
+                await flipName(args[0]);                // Flip the name
+                retries = retries+1;
+                startBooru();                           // Searches again
+            } else {
+                if (boorus[0] === "paheal") {
+                    console.log("Regla 34 es.");
+                    message.channel.send({files: [posts[0].fileUrl]});
+                    message.channel.stopTyping(true);
+                    return esperarRespuesta();
                 } else {
-                    if (boorus[0] === "paheal") {
-                        console.log("Regla 34 es.");
-                        message.channel.send({files: [posts[0].fileUrl]});
-                        message.channel.stopTyping(true);
-                        esperarRespuesta();
-                    } else {
-                        let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
-                        console.log(`Encontré esto: ${posts[0].fileUrl}\nScore: ${posts[0].score}\nRating: ${posts[0].rating}`);
+                    let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
+                    console.log(`Encontré esto: ${posts[0].fileUrl}\nScore: ${posts[0].score}\nRating: ${posts[0].rating}`);
 
-                        if (typeof posts[0] === 'undefined') {
-                            console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
-                            var booruRemoved = boorus.shift();  // Removes the first booru
-                            retries = retries+1;
-                            if (retries < 5) {
-                                startBooru();                       // Searches again
-                            } else {
-                                //getFileSize(url);
-                                gis(gisOptions, gisResults);
-                            };
+                    if (typeof posts[0] === 'undefined') {
+                        console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                        var booruRemoved = boorus.shift();  // Removes the first booru
+                        retries = retries+1;
+                        if (retries < 5) {
+                            startBooru();                       // Searches again
                         } else {
-                            try {
-                                if ((boorus[0] === "danbooru")&&(posts[0].rating === 's')) {
-                                    console.log("Meh, busco otra");
-                                    var booruRemoved = boorus.shift();  // Removes the first booru
-                                    // Retry without adding to the "retries" counter
-                                    startBooru(); // Searches again
-                                } else {
-                                    console.log("Esta está buena, la envío altiro.");
-                                    url = posts[0].fileUrl;
-                                    db.push('booruLastfind', md5(posts[0].fileUrl));
-                                    const msg = message.channel.send({files: [posts[0].fileUrl]})
-                                    .catch(() => imgReduce(url));
-                                    esperarRespuesta(msg);
-                                };
-                            }
-                            catch(err) {
-                                console.log(`No... ${err}\nIntentaré convertir el archivo a jpg.`);
-                                imgReduce(posts[0]);
-                            }
+                            //getFileSize(url);
+                            gis(gisOptions, gisResults);
+                        };
+                    } else {
+                        try {
+                            if ((boorus[0] === "danbooru")&&(posts[0].rating === 's')) {
+                                console.log("Meh, busco otra");
+                                var booruRemoved = boorus.shift();  // Removes the first booru
+                                // Retry without adding to the "retries" counter
+                                startBooru(); // Searches again
+                            } else {
+                                console.log("Esta está buena, la envío altiro.");
+                                url = posts[0].fileUrl;
+                                db.push('booruLastfind', md5(posts[0].fileUrl));
+                                const msg = message.channel.send({files: [posts[0].fileUrl]})
+                                .catch(() => imgReduce(url));
+                                return esperarRespuesta(msg);
+                            };
+                        }
+                        catch(err) {
+                            console.log(`No... ${err}\nIntentaré convertir el archivo a jpg.`);
+                            imgReduce(posts[0]);
                         }
                     }
-                };
-            }
+                }
+            };
         };
 
         function gisResults(error, results) {
@@ -551,7 +558,7 @@ module.exports = {
                         retries = retries+1;
                         startBooru();
                     } finally {
-                        message.channel.stopTyping(true);
+                        return message.channel.stopTyping(true);
                     }
                 } else {
                     retries = retries+1;
@@ -560,7 +567,7 @@ module.exports = {
                     } else {
                         console.log("Me rindo, no encuentro nada.");
                         db.subtract(`booru_cd.${member.id}.rolls`, 1);
-                        message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
+                        return message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                     }
                 };
             }
@@ -577,7 +584,7 @@ module.exports = {
             .then(function(outputBuffer) {
                 console.log(`Reduciendo tamaño de archivo...`);
                 message.channel.stopTyping(true);
-                message.channel.send({ files: [outputBuffer] });
+                return message.channel.send({ files: [outputBuffer] });
             })
             .catch(err => {
                 message.channel.stopTyping(true);
