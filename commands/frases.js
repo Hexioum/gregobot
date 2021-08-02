@@ -56,6 +56,9 @@ module.exports = {
   else if ((args[0] === 'lgtb')||(args[0] === 'picklez')||(args[0] === 'donando')||(args[0] === 'cura')) {
     page = 12;
   }
+  else if ((args[0] === 'demostrar')||(args[0] === 'magia')||(args[0] === 'hechizo')||(args[0] === 'lahomosexualidad')) {
+    page = 13;
+  }
   else if ((args[0] === 'undefined')||(isNaN(args[0]))||(args[0] > entries.length)||(args[0] < 1)) {
     page = 1;
   }
