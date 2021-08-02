@@ -112,80 +112,20 @@ const ignoreList = [
 	'565330655915933696',
 	'164473940532527104'
 	]; // banned from image reactions.
-const bannedWords = [
+const bannedNames = [
     "m4",
-	"sopmod",
-	"sopñod",
-	"sipmid",
-	"simpid",
-	"spmid",
-	"sipmd",
-	"sopm",
-	"sópm",
-    "s0pm0d",
-    "søpmød",
-	"s°pm°d",
-	"sºpmºd",
-    "søpmºd",
-    "sºpmød",
-    "opmod",
-    "ompod",
-    "dompo",
-    "oppo",
-    "pmd",
-    "soppo",
-	"soppu",
-	"spand",
-	"mdand",
-	"spnd",
-	"ndmd",
-	"spmd",
-	"smpd",
-	"zpmd",
-	"zmpd",
-	"zpmód",
-	"spmod",
-	"sopmd",
-	"sodmop",
-	"dompos",
-	"posmod",
-	"sompod",
-	"splec",
-	"zplec",
-	"splch",
-    "lechemod",
-    "pleched",
-	"dleches",
-	"zompod",
-	"zopmod",
-	"dompoz",
-	"hup",
-	"spm",
-	"mod",
-    "mbercita",
-    "amber",
-    "mber",
-    "4mber",
-    "amb3r",
-    "4mb3r",
-	"zandmod",
-	"zandmd",
-    "jeell",
-	"stingray",
-	"stngray",
-	"stngry",
-	"stingry",
-    "shadowm",
-    "sh4dowm",
-    "sh4d0wm",
-    "shadwm",
-    "shdowm",
-    "hadowm",
-    "shdwm",
-    "j1ll",
-    "jll",
-    "jill"
+	"sopmod", "sopñod",	"sipmid", "simpid",	"spmid", "sipmd", "sopm", "sópm", "s0pm0d", "søpmød", "s°pm°d",	"sºpmºd", "søpmºd", "sºpmød",
+    "opmod", "ompod", "dompo", "oppo", "pmd", "soppo", "soppu",	"spand", "mdand", "spnd", "ndmd", "spmd", "smpd", "zpmd", "zmpd", "zpmód",
+	"spmod", "sopmd", "sodmop", "dompos", "posmod", "sompod", "splec", "zplec", "splch", "lechemod", "pleched", "dleches", "zompod", "zopmod",
+	"dompoz", "hup", "spm", "mod", "mbercita", "amber", "mber", "4mber", "amb3r", "4mb3r", "zandmod", "zandmd", "jeell", "stingray", "stngray",
+	"stngry", "stingry", "shadowm", "sh4dowm", "sh4d0wm", "shadwm", "shdowm", "hadowm", "shdwm", "j1ll", "jll", "jill"
     ]; // Don't ever say them out loud.
+const bannedWords = [
+    "dmps", "dpms", "psmd", "opmod", "spmd", "smpd", "smdp", "sopmd", "spmod"
+    ]; // Shorter version
+const bannedSymbols = [
+    "ⓢⓞⓟⓜⓞⓓ", "ⓈⓄⓅⓂⓄⒹ", "Ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝"
+    ]; // Shorter version
 const responseObject = {
 	"$rtu": "¡$rt está disponible!",
 	"grego?": "que wea",
@@ -345,7 +285,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
-		if( bannedWords.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ||(newMember.nickname.toLowerCase().startsWith('sp'))) {
+		if (bannedNames.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ||(newMember.nickname.toLowerCase().startsWith('sp'))) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Furro', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a alguien.'))
@@ -376,6 +316,17 @@ bot.on('message', message => {
 			};
 		};
 	}
+
+	// Forbidden word automod
+	if (bannedWords.some(words => message.content.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(words))) {
+		console.log('Borrando la palabra prohibida.');
+		try {
+			message.delete();
+			return console.log(`Se ha borrado el mensaje: ${message}`);
+		} catch {
+			return console.log(`No se ha borrado el mensaje: ${message}\nFaltan permisos?`);
+		};
+    }
 
 	var attachment = 'PIC1.PNG';
 // If message is an attachment
