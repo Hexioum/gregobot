@@ -9,15 +9,18 @@ const client = sagiri(process.env.SAUCE_TOKEN, {
 });
 module.exports = {
 	name: 'saucenao',
-	aliases: ['source','sauce','fuente','reverse search','salsa'],
-	description: 'Gregorio obtiene el source mediante SauceNAO',
-	args: false,
+	aliases: ['source','sauce','salsa','fuente','reverse search','rs'],
+	description: 'Obtiene el origen de la imágen mediante SauceNAO',
+	args: true,
 	usage: 'cantidad de resultados',
-	execute(message) {
-		let member = message.author
+	execute(message, args) {
+		let member = message.author;
 		var memes = fs.readdirSync('./memes');
-		var url1 = "https://cdn.discordapp.com/attachments/441386860300730378/822114125638795334/20210318_112702.jpg";
-		var url2 = "https://cdn.discordapp.com/attachments/441386860300730378/822114125638795334/20210318_112702.jpg";
+		if (typeof args[0] === 'undefined') {
+			args[0] = "";
+		};
+		var url1 = args[0];
+		var url2 = "";
 		var results = "Nothing Happened.";
 		for (var i = 0; i < memes.length; i++) {
 			memes[i] = memes[i].replace(/[!$&'()*+,;=]/gi, '');
@@ -27,7 +30,11 @@ module.exports = {
 			try {
 				console.log(memes);
 				message.channel.startTyping();
-				await getURL();
+				if (args[0].toLowerCase().startsWith(`http`)) {
+					sauceGet();
+				} else {
+					await getURL();
+				}
 			}
 			catch(err) {
 				console.log("chucha:"+err);
@@ -35,7 +42,7 @@ module.exports = {
 			}
 		}
 		async function getURL () {
-			message.channel.messages.fetch({limit: 50}).then((messages) => {
+			message.channel.messages.fetch({limit: 48}).then((messages) => {
 				//const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
 				const lastMessages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0);	//object
 				
@@ -48,9 +55,8 @@ module.exports = {
 				console.log(`En caso de emergencia, veré `+url2);
 				//console.log(lastMessages.first(2));
 				//(filename.indexOf(memes) != -1)&&
-				if ((url1.substr(url1.length - 10) != "triste.png")&&(url1.substr(url1.length - 10) != "atomar.jpg")&&(url1.substr(url1.length - 14) != "avergonzao.jpg")) {
+				if (!memes.includes(`${filename}`)) {
 					//Si el filename de la url no coincide con los archivos en la carpeta de memes
-					console.log(filename.indexOf(memes));
 					try {
 						sauceGet();
 					} catch {
@@ -83,7 +89,7 @@ module.exports = {
 						});
 					};
 				} else {
-					console.log(`Usando la segunda URL...`);
+					console.log(`Index: ${memes.indexOf(filename)}\nUsando la segunda URL...`);
 					url1 = url2
 					try {
 						sauceGet();
@@ -103,7 +109,16 @@ module.exports = {
 		async function sauceGet () {
 			console.log(`Buscando el source de `+url1.substring(url1.lastIndexOf('/')+1))
 			message.channel.stopTyping(true);
-			results = await client(url1);
+			try {
+				results = await client(url1);
+			} catch {
+				try {
+					results = await client(url2);
+				} catch(err) {
+					message.channel.send(`<@${member.id}> ERROR\nintenta copiando el link de la imágen y poniendo "gr salsa, https..."`);
+					return console.log(`chucha: `+err);
+				}
+			}
 			for (let i = 0; i < results.length; i++) {
 				try {
 					if ((results[i].url.startsWith("https://anidb.net/"))||(results[i].url.startsWith("https://deviantart.com/"))) {

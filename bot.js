@@ -117,14 +117,14 @@ const bannedNames = [
 	"sopmod", "sopñod",	"sipmid", "simpid",	"spmid", "sipmd", "sopm", "sópm", "s0pm0d", "søpmød", "s°pm°d",	"sºpmºd", "søpmºd", "sºpmød",
     "opmod", "ompod", "dompo", "oppo", "pmd", "soppo", "soppu",	"spand", "mdand", "spnd", "ndmd", "spmd", "smpd", "zpmd", "zmpd", "zpmód",
 	"spmod", "sopmd", "sodmop", "dompos", "posmod", "sompod", "splec", "zplec", "splch", "lechemod", "pleched", "dleches", "zompod", "zopmod",
-	"dompoz", "hup", "spm", "mod", "mbercita", "amber", "mber", "4mber", "amb3r", "4mb3r", "zandmod", "zandmd", "jeell", "stingray", "stngray",
+	"dompoz", "hup", "spm", "mod", "mbercita", "amber", "4mber", "amb3r", "4mb3r", "zandmod", "zandmd", "jeell", "stingray", "stngray",
 	"stngry", "stingry", "shadowm", "sh4dowm", "sh4d0wm", "shadwm", "shdowm", "hadowm", "shdwm", "j1ll", "jll", "jill"
     ]; // Don't ever say them out loud.
 const bannedWords = [
     "dmps", "dpms", "psmd", "opmod", "spmd", "smpd", "smdp", "sopmd", "spmod"
     ]; // Shorter version
 const bannedSymbols = [
-    "ⓢⓞⓟⓜⓞⓓ", "ⓈⓄⓅⓂⓄⒹ", "Ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝"
+    "sᴏᴘᴍᴏᴅ", "ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝", "ˢᵒᵖᵐᵒᵈ", "𝔖𝔬𝔭𝔪𝔬𝔡", "𝕾𝖔𝖕𝖒𝖔𝖉", "𝔰𝔬𝔭𝔪𝔬𝔡", "𝔖𝔒𝔓𝔐𝔒𝔇", "𝕾𝕺𝕻𝕸𝕺𝕯", "丂口尸从口刀"
     ]; // Shorter version
 const responseObject = {
 	"$rtu": "¡$rt está disponible!",
@@ -177,7 +177,7 @@ bot.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*15);
+			let randomChance = Math.floor(Math.random()*16);
 			let randomComment = Math.floor(Math.random()*6);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
@@ -285,7 +285,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 		};
 		//	Wait 250ms and then check if includes a bad word.
 		setTimeout(function(){
-		if (bannedNames.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word)) ||(newMember.nickname.toLowerCase().startsWith('sp'))) {
+		if (bannedNames.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word))||bannedSymbols.some(word => newMember.nickname.toLowerCase().includes(word))||(newMember.nickname.toLowerCase().startsWith('sp'))) {
 				console.log('Intentando renombrar usuario...');
 				oldMember.setNickname('Furro', ['Bad words.'])
 					.then(() => console.log('Se ha renombrado a alguien.'))
@@ -299,12 +299,12 @@ bot.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
 bot.on('message', message => {
-// If the message starts was sent by a bot, exit early.
+	// If the message starts was sent by a bot, exit early.
 	if (message.author.bot) return;
 
-// If message channel is #tech
-	if (message.channel.id == 742579461714870353) {
-		console.log('Se ha enviado un mensaje a #tech.');
+	// If message channel is #tech or #gallery
+	if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) {
+		console.log('Se ha enviado un mensaje a #tech o #gallery');
 		if ((message.attachments.size > 0)||(message.content.toLowerCase().startsWith(`http`))) {
 		console.log('El contenido enviado corresponde.');
 		} else {
@@ -329,7 +329,7 @@ bot.on('message', message => {
     }
 
 	var attachment = 'PIC1.PNG';
-// If message is an attachment
+	// If message is an attachment
 	if (message.attachments.size > 0) {
 		if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
 		for (let i = 0; i < ignoreList.length; i++) {
@@ -372,7 +372,7 @@ bot.on('message', message => {
 			return console.log('Ví la imágen pero tiene baja resolución.');
 		}
 		if (message.attachments.every(attachIsImage)){
-			let random = Math.floor(Math.random() * 36);
+			let random = Math.floor(Math.random() * 38);
 			let rand1Reaction = Math.floor(Math.random() * (react1List.length - 1) + 1);
 			let randReaction = Math.floor(Math.random() * (reactList.length - 1) + 1);
 
@@ -382,6 +382,11 @@ bot.on('message', message => {
 			// Add 1 to the nut counter.
 			db.add('gregoBot.nuts', 1);
 			console.log(`Ha aumentado la cantidad de nueces.`);
+			try {
+				message.channel.setRateLimitPerUser(5);
+			} catch(err) {
+				console.log("No puedo reducir el slowmode "+err);
+			};
 			setTimeout(function(){
 			if (random === 0){
 				message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
@@ -452,6 +457,43 @@ bot.on('message', message => {
 			console.error(error);
 			console.log('No puedo reaccionar.');
 		}
+	} else if (message.content.toLowerCase().startsWith(`$wish `)||message.content.toLowerCase().startsWith(`$w `)) {
+		try {
+			bot.commands.get('wish').execute(message)
+		} catch (error) {
+			console.error(error);
+			return message.reply('estoy hecho mierda weon!');
+		}
+	} else if (message.content.toLowerCase().startsWith(`$wishlist`)||message.content.toLowerCase().startsWith(`$wl`)) {
+		try {
+			bot.commands.get('wishlist').execute(message)
+		} catch (error) {
+			console.error(error);
+			return message.reply('estoy hecho mierda weon!');
+		}
+	} else if (message.content.toLowerCase().startsWith(`$wishremove `)||message.content.toLowerCase().startsWith(`$wr `)) {
+		try {
+			bot.commands.get('wishremove').execute(message)
+		} catch (error) {
+			console.error(error);
+			return message.reply('estoy hecho mierda weon!');
+		}
+	} else if (message.content.toLowerCase().startsWith(`$wishremoveall`)||message.content.toLowerCase().startsWith(`$wra`)) {
+		try {
+			db.delete(`wishlists.${message.author.id}`);
+			try {
+				return message.react('✅');
+			} catch (err) {
+				return console.log(`No puedo reaccionar: ${err}`);
+			};
+		} catch (error) {
+			console.error(error);
+			try {
+				return message.react('❌');
+			} catch (err) {
+				return console.log(`No puedo reaccionar: ${err}`);
+			};
+		}
 	} else if (message.content.toLowerCase().includes(`nosgoth`)) {
 		let replies = ["kabaltroteligero.gif", "UtY9sT39.gif"];
 		let random = Math.floor(Math.random() * 2);
@@ -464,7 +506,7 @@ bot.on('message', message => {
 				.then(() => message.channel.send({files: [`./memes/kabaltroteligero.gif`]}))
 				.catch(() => console.error('Que onda?? No pude responder.'));
 		};
-	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`) || message.content.toLowerCase().startsWith(`ah está el gr`)) {
+	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`)) {
 		message.channel.send('se wn');
 	} else if (message.content.toLowerCase().startsWith(`buena grego`) || message.content.toLowerCase().startsWith(`hola grego`)) {
 		message.channel.send('wena');
@@ -545,6 +587,76 @@ bot.on('message', message => {
 			console.error(error);
 			message.reply('estoy hecho mierda weon!');
 		}
+	}
+		
+	// If message channel is #monaschinas
+	if (message.channel.id == 441386860300730378) {
+		console.log('Se ha enviado un mensaje a #monaschinas.');
+		if ((message.attachments.size > 0)||(message.content.toLowerCase().startsWith(`http`))||(message.content.toLowerCase().startsWith(`$w`))) {
+			try {
+				db.delete(`booru.textCount`);
+			} catch(err) {
+				console.log("chucha:"+err+"\nError al borrar base de datos en bot.js");
+			};
+		} else {
+			textCounter = db.get(`booru.textCount`);
+			try {
+				db.add(`booru.textCount`, 1);
+			} catch {
+				console.log(`Error en línea 600 de bot.js`);
+			};
+			if ((textCounter!== null)&&(textCounter == 20)) {
+				console.log("Están hablando demasiado.");
+				let random = Math.floor(Math.random() * 4);
+				message.channel.startTyping();
+				if (random === 3){
+					setTimeout(function(){
+						message.channel.send('ya si si bacan')
+						.catch(() => console.error('Que onda?? No pude responder.'));
+						setTimeout(function(){
+							message.channel.send('donde estan las wachas??')
+							.catch(() => console.error('Que onda?? No pude responder.'));
+							return message.channel.stopTyping(true);
+						}, 1070);
+					}, 660);
+				} else if (random === 2){
+					setTimeout(function(){
+						message.channel.send('dejen de hablar mierda')
+						.catch(() => console.error('Que onda?? No pude responder.'));
+						setTimeout(function(){
+							message.channel.send('manden minas')
+							.catch(() => console.error('Que onda?? No pude responder.'));
+							return message.channel.stopTyping(true);
+						}, 1070);
+					}, 720);
+				} else if (random === 1){
+					setTimeout(function(){
+						message.channel.send('buena wn si')
+						.catch(() => console.error('Que onda?? No pude responder.'));
+						setTimeout(function(){
+							message.channel.send('y las minas cuando?')
+							.catch(() => console.error('Que onda?? No pude responder.'));
+							return message.channel.stopTyping(true);
+						}, 1070);
+					}, 720);
+				} else {
+					setTimeout(function(){
+						message.channel.send('hablan pura mierda wn')
+						.catch(() => console.error('Que onda?? No pude responder.'));
+						setTimeout(function(){
+							message.channel.send('suban alguna wea')
+							.catch(() => console.error('Que onda?? No pude responder.'));
+							return message.channel.stopTyping(true);
+						}, 1070);
+					}, 720);
+				};
+				try {
+					message.channel.setRateLimitPerUser(60);
+				} catch(err) {
+					return console.log("No puedo poner slowmode: "+err);
+				};
+			}
+		};
 	}
 	
 	const prefixes = ['Grego ', 'grego ', 'Gr ', 'gr '];
@@ -639,25 +751,14 @@ bot.on('message', message => {
     //True if the url is not a gif image.
     return url.indexOf("gif", url.length - "gif".length /*or 3*/) == -1;
 	}
-/*
-    //If cooldowns map doesn't have a command.name key then create one.
-    if(!cooldowns.has(command.name)){
-        cooldowns.set(command.name, new Discord.Collection());
-    }
-    const current_time = Date.now();
-    const time_stamps = cooldowns.get(command.name);
-    const cooldown_amount = (command.cooldown) * 1000;
-    //If the author's id is not in time_stamps then add them with the current time.
-    time_stamps.set(message.author.id, current_time);
-    //Delete the user's id once the cooldown is over.
-    setTimeout(() => time_stamps.delete(message.author.id), cooldown_amount);
-*/
+
 	try {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
 		message.reply('estoy hecho mierda weon!');
 	}
+
 });
 // login to Discord with your app's token
 bot.login(process.env.BOT_TOKEN);

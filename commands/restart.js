@@ -12,7 +12,11 @@ module.exports = {
 	execute(message, args) {
 //	Check the server owner ID
 	if(message.author.id != "360892991499665408") return message.channel.send("no");
-
+	// resolve(guildID) and get gregoID	(GET AVATAR)
+/*	bot.users.fetch(gregorid).then(myUser => {
+    bot.user.setAvatar(myUser.avatarURL())})
+	.then(() => console.log(myUser))
+	.catch((err) => console.log(`avatarURL:`+err));*/
     try {
 		if (args[0] === "booru") {
 			db.delete(`booru_cd`);
@@ -21,6 +25,8 @@ module.exports = {
 			db.delete(`booru_cd`);
 		} else if (args[0] === "booru memory") {
 			db.delete(`booruLastfind`);
+		} else if (args[0] === "wishlists") {
+			db.delete(`wishlists`);
 		};
 		message.channel.send("volveré...").then(msg => {
 			setTimeout(function(){

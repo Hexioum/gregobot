@@ -37,10 +37,18 @@ const alChars = [
     "honolulu",
     "kawakaze",
     "laffey",
+    "lappland",
+    "le malin",
+    "shimakaze",
     "sirius",
     "south dakota",
     "st. louis",
     "washington",
+]
+
+const fateapoChars = [
+    "jack the ripper",
+    "jeanne d'arc"
 ]
 
 const fateChars = [
@@ -52,7 +60,12 @@ const fateChars = [
     "minamoto no yorimitsu",
     "nero claudius",
     "shuten douji",
+    "stheno",
     "tamamo no mae"
+]
+
+const fateexChars = [
+    "alice", "caster", "nursery rhyme"
 ]
 
 const fategoChars = [
@@ -63,11 +76,8 @@ const fategoChars = [
     "mata hari",
     "miyamoto musashi",
     "nitocris",
-    "tiamat"
-]
-
-const fateexChars = [
-    "alice", "caster", "nursery rhyme"
+    "tiamat",
+    "ushiwakamaru"
 ]
 
 const gflChars = [
@@ -110,12 +120,13 @@ const gflChars = [
 
 const giChars = [
     "amber", "barbara", "beidou", "cloud retainer", "collei",
-    "diona", "eula", "fischl", "ganyu", "hu tao", "iansan",
-    "jean", "kamisato ayaka", "katheryne", "keqing", "klee",
-    "la signora", "lisa", "lumine", "lynette", "mona",
-    "ningguang", "noelle", "paimon", "qiqi", "rosaria", "sucrose",
-    "vennessa", "xiangling", "xinyan", "yanfei", "yaoyao"
+    "diona", "eula", "fischl", "ganyu", "hu tao", "iansan", "jean",
+    "kamisato ayaka", "katheryne", "kazari", "keqing", "kitsune saiguu", "klee",
+    "la signora", "lisa", "lumine", "lynette", "madame ping", "mikoshi chiyo", "mona",
+    "ningguang", "noelle", "paimon", "qiqi", "raiden shogun", "rosaria", "sasayuri", "sayu", "sucrose",
+    "tubby", "vennessa", "xiangling", "xinyan", "yoimiya", "yanfei", "yaoyao"
 ]
+//kujou_sara and sangonomiya_kokomi do not have "gi" in parentheses
 
 const pkmnChars = [
     "anzu", "ariana", "atena", "ayumi", "bea", "caitlin", "cattleya", "cynthia",
@@ -136,8 +147,26 @@ module.exports = {
 			return message.channel.send(helpEmbed);
 		};
 		let member = message.author
-        var booruCd = db.add(`booru_cd.${member.id}.rolls`, 1);
         var lastFind = db.get('booruLastfind');
+        var cdBooru = db.add(`booru_cd.${member.id}.rolls`, 0);
+        var wishlist = db.get(`wishlists.${member.id}`);
+        var isWished = false
+        if ((typeof args[0]==='undefined')&&(wishlist!== null)) {
+            console.log("Comprobando wishlist...");
+            if (wishlist.length > 0) {
+                wishlist = wishlist.join();
+                wishlist = wishlist.split(',');
+                let random = Math.floor(Math.random() * 20);
+                if (random > wishlist.length) {
+                    console.log("El dado dice que será una búsqueda aleatoria.");
+                    args[0] = '-rating:safe';
+                } else {
+                    console.log("El dado dice que estás de suerte.");
+                    args[0] = wishlist[random];
+                    isWished = true;
+                }
+            }
+        };
         const date = new Date(); // for reference, PST is UTC-8
         let day = date.getDay();
         const dayHours = date.getHours();
@@ -247,11 +276,11 @@ module.exports = {
         } else {
             if (db.get(`booru_cd.${member.id}.rolls`) < 3) {
                 shuffle(boorus);
-                boorus.push("paheal");                      // Add rule34 at the end of the array
+                boorus.push("paheal");  // Add rule34 at the end of the array
                 startBooru();
             } else {
                 difference = hours+minutes;
-                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 2 usos cada 2 horas (la hora punta). **${difference}** min restante(s).`);
+                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 3 usos cada 2 horas (la hora punta). **${difference}** min restante(s).`);
             };
         };
 
@@ -302,7 +331,7 @@ module.exports = {
 
         async function tagsFix() {
 		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
-            if (args[0].toLowerCase().startsWith('m4_sop')) return message.channel.send('no');
+            if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('no');
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
 
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
@@ -333,7 +362,7 @@ module.exports = {
 
             if (args[0].toLowerCase().startsWith('zelda')) {
                 args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
-            } else if ((args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cunny')) {
+            } else if ((args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')) {
                 args[0] = `loli`
             } else if (args[0].toLowerCase() === 'pendejas rubias') {
                 if (random === 0) {
@@ -345,6 +374,10 @@ module.exports = {
                 randomPo = poison.length-1;
             } else if (args[0].toLowerCase() === 'leche') {
                 args[0] = `lactation`
+            } else if (args[0].toLowerCase() === 'cum eater') {
+                args[0] = `open_mouth`;
+                poison.push('cum');
+                randomPo = poison.length-1;
             } else if (args[0].toLowerCase() === 'rin tohsaka') {
                 args[0] = `toosaka_rin`
             } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
@@ -399,12 +432,14 @@ module.exports = {
                 args[0] = `satanichia_kurumizawa_mcdowell`
             } else if (alChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
                 args[0] = `${args[0]}_(azur_lane)`
+            } else if (fateapoChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(fate/apocrypha)`
             } else if (fateChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(fate)`
-            } else if (fategoChars.indexOf(args[0].toLowerCase()) > -1) {
-                args[0] = `${args[0]}_(fate/grand_order)`
             } else if (fateexChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(fate/extra)`
+            } else if (fategoChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(fate/grand_order)`
             } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(girls_frontline)`
             } else if (pkmnChars.indexOf(args[0].toLowerCase()) > -1) {
@@ -428,6 +463,11 @@ module.exports = {
         };
 
 		async function startBooru () {
+            try {
+                db.delete(`booru.textCount`);
+            } catch(err) {
+                console.log("chucha:"+err+"\nError al borrar base de datos en booru.js");
+            };
             if ((boorus.length > 0)&&(retries < 5)) {
                 try {
                     message.channel.startTyping();
@@ -500,9 +540,16 @@ module.exports = {
             } else {
                 if (boorus[0] === "paheal") {
                     console.log("Regla 34 es.");
+                    try {
                     message.channel.send({files: [posts[0].fileUrl]});
-                    message.channel.stopTyping(true);
-                    return esperarRespuesta();
+                    db.add(`booru_cd.${member.id}.rolls`, 1);
+                    } catch(err) {
+                        message.channel.send(posts[0].fileUrl);
+                        console.log("Chucha, pesa mucho :(");
+                    } finally {
+                        message.channel.stopTyping(true);
+                        return esperarRespuesta();
+                    }
                 } else {
                     let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
                     console.log(`Encontré esto: ${posts[0].fileUrl}\nScore: ${posts[0].score}\nRating: ${posts[0].rating}`);
@@ -526,10 +573,19 @@ module.exports = {
                                 startBooru(); // Searches again
                             } else {
                                 console.log("Esta está buena, la envío altiro.");
+                                if (isWished) {
+                                    try {
+                                        message.react('🌟');
+                                    } catch (err) {
+                                        console.log(`No puedo reaccionar: ${err}`);
+                                    };
+                                }
                                 url = posts[0].fileUrl;
                                 db.push('booruLastfind', md5(posts[0].fileUrl));
-                                const msg = message.channel.send({files: [posts[0].fileUrl]})
-                                .catch(() => imgReduce(url));
+                                //const msg = message.channel.send({files: [posts[0].fileUrl]})
+                                const msg = message.channel.send(posts[0].fileUrl)
+                                .then(() => db.add(`booru_cd.${member.id}.rolls`, 1))
+                                .catch(() => imgReduce(posts, url));
                                 return esperarRespuesta(msg);
                             };
                         }
@@ -553,6 +609,7 @@ module.exports = {
                         db.push('booruLastfind', md5(results[Number(random)].url));
                         console.log(`Enviando:\n${results[Number(random)].url}`);
                         message.channel.send({files: [results[Number(random)].url]});
+                        db.add(`booru_cd.${member.id}.rolls`, 1);
                     } catch {
                         console.log("No puedo enviar el resultado de Google.");
                         retries = retries+1;
@@ -566,20 +623,20 @@ module.exports = {
                         gisResults();
                     } else {
                         console.log("Me rindo, no encuentro nada.");
-                        db.subtract(`booru_cd.${member.id}.rolls`, 1);
+                        //db.subtract(`booru_cd.${member.id}.rolls`, 1);
                         return message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                     }
                 };
             }
         };
         
-        // Usar esta función para reducir el tamaño de archivo si es que este excede el límite de subida de discord (8Mb)
+        // Si es que excede el límite de subida de discord (8Mb)
 		async function imgReduce () {
             console.log("Intentando reducir tamaño de archivo.");
 			const imageResponse = await axios({url: url, responseType: 'arraybuffer'});
 			theImage = Buffer.from(imageResponse.data, 'binary');
             await sharp(theImage)
-            .jpeg({ mozjpeg: true })    // Use mozjpeg to reduce output JPEG file size (slower)
+            .jpeg({ mozjpeg: true })    // Reduces output JPEG file size (slower)
             .toBuffer()
             .then(function(outputBuffer) {
                 console.log(`Reduciendo tamaño de archivo...`);
@@ -587,9 +644,15 @@ module.exports = {
                 return message.channel.send({ files: [outputBuffer] });
             })
             .catch(err => {
-                message.channel.stopTyping(true);
-                message.channel.send(posts[0].fileUrl);
-                return console.error(`Bruh\n`+`*${err}*`);
+                console.error(`Bruh: `+`*${err}*`);
+                try {
+                    message.channel.send(posts[0].fileUrl);
+                    db.add(`booru_cd.${member.id}.rolls`, 1);
+                } catch {
+                    console.log("Posts[0] no existe?");
+                } finally {
+                    return message.channel.stopTyping(true);
+                };
             })
         };
         
