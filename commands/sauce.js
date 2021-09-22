@@ -42,18 +42,25 @@ module.exports = {
 			}
 		}
 		async function getURL () {
-			message.channel.messages.fetch({limit: 48}).then((messages) => {
-				//const lastMessage = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0).first();
-				const lastMessages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter((m) => m.attachments.size > 0);	//object
-				
+			message.channel.messages.fetch({limit: 44}).then((messages) => {
+				const lastMessages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter(
+					(m) => (m.attachments.size > 0)||((m.content.startsWith("http"))&&(!m.content.includes(".gif"))&&(!m.content.includes(".mp4"))&&(!m.content.includes(".webm"))&&(!m.content.includes("/tenor"))));	//object
+
 				//lastMessages.first(2).forEach(message => console.log(message.attachments.first().url))
 				var attFetch = Object.values(lastMessages.first(2));
-				url1 = attFetch[0].attachments.first().url;
-				url2 = attFetch[1].attachments.first().url;
+				if (attFetch[0].attachments.size > 0) {
+					url1 = attFetch[0].attachments.first().url;
+				} else {
+					url1 = attFetch[0].content;
+				}
+				if (attFetch[1].attachments.size > 0) {
+					url2 = attFetch[1].attachments.first().url;
+				} else {
+					url2 = attFetch[1].content;
+				}
 				var filename = url1.substring(url1.lastIndexOf('/')+1);
-				console.log(filename);
+				console.log(`Voy a buscar esto: `+url1);
 				console.log(`En caso de emergencia, veré `+url2);
-				//console.log(lastMessages.first(2));
 				//(filename.indexOf(memes) != -1)&&
 				if (!memes.includes(`${filename}`)) {
 					//Si el filename de la url no coincide con los archivos en la carpeta de memes
@@ -116,7 +123,8 @@ module.exports = {
 					results = await client(url2);
 				} catch(err) {
 					message.channel.send(`<@${member.id}> ERROR\nintenta copiando el link de la imágen y poniendo "gr salsa, https..."`);
-					return console.log(`chucha: `+err);
+					console.log(`chucha: `+err);
+					return message.channel.stopTyping(true);
 				}
 			}
 			for (let i = 0; i < results.length; i++) {

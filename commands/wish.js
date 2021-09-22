@@ -16,7 +16,6 @@ module.exports = {
             var member = message.author;
             var msg = capitalize(message.content);
             var args = msg.slice(prefix).trim().split(/ \$ | \$|\$ |\$/).filter(Boolean); //slices the prefix, trims spaces, splits the message with $, removes empty elements.
-            //args = args.map(x => x * 2);
             var wishlist = db.get(`wishlists.${member.id}`);
             if ((typeof args!=='undefined')&&(args.length > 0)) {
                 if (wishlist == null) {

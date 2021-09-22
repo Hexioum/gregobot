@@ -14,7 +14,7 @@ module.exports = {
         prefix = prefix[0].length;
         if (message.content.length > prefix) {
             var member = message.author;
-            args = message.content.slice(prefix).trim().split(/ \$ | \$|\$ |\$/);
+            var args = message.content.slice(prefix).trim().split(/ \$ | \$|\$ |\$/).filter(Boolean);
             var wishlist = db.get(`wishlists.${member.id}`);
             console.log(`Wishlist: ${wishlist}\nRemoviendo: ${args}`);
             if (wishlist == null) {
@@ -27,17 +27,13 @@ module.exports = {
                     return console.log(`No puedo reaccionar: ${err}`);
                 };
             } else {
-                wishlist = wishlist.join();
-                wishlist = wishlist.toLowerCase().split(',');
-                //console.log(wishlist);
+                wishlist = wishlist.join().toLowerCase().split(',').filter( ( excl ) => !args.includes( excl ) );
                 var length = (wishlist.length);
                 console.log(`Largo de array: `+length);
-                var index = wishlist.indexOf(args[0].toLowerCase());
-                if (index > -1) {
-                    wishlist.splice(index, 1);
+                if (wishlist.length > -1) {
                     console.log(`Ahora es: ${wishlist}`);
                     if (length > 0) {
-                        var charAdded = db.set(`wishlists.${member.id}`,wishlist);
+                        db.set(`wishlists.${member.id}`,wishlist);
                         try {
                             return message.react('✅');
                         } catch (err) {

@@ -539,6 +539,13 @@ module.exports = {
                 startBooru();                           // Searches again
             } else {
                 if (boorus[0] === "paheal") {
+                    if (isWished) {
+                        try {
+                            message.react('🌟');
+                        } catch (err) {
+                            console.log(`No puedo reaccionar: ${err}`);
+                        };
+                    };
                     console.log("Regla 34 es.");
                     try {
                     message.channel.send({files: [posts[0].fileUrl]});
@@ -579,7 +586,7 @@ module.exports = {
                                     } catch (err) {
                                         console.log(`No puedo reaccionar: ${err}`);
                                     };
-                                }
+                                };
                                 url = posts[0].fileUrl;
                                 db.push('booruLastfind', md5(posts[0].fileUrl));
                                 //const msg = message.channel.send({files: [posts[0].fileUrl]})

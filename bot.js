@@ -28,7 +28,8 @@ bot.commands = new Discord.Collection();
 const cooldowns = new Map();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
+//const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
+const devMode = false; //ATTENTION
 const activitiesList = [
     "League of Legends",
     "League of Legends",
@@ -301,6 +302,8 @@ bot.on('unhandledRejection', error => {
 bot.on('message', message => {
 	// If the message starts was sent by a bot, exit early.
 	if (message.author.bot) return;
+	
+	if ((devMode === true)&&(message.author.id != 360892991499665408)) return;
 
 	// If message channel is #tech or #gallery
 	if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) {
