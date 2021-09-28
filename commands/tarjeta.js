@@ -18,14 +18,7 @@ imgcli = new ImgurClient({
 	password: process.env.IMGUR_PASSWORD,
 	clientId: process.env.IMGUR_CLIENTID,
   });*/
-const bot = new Discord.Client({ 
-ws: { intents: [
-	'GUILDS',
-	'GUILD_PRESENCES',
-	'GUILD_MEMBERS',
-	'GUILD_MESSAGES',
-	'GUILD_MESSAGE_REACTIONS'] }
-});
+const bot = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] });
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
 const backgrounds = fs.readdirSync('./mdcards/bgs');
@@ -99,12 +92,11 @@ module.exports = {
 		
 		async function fetchMsg () {
 			try {
-				message.channel.startTyping();
+				message.channel.sendTyping();
 				await getURL();
 			}
 			catch(err) {
-				console.log("chucha:"+err);
-				return message.channel.stopTyping(true);
+				return console.log("chucha:"+err);
 			}
 		}
 		async function getURL () {
@@ -115,20 +107,17 @@ module.exports = {
 				console.log(url1);
 				console.log("El archivo encontrado es un "+fileType);//gets file type
 				if ((fileType == "mp4")||(fileType == "mov")||(fileType == "avi")||(fileType == "3gp")) {
-					message.channel.send(`no puedo usar un video <@${member.id}>`)
-					return message.channel.stopTyping(true);
+					return message.channel.send(`no puedo usar un video <@${member.id}>`)
 				} else {
 					try {
 						imgResize();
 					} catch {
 						console.log("getURL:"+err);
-						message.channel.send(`intenta denuevo <@${member.id}>`)
-						return message.channel.stopTyping(true);
+						return message.channel.send(`intenta denuevo <@${member.id}>`)
 					}
 				};
 			}).catch(err => {
-				console.log("chucha:"+err);
-				return message.channel.stopTyping(true);
+				return console.log("chucha:"+err);
 			});
 		}
 		
@@ -176,7 +165,6 @@ module.exports = {
 						cardMaker(outputBuffer);
 					})
 					.catch(err => {
-						message.channel.stopTyping(true);
 						return console.error(`Alignbruh\n`+`*${err}*`);
 					});
 				}
@@ -192,7 +180,6 @@ module.exports = {
 						cardMaker(outputBuffer);
 					})
 					.catch(err => {
-						message.channel.stopTyping(true);
 						message.channel.send(`ta en webp esta wea??\n`+err);
 						return console.error(`Bruh\n`+`*${err}*`);
 					});
@@ -218,19 +205,16 @@ module.exports = {
 					.toBuffer()
 					.then(function(outputBuffer) {
 					console.log(`Generando carta para ${member.username}, marco ${args[1]} y alineación ${alignment[Number(args[2])]}.`);
-					message.channel.stopTyping(true);
 					finalResult = outputBuffer;
 					message.channel.send(`<@${member.id}> toma amigo :))))))))`, { files: [outputBuffer] })
 					.then((message) => deleteMessage(message, outputBuffer))
 					.catch(err => {
 						message.channel.send(`estoy hecho mierda <@${member.id}>`)
-						message.channel.stopTyping(true)
 						console.error(err)
 					})
 				})
 				.catch(err => {
 					message.channel.send(`no puedo <@${member.id}>`)
-					message.channel.stopTyping(true)
 					console.error(err)
 				})
 		}
@@ -258,10 +242,9 @@ module.exports = {
             for (const reaction of validReactions) await message.react(reaction);
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && (!user.bot)
 		console.log(`user: ${message.author.username}`);
-		message.channel.stopTyping(true);
 
         return message
-            .awaitReactions(filter, {
+            .awaitReactions({filter, 
                 max: 1,
                 time: 30000
             })
@@ -300,17 +283,15 @@ module.exports = {
 			
 		async function cardUpload () {
 			//fOutput = `./card_${random}.png`
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			console.log(`Iniciando subida a Imgur...\nArchivo: ${finalResult.toString('base64').substring(0,64)}`);
 			imgur.setCredentials(process.env.IMGUR_USERNAME, process.env.IMGUR_PASSWORD, process.env.IMGUR_CLIENTID);
 			imgur.uploadBase64(finalResult.toString('base64'), albumId).then((json) => {
 				console.log(json.link);
-				message.channel.stopTyping(true);
 				return message.channel.send(`<@${member.id}>\n$ai **NOMBRE** $${json.link}`);
 				// .send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${json.link}\`\`\``);
 			}).catch((err) => {
-				message.channel.stopTyping(true);
-				message.channel.send(`no pude subirla 😦`);
+				message.reply(`no pude subirla 😦`);
 				return console.log("cardUpload: "+err);
 			});
 			

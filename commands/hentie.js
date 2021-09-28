@@ -1,41 +1,43 @@
 const Discord = require('discord.js');
-const bot = new Discord.Client({ 
-ws: { intents: [
-	'GUILDS',
-	'GUILD_PRESENCES',
-	'GUILD_MEMBERS',
-	'GUILD_MESSAGES',
-	'GUILD_MESSAGE_REACTIONS'] }
-});
+const bot = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] });
 bot.commands = new Discord.Collection();
 const { API, } = require('nhentai-api');
 
 module.exports = {
 	name: 'hentie',
 	aliases: ['hentai','manga','nh','nhentai','conocimiento'],
-	description: 'Gregorio hace la búsqueda por ti',
+	description: 'Para la búsqueda del conocimiento',
 	args: true,
-	usage: 'los números... que significan??',
+	usage: 'nh, <valor entre 0 y 999999>',
 	execute(message, args) {
-		let random = Math.floor(Math.random()*350000);
+        if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
+			return message.channel.send('en <#441386860300730378> si');
+        }
+		let random = Math.floor(Math.random()*380000);
         const api = new API();
-        if ((args.length === 0)||(isNaN(args[0]))) {
+        if (typeof args!=='undefined') {
+			api.getBook(Number(random)).then(book => {
+                api.getImageURL(book.cover);    // https://t.nhentai.net/galleries/343434/cover.jpg
+                api.getImageURL(book.pages[1]); // https://i.nhentai.net/galleries/343434/2.jpg
+                mangaInfo(book);
+            })
+            .catch(err => {
+                console.error(err);
+                return message.reply(`puta... intenta mas rato`);
+            });
+		} else if (isNaN.args[0]) {
 			message.channel.send(`https://nhentai.to/g/${random}`);
-		}
-        if ((args[0] == 34)||(args[0] == 3434)||(args[0] == 343434)) {
+		} else if ((args[0] == 34)||(args[0] == 3434)||(args[0] == 343434)) {
             message.channel.send({files: ['./memes/;momopatas;.png']})
             .catch(() => console.error('Que onda?? No pude responder.'));
-		}
-        if (args[0].length > 6) {
+		} else if (args[0].length > 6) {
             message.channel.send(`https://nhentai.to/g/${random}`)
             .then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
             .catch(() => console.error('Que onda?? No pude responder.'));
-		}
-        if (args.length > 0) {
+		} else if (args.length > 0) {
             api.getBook(Number(args[0])).then(book => {
                 api.getImageURL(book.cover);    // https://t.nhentai.net/galleries/343434/cover.jpg
                 api.getImageURL(book.pages[1]); // https://i.nhentai.net/galleries/343434/2.jpg
-            //  console.log(book);
                 mangaInfo(book);
             })
             .catch(err => {
@@ -62,12 +64,13 @@ module.exports = {
             .setURL(`https://nhentai.net/g/${nhArray[1]}`)
             .setAuthor('Buscador de Conocimiento', 'https://i.imgur.com/ZmtGJgz.png')
             .setDescription(`**Tags:** ${nhTags}.`)
-            .setThumbnail(api.getImageURL(book.cover))
+            //.setThumbnail('https://i.imgur.com/uLAimaY.png')
+            .setImage(api.getImageURL(book.cover))
             .addField('Visitas', `${nhArray[2]}`, true)
             .addField('Favoritos', `${nhArray[3]}`, true)
-            .setTimestamp(`Publicado el: ${nhArray[5]}`)
-            .setFooter('gregobot® 2021');
-			return message.channel.send(helpEmbed);
+            .setTimestamp(nhArray[5])
+            .setFooter('Fecha de publicación','https://i.imgur.com/uLAimaY.png');//gregobot® 2021
+			return message.reply({ embeds: [helpEmbed] });
         }
     },
 };

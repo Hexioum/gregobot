@@ -2,14 +2,13 @@ const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const db = require('quick.db');
-const client = new Discord.Client();
 module.exports = {
 	name: 'wish',
 	aliases: ['w','wishea'],
 	description: 'Agrega algo a tu lista de deseados',
 	args: true,
 	usage: '$wish <personaje>',
-	execute(message, args) {
+	execute(message, args) {//TODO: Evitar que los wish puedan exceder los 32 caracteres.
         var prefix = message.content.slice(prefix).trim().split(" ");
         prefix = prefix[0].length;
         if (message.content.length > prefix) {
@@ -18,6 +17,7 @@ module.exports = {
             var args = msg.slice(prefix).trim().split(/ \$ | \$|\$ |\$/).filter(Boolean); //slices the prefix, trims spaces, splits the message with $, removes empty elements.
             var wishlist = db.get(`wishlists.${member.id}`);
             if ((typeof args!=='undefined')&&(args.length > 0)) {
+                args = args.map(ar => ar.substring(0, 32));
                 if (wishlist == null) {
                     console.log("Creando lista de deseados para "+member.username);
                     if (args.length < 16) {

@@ -16,13 +16,8 @@ const db = require('quick.db');
 
 // create a new Discord client
 const bot = new Discord.Client({ 
-ws: { intents: [
-	'GUILDS',
-	'GUILD_PRESENCES',
-	'GUILD_MEMBERS',
-	'GUILD_MESSAGES',
-	'GUILD_MESSAGE_REACTIONS'] }
-});
+intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] }
+);
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
 const cooldowns = new Map();
@@ -227,15 +222,12 @@ bot.on('ready', function () {
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
-		.then(updated => console.log(`Channel's new topic is "${topicList[topic]}".`))
-		.catch(console.error);
+		console.log(`Channel's new topic is "${topicList[topic]}".`);
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
-        bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }) // sets bot's activities to one of the phrases in the arraylist.
-		.then(presence => console.log(`Ahora jugando a ${presence.activities[0].name}`))
-		.catch(console.error);
-
+        bot.user.setActivity(activitiesList[index], { type: 'COMPETING' }); // sets bot's activities to one of the phrases in the arraylist.
+		console.log(`Ahora jugando a ${activitiesList[index]}`);
     }, 390000); // Runs this every 390 seconds.
 });
 //	async member*
@@ -254,9 +246,7 @@ bot.on('guildMemberAdd', member => {
             console.log(`Successfully kicked ${user.tag}`);
 		})
           .catch(err => {
-            // An error happened
-            // This is generally due to the bot not being able to kick the member,
-            // either due to missing permissions or role hierarchy
+            // An error happened either due to missing permissions or role hierarchy
             console.log('I was unable to kick the member!');
             // Log the error
             console.error(err);
@@ -299,7 +289,7 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 bot.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
-bot.on('message', message => {
+bot.on('messageCreate', message => {
 	// If the message starts was sent by a bot, exit early.
 	if (message.author.bot) return;
 	
@@ -425,13 +415,12 @@ bot.on('message', message => {
 				message.channel.send('👌')
 				.catch(() => console.error('Que onda?? No puedo mandar mensajes'));
 			} else if (random === 11){
-				message.channel.startTyping();
+				message.channel.sendTyping();
 				setTimeout(function(){
 					message.channel.send('ta wena igual')
 					.then(() => message.channel.send('le paso el pico por los rollos'))
 					.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
 					.catch(() => console.error('Que onda?? No pude responder.'));
-					return message.channel.stopTyping(true);
 				}, 520);
 			}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
@@ -465,21 +454,21 @@ bot.on('message', message => {
 			bot.commands.get('wish').execute(message)
 		} catch (error) {
 			console.error(error);
-			return message.reply('estoy hecho mierda weon!');
+			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wishlist`)||message.content.toLowerCase().startsWith(`$wl`)) {
 		try {
 			bot.commands.get('wishlist').execute(message)
 		} catch (error) {
 			console.error(error);
-			return message.reply('estoy hecho mierda weon!');
+			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wishremove `)||message.content.toLowerCase().startsWith(`$wr `)) {
 		try {
 			bot.commands.get('wishremove').execute(message)
 		} catch (error) {
 			console.error(error);
-			return message.reply('estoy hecho mierda weon!');
+			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wishremoveall`)||message.content.toLowerCase().startsWith(`$wra`)) {
 		try {
@@ -541,37 +530,32 @@ bot.on('message', message => {
 	} else if (message.content.toLowerCase().includes(`lucho`)) {
 		let random = Math.floor(Math.random() * 250);
 		if (random == 0) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`cual lucho?`);
-			return message.channel.stopTyping(true);
 			}, Number(550+randomKps));
 		}
 	} else if (message.content.toLowerCase().includes(`genshin`)) {
 		let random = Math.floor(Math.random() * 5);
 		if (random == 0) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`mas razones por odiar esa wea de juego`);
-			return message.channel.stopTyping(true);
 		}, Number(1900+randomKps));//tomando en cuenta los keystrokes por segundo promedio de gr que seguramente es de 5.
 		} else if (random == 1) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`juego qlo malo aguante el gears`);
-			return message.channel.stopTyping(true);
 		}, Number(1550+randomKps));
 		} else if (random == 2) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`mala la wea`);
-			return message.channel.stopTyping(true);
 		}, Number(550+randomKps));
 		} else if (random == 3) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`otra razon mas para no volver a la mierda`);
-			return message.channel.stopTyping(true);
 		}, Number(2000+randomKps));
 		};
 	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
@@ -588,7 +572,7 @@ bot.on('message', message => {
 			bot.commands.get('camiro').execute(message)
 		} catch (error) {
 			console.error(error);
-			message.reply('estoy hecho mierda weon!');
+			message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	}
 		
@@ -611,7 +595,7 @@ bot.on('message', message => {
 			if ((textCounter!== null)&&(textCounter == 20)) {
 				console.log("Están hablando demasiado.");
 				let random = Math.floor(Math.random() * 4);
-				message.channel.startTyping();
+				message.channel.sendTyping();
 				if (random === 3){
 					setTimeout(function(){
 						message.channel.send('ya si si bacan')
@@ -619,8 +603,7 @@ bot.on('message', message => {
 						setTimeout(function(){
 							message.channel.send('donde estan las wachas??')
 							.catch(() => console.error('Que onda?? No pude responder.'));
-							return message.channel.stopTyping(true);
-						}, 1070);
+						}, 1210);
 					}, 660);
 				} else if (random === 2){
 					setTimeout(function(){
@@ -629,9 +612,8 @@ bot.on('message', message => {
 						setTimeout(function(){
 							message.channel.send('manden minas')
 							.catch(() => console.error('Que onda?? No pude responder.'));
-							return message.channel.stopTyping(true);
-						}, 1070);
-					}, 720);
+						}, 1090);
+					}, 790);
 				} else if (random === 1){
 					setTimeout(function(){
 						message.channel.send('buena wn si')
@@ -639,9 +621,8 @@ bot.on('message', message => {
 						setTimeout(function(){
 							message.channel.send('y las minas cuando?')
 							.catch(() => console.error('Que onda?? No pude responder.'));
-							return message.channel.stopTyping(true);
-						}, 1070);
-					}, 720);
+						}, 1180);
+					}, 700);
 				} else {
 					setTimeout(function(){
 						message.channel.send('hablan pura mierda wn')
@@ -649,9 +630,8 @@ bot.on('message', message => {
 						setTimeout(function(){
 							message.channel.send('suban alguna wea')
 							.catch(() => console.error('Que onda?? No pude responder.'));
-							return message.channel.stopTyping(true);
-						}, 1070);
-					}, 720);
+						}, 1130);
+					}, 740);
 				};
 				try {
 					message.channel.setRateLimitPerUser(60);
@@ -678,7 +658,7 @@ bot.on('message', message => {
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
-		return message.reply('basta wn, por privado no');
+		return message.reply({ content: 'por privado no wn', allowedMentions: { repliedUser: false }});
 	}
 
 	//Screenshot reading with TesseractOCR
@@ -689,34 +669,29 @@ bot.on('message', message => {
 		const { data: { text } } = await worker.recognize(attachment);
 		console.log(text);
 		if (text.toLowerCase().includes(`genshin`)) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`juego qlo malo aguante el gears`);
-			return message.channel.stopTyping(true);
 			}, Number(1550));
 		} else if (text.toLowerCase().includes(`nekopara`)) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`la wea buena`);
-			return message.channel.stopTyping(true);
 			}, Number(600));
 		} else if (text.toLowerCase().includes(`sopmod`)) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`la wea mala oh`);
-			return message.channel.stopTyping(true);
 			}, Number(660));
 		} else if (text.toLowerCase().includes(`grego`)) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`<:Grego2:852589102804107264>⁉`);
-			return message.channel.stopTyping(true);
 			}, Number(360));
 		} else if (text.toLowerCase().includes(`notebook`) || text.toLowerCase().includes(`laptop`)) {
-			message.channel.startTyping();
+			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`en las mierdas que te gastai la plata`);
-			return message.channel.stopTyping(true);
 			}, Number(720));
 		};
 		await worker.terminate();
@@ -759,7 +734,7 @@ bot.on('message', message => {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		message.reply('estoy hecho mierda weon!');
+		message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 	}
 
 });

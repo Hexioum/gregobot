@@ -29,7 +29,7 @@ module.exports = {
 		async function fetchMsg () {
 			try {
 				console.log(memes);
-				message.channel.startTyping();
+				message.channel.sendTyping();
 				if (args[0].toLowerCase().startsWith(`http`)) {
 					sauceGet();
 				} else {
@@ -37,8 +37,7 @@ module.exports = {
 				}
 			}
 			catch(err) {
-				console.log("chucha:"+err);
-				return message.channel.stopTyping(true);
+				return console.log("chucha:"+err);
 			}
 		}
 		async function getURL () {
@@ -71,7 +70,6 @@ module.exports = {
 						message.channel.send("puta no se wn");
 						
 						let filter = m => m.author.id === message.author.id;
-						message.channel.stopTyping(true);
 						message.channel.send(`meh`).then(() => {
 							message.channel.awaitMessages(filter, {
 								max: 1,
@@ -115,7 +113,6 @@ module.exports = {
 		
 		async function sauceGet () {
 			console.log(`Buscando el source de `+url1.substring(url1.lastIndexOf('/')+1))
-			message.channel.stopTyping(true);
 			try {
 				results = await client(url1);
 			} catch {
@@ -123,8 +120,7 @@ module.exports = {
 					results = await client(url2);
 				} catch(err) {
 					message.channel.send(`<@${member.id}> ERROR\nintenta copiando el link de la imágen y poniendo "gr salsa, https..."`);
-					console.log(`chucha: `+err);
-					return message.channel.stopTyping(true);
+					return console.log(`chucha: `+err);
 				}
 			}
 			for (let i = 0; i < results.length; i++) {

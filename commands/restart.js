@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const db = require('quick.db');
-const client = new Discord.Client();
+const client = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS'] });
+const { gregorid } = require('../config.json');
 module.exports = {
 	name: 'restart',
 	aliases: ['update','reinicia'],
@@ -17,6 +18,7 @@ module.exports = {
     bot.user.setAvatar(myUser.avatarURL())})
 	.then(() => console.log(myUser))
 	.catch((err) => console.log(`avatarURL:`+err));*/
+	const memberGr = client.users.fetch(gregorid);
     try {
 		if (args[0] === "booru") {
 			db.delete(`booru_cd`);
@@ -27,16 +29,33 @@ module.exports = {
 			db.delete(`booruLastfind`);
 		} else if (args[0] === "wishlists") {
 			db.delete(`wishlists`);
-		};
-		message.channel.send("volveré...").then(msg => {
-			setTimeout(function(){
-				msg.edit("toc toc!");
-				msg.react('🆗');
-				message.channel.stopTyping(true);
-			}, 6000);
-		})
-		.then(client.destroy())
-		.then(client.login(process.env.BOT_TOKEN))
+		}
+		if (args[0] === "avatar") {
+			try {
+				client.user.setAvatar("https://cdn.discordapp.com/avatars/"+memberGr.id+"/"+memberGr.avatar+".jpeg");
+				try {
+					return message.react('✅');
+				} catch (err) {
+					return console.log(`No puedo reaccionar: ${err}`);
+				};
+			} catch(err) {
+				console.log("No puedo cambiar el avatar: "+err)
+				try {
+					return message.react('❌');
+				} catch (err) {
+					return console.log(`No puedo reaccionar: ${err}`);
+				};
+			}
+		} else {
+			message.channel.send("volveré...").then(msg => {
+				setTimeout(function(){
+					msg.edit("toc toc!");
+					msg.react('🆗');
+				}, 5000);
+			})
+			.then(client.destroy())
+			.then(client.login(process.env.BOT_TOKEN))
+		}
 
 		} catch(e) {
 			message.channel.send(`ERROR: ${e.message}`)

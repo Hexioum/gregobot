@@ -1,13 +1,5 @@
 const fs = require("fs")
 const Discord = require('discord.js');
-const bot = new Discord.Client({ 
-ws: { intents: [
-	'GUILDS',
-	'GUILD_PRESENCES',
-	'GUILD_MEMBERS',
-	'GUILD_MESSAGES',
-	'GUILD_MESSAGE_REACTIONS'] }
-});
 module.exports = {
 	name: 'frases',
 	aliases: ['quotes','frase funa','funas','ff'],
@@ -96,7 +88,7 @@ module.exports = {
 
     // Set up page reactions.
     const lFilter = (reaction, user) => reaction.emoji.name === '◀' && user.id === message.author.id;
-    const lCollector = listMsg.createReactionCollector(lFilter, { max: 1 });
+    const lCollector = listMsg.createReactionCollector({lFilter, max: 1 });
 
     lCollector.on('collect', async () => {
       rCollector.stop();
@@ -111,7 +103,7 @@ module.exports = {
     });
 
     const rFilter = (reaction, user) => reaction.emoji.name === '▶' && user.id === message.author.id;
-    const rCollector = listMsg.createReactionCollector(rFilter, { max: 1 });
+    const rCollector = listMsg.createReactionCollector({rFilter, max: 1 });
 
     rCollector.on('collect', async () => {
       lCollector.stop();

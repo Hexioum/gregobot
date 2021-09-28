@@ -47,8 +47,7 @@ const alChars = [
 ]
 
 const fateapoChars = [
-    "jack the ripper",
-    "jeanne d'arc"
+    "jack the ripper", "jeanne d'arc"
 ]
 
 const fateChars = [
@@ -80,19 +79,13 @@ const fategoChars = [
     "ushiwakamaru"
 ]
 
-const gflChars = [
-    "43m", "6p62", "9a-91",
-    "a-91", "aa-12", "aat-52", "ads", "aek-999", "ak-12", "ak-15", "ak-47", "ak-74u", "ak-alfa",
-    "ameli", "an94", "ar70", "art556", "arx-160", "as val", "ash-12.7", "astra", "aug",
-    "ballista", "bren ten", "bren",
+const gflChars = [//removed "bren ten"
+    "43m", "6p62", "9a-91", "a-91", "aa-12", "aat-52", "ads", "aek-999", "ak-12", "ak-15", "ak-47", "ak-74u", "ak-alfa",
+    "ameli", "an94", "ar70", "art556", "arx-160", "as val", "ash-12.7", "astra", "aug", "ballista", "bren",
     "c-93", "c-ms", "c96", "carcano m1891", "carcano m91/38", "caws", "cf05",
-    "contender", "cr-21", "cz-52", "cz-805", "cz2000", "cz75",
-    "dp-12", "dp28", "dsr-50",
-    "em-2", "evo 3",
-    "f1", "f2000", "fal", "falcon", "famas", "fg42", "five-seven",
-    "fmg-9", "fnc", "fnp9", "fp-6",
-    "g11", "g17", "g28", "g3", "g36", "g36c", "g41", "g43",
-    "galil", "gepard m1", "gr hk45", "grizzly", "gsh-18",
+    "contender", "cr-21", "cz-52", "cz-805", "cz2000", "cz75", "dp-12", "dp28", "dsr-50", "em-2", "evo 3",
+    "f1", "f2000", "fal", "falcon", "famas", "fg42", "five-seven", "fmg-9", "fnc", "fnp9", "fp-6",
+    "g11", "g17", "g28", "g3", "g36", "g36c", "g41", "g43", "galil", "gepard m1", "gr hk45", "grizzly", "gsh-18",
     "hk33", "hk416", "hmg21", "honey badger", "howa 89", "hp-35", "hs2000",
     "idw", "ingram", "ithaca m37", "iws-2000", "jericho", "js 9", "js05",
     "k11", "k2", "k3", "k31", "k5", "kac-pdw", "kar98k", "klin", "ks-23", "ksg", "ksvk",
@@ -105,17 +98,15 @@ const gflChars = [
     "negev", "ns2000", "ntw-20", "nyto black", "nyto mercurows", "nyto nimogen", "nyto polaroid",
     "ots-12", "ots-14", "ots-39", "ots-44", "p08", "p22", "p226", "p30", "p38", "p7", "p90", "p99", "pa-15", "pk", "pkp",
     "pp-19", "pp-19-01", "pp-2000", "pp-90", "ppk", "pps-41", "ppsh-41", "psg-1", "psm", "ptrd", "px4 storm", "python", "pzb39",
-    "qjy-88",
-    "r5", "r93", "rfb", "ribeyrolles", "rmb-93", "ro635", "rpd", "rpk-16", "rt-20", "s.a.t.8", "saa", "saf", "saiga-12", "sar-21",
-    "scw", "scarecrow", "serdyukov", "shipka", "sig-510", "sig-556", "six12", "skorpion", "sks", "sl8",
-    "spas-12", "spectre-m4", "spitfire", "spp-1", "spr a3g", "springfield", "sr-3mp", "srs", "ssg 69",
+    "qjy-88", "r5", "r93", "rfb", "ribeyrolles", "rmb-93", "ro635", "rpd", "rpk-16", "rt-20",
+    "s.a.t.8", "saa", "saf", "saiga-12", "sar-21", "scw", "scarecrow", "serdyukov", "shipka", "sig-510", "sig-556", "six12",
+    "skorpion", "sks", "sl8", "spas-12", "spectre-m4", "spitfire", "spp-1", "spr a3g", "springfield", "sr-3mp", "srs", "ssg 69",
     "st ar-15", "stechkin", "sten mkii", "steyr scout", "stg44", "suomi", "super sass", "super-shorty",
     "sv-98", "svd", "svt-38", "t-5000", "t-cms", "t65", "t77", "t91", "tabuk", "tac-50", "tar-21", "tec-9",
     "thompson", "thunder", "tmp", "tokarev", "type 56-1", "type 56r", "type 59", "type 62", "type 63", "type 64",
     "type 79", "type 80", "type 81", "type 88", "type 95", "type 92", "type 97", "type 97 shotgun", "type 100",
     "ukm-2000", "ump40", "ump45", "ump9", "usas-12", "usp compact", "vector", "vm59",
-    "wa2000", "webley", "welrod mk2", "welrod mkii", "wz.29", "x95", "xm3", "xm8",
-    "z-62", "zas m21", "zas m76", "zb-26"
+    "wa2000", "webley", "welrod mkii", "wz.29", "x95", "xm3", "xm8", "z-62", "zas m21", "zas m76", "zb-26"
 ]
 
 const giChars = [
@@ -151,12 +142,13 @@ module.exports = {
         var cdBooru = db.add(`booru_cd.${member.id}.rolls`, 0);
         var wishlist = db.get(`wishlists.${member.id}`);
         var isWished = false
-        if ((typeof args[0]==='undefined')&&(wishlist!== null)) {
+        if ((typeof args[0]==='undefined')&&(wishlist!== null)&&(typeof wishlist!=='undefined')) {
             console.log("Comprobando wishlist...");
             if (wishlist.length > 0) {
                 wishlist = wishlist.join();
                 wishlist = wishlist.split(',');
                 let random = Math.floor(Math.random() * 20);
+                console.log(`Random: ${random}\nWishlist contiene ${wishlist.length} personajes.`);
                 if (random > wishlist.length) {
                     console.log("El dado dice que será una búsqueda aleatoria.");
                     args[0] = '-rating:safe';
@@ -378,40 +370,40 @@ module.exports = {
                 args[0] = `open_mouth`;
                 poison.push('cum');
                 randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'rin tohsaka') {
-                args[0] = `toosaka_rin`
+            } else if (args[0].toLowerCase() === 'danmachi') {
+                args[0] = `dungeon_ni_deai_wo_motomeru_no_wa_machigatteiru_darou_ka`
+            } else if (args[0].toLowerCase() === 'fubuki') {
+                args[0] = `fubuki_(one-punch_man)`
             } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
                 args[0] = `jujutsu_kaisen`
             } else if ((args[0].toLowerCase() === 'mash')||(args[0].toLowerCase() === 'mashu')) {
                 args[0] = `mash_kyrielight`
             } else if (args[0].toLowerCase() === 'beni-enma') {
                 args[0] = `benienma_(fate)`
-            } else if (args[0].toLowerCase() === 'misty') {
-                args[0] = `kasumi_(pokemon)`
-            } else if (args[0].toLowerCase() === 'sabrina') {
-                args[0] = `natsume_(pokemon)`
-            } else if (args[0].toLowerCase() === 'whitney') {
-                args[0] = `akane_(pokemon)`
-            } else if (args[0].toLowerCase() === 'nessa') {
-                args[0] = `rurina_(pokemon)`
             } else if (args[0].toLowerCase() === 'ganyu leche') {
                 args[0] = `ganyu_(genshin_impact)`;
                 poison.push('lactation');
                 randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'misty') {
+                args[0] = `kasumi_(pokemon)`
+            } else if (args[0].toLowerCase() === 'nessa') {
+                args[0] = `rurina_(pokemon)`
+            } else if (args[0].toLowerCase() === 'rin tohsaka') {
+                args[0] = `toosaka_rin`
+            } else if (args[0].toLowerCase() === 'sabrina') {
+                args[0] = `natsume_(pokemon)`
+            } else if (args[0].toLowerCase() === 'whitney') {
+                args[0] = `akane_(pokemon)`
             } else if (args[0].toLowerCase() === 'xiangling zorra pelua') {
                 args[0] = `xiangling_(genshin_impact)`;
                 poison.push('pubic_hair');
                 randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'klee meao') {
-                args[0] = `klee_(genshin_impact)`;
-                poison.push('urine');
-                randomPo = poison.length-1;
-            } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {     //FILTER
-                args[0] = `${args[0]}_(genshin_impact)`
             } else if (args[0].toLowerCase() === 'super shorty') {
                 args[0] = `super_shorty_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'calico m950a') {
                 args[0] = `m950a_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'welrod mk2') {
+                args[0] = `welrod_mkii_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'nimogen') {
                 args[0] = `nyto_nimogen_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'mercurows') {
@@ -440,6 +432,8 @@ module.exports = {
                 args[0] = `${args[0]}_(fate/extra)`
             } else if (fategoChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(fate/grand_order)`
+            } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(genshin_impact)`
             } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(girls_frontline)`
             } else if (pkmnChars.indexOf(args[0].toLowerCase()) > -1) {
@@ -459,7 +453,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
             args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
             console.log(`Buscando ${args[0]}...`);
-            return args[0];
+            return args[0];//.trim()?
         };
 
 		async function startBooru () {
@@ -470,15 +464,13 @@ module.exports = {
             };
             if ((boorus.length > 0)&&(retries < 5)) {
                 try {
-                    message.channel.startTyping();
+                    message.channel.sendTyping();
                     console.log(`Boorus restantes: `+boorus);
                     await searchBoorus();
                 } catch(err) {
                     retries = retries+1;
                     startBooru();
                     console.log("chucha:"+err+"\nReintentando...");
-                } finally {
-                    return message.channel.stopTyping(true);
                 };
             } else if (retries === 5) {
                 console.log("Buscando en Google Imágenes...");
@@ -492,7 +484,6 @@ module.exports = {
             } else {
                 db.subtract(`booru_cd.${member.id}.rolls`, 1);
                 message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
-                message.channel.stopTyping(true);
                 return console.log("chucha: No encontré nada.");
             };
         };
@@ -518,7 +509,7 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/\(fate\/grand_order+/gi, '(fate');
                 args[0] = args[0].toLowerCase().replace(/\(fate\/extra+/gi, '(fate');
                 args[0] = args[0].toLowerCase().replace(/girls_frontline+/gi, `girls'_frontline`);
-                //Removes topic if it's danbooru because they limit their tag search, also remove if He ain't finding anything?
+                //Removes topic if it's danbooru because they limit their tag search, also remove if isn't finding anything?
                 tags.splice(1,1);
                 //var booruRemoved = boorus.shift(); // Removes the first booru
             }
@@ -554,7 +545,6 @@ module.exports = {
                         message.channel.send(posts[0].fileUrl);
                         console.log("Chucha, pesa mucho :(");
                     } finally {
-                        message.channel.stopTyping(true);
                         return esperarRespuesta();
                     }
                 } else {
@@ -590,7 +580,7 @@ module.exports = {
                                 url = posts[0].fileUrl;
                                 db.push('booruLastfind', md5(posts[0].fileUrl));
                                 //const msg = message.channel.send({files: [posts[0].fileUrl]})
-                                const msg = message.channel.send(posts[0].fileUrl)
+                                const msg = message.reply(posts[0].fileUrl)
                                 .then(() => db.add(`booru_cd.${member.id}.rolls`, 1))
                                 .catch(() => imgReduce(posts, url));
                                 return esperarRespuesta(msg);
@@ -621,8 +611,6 @@ module.exports = {
                         console.log("No puedo enviar el resultado de Google.");
                         retries = retries+1;
                         startBooru();
-                    } finally {
-                        return message.channel.stopTyping(true);
                     }
                 } else {
                     retries = retries+1;
@@ -647,7 +635,6 @@ module.exports = {
             .toBuffer()
             .then(function(outputBuffer) {
                 console.log(`Reduciendo tamaño de archivo...`);
-                message.channel.stopTyping(true);
                 return message.channel.send({ files: [outputBuffer] });
             })
             .catch(err => {
@@ -657,8 +644,6 @@ module.exports = {
                     db.add(`booru_cd.${member.id}.rolls`, 1);
                 } catch {
                     console.log("Posts[0] no existe?");
-                } finally {
-                    return message.channel.stopTyping(true);
                 };
             })
         };
@@ -667,7 +652,6 @@ module.exports = {
 		async function emojiMessage(message, validReactions) {
             for (const reaction of validReactions) await message.react(reaction);
         const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && (!user.bot)
-		message.channel.stopTyping(true);
 
         return message
             .awaitReactions(filter, {
@@ -719,25 +703,6 @@ module.exports = {
             .catch(collected => {
                 return console.log('Se acabó el tiempo, nadie me insultó. Gané.');
             });
-        };
-
-        function getFileSize(url) {
-            console.log(`Entrando a la función getFileSize de:\n${url}`);
-            fileSize = '';//var
-            var http = new XMLHttpRequest();
-            http.open('HEAD', url, true); // true = Asynchronous
-            http.onreadystatechange = function() {
-                if (this.readyState == this.DONE) {
-                    if (this.status === 200) {
-                        fileSize = this.getResponseHeader('content-length');
-                        console.log('fileSize = ' + fileSize);
-                        // ok here is the only place in the code where we have our request result and file size ...
-                        // the problem is that here we are in the middle of anonymous function nested into another function
-                    }
-                }
-            };
-            http.send(); // it will submit request and jump to the next line immediately, without even waiting for request result b/c we used ASYNC XHR call
-            return ('At this moment, we do not even have Request Results b/c we used ASYNC call to follow');
         };
 
     },
