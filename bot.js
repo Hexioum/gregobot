@@ -13,6 +13,8 @@ const worker = createWorker({
 var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
+// PostgreSQL is a hard-to-use database manager.
+const dbp = require('./models/index.js');
 
 // create a new Discord client
 const bot = new Discord.Client({ 
@@ -20,19 +22,18 @@ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MES
 );
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
-const cooldowns = new Map();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
-const devMode = false; //ATTENTION
+const devMode = true; //ATTENTION
 const activitiesList = [
     "League of Legends",
     "League of Legends",
     "Warframe",
     "Warframe",
-	"Warframe",
-    "Spacewar",
-    "Spacewar",
+	"Spacewar",
+    "OpenOSRS",
+    "OpenOSRS",
 	"Old School RuneScape",
 	"World of Warcraft Classic",
     "Counter-Strike: Global Offensive",
@@ -123,7 +124,7 @@ const bannedSymbols = [
     "sᴏᴘᴍᴏᴅ", "ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝", "ˢᵒᵖᵐᵒᵈ", "𝔖𝔬𝔭𝔪𝔬𝔡", "𝕾𝖔𝖕𝖒𝖔𝖉", "𝔰𝔬𝔭𝔪𝔬𝔡", "𝔖𝔒𝔓𝔐𝔒𝔇", "𝕾𝕺𝕻𝕸𝕺𝕯", "丂口尸从口刀"
     ]; // Shorter version
 const responseObject = {
-	"$rtu": "¡$rt está disponible!",
+	"$rtu": "¡$rt no está disponible!",
 	"grego?": "que wea",
 	"Grego?": "Que wea",
 	"gregO?": "que weA",
@@ -225,10 +226,10 @@ bot.on('ready', function () {
 		console.log(`Channel's new topic is "${topicList[topic]}".`);
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
-        const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1); // generates a random number between 1 and the length of the activities array list.
-        bot.user.setActivity(activitiesList[index], { type: 'COMPETING' }); // sets bot's activities to one of the phrases in the arraylist.
+        const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
+        bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }); // sets bot's activities to one of the phrases in the arraylist.
 		console.log(`Ahora jugando a ${activitiesList[index]}`);
-    }, 390000); // Runs this every 390 seconds.
+    }, 420000); // Runs this every 420 seconds.
 });
 //	async member*
 bot.on('guildMemberAdd', member => {
@@ -298,9 +299,10 @@ bot.on('messageCreate', message => {
 	// If message channel is #tech or #gallery
 	if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) {
 		console.log('Se ha enviado un mensaje a #tech o #gallery');
-		if ((message.attachments.size > 0)||(message.content.toLowerCase().startsWith(`http`))) {
-		console.log('El contenido enviado corresponde.');
+		if ((message.attachments.size > 0)||((message.content.toLowerCase().startsWith(`http://`)||message.content.toLowerCase().startsWith(`https://`))&&(!message.content.toLowerCase().includes('tenor.')))) {
+			console.log('El contenido enviado corresponde.');
 		} else {
+			//var lastMessage = message.channel.messages.fetch({limit: 1})
 			try {
 				message.delete();
 				return console.log(`Se ha borrado el mensaje: ${message}`);
@@ -498,27 +500,15 @@ bot.on('messageCreate', message => {
 				.then(() => message.channel.send({files: [`./memes/kabaltroteligero.gif`]}))
 				.catch(() => console.error('Que onda?? No pude responder.'));
 		};
-	} else if (message.content.toLowerCase().startsWith(`ah esta el gr`)) {
-		message.channel.send('se wn');
 	} else if (message.content.toLowerCase().startsWith(`buena grego`) || message.content.toLowerCase().startsWith(`hola grego`)) {
 		message.channel.send('wena');
-	} else if (message.content.toLowerCase().startsWith(`wena grego`)) {
-		message.channel.send('wena wena')
-			.then(() => message.channel.send('quien su lol?'))
-			.catch(() => console.error('Que onda?? No pude responder.'));
-	} else if (message.content.startsWith(`XD`)) {
-		message.channel.send({files: ['./memes/;momopatas;.png']});
-	} else if (message.content.toLowerCase().startsWith(`mañana `)) {
-		message.channel.send('no te creo nada')
-			.then(() => message.channel.send('mentiroso qlo'))
-			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
-			.catch(() => console.error('Que onda?? No pude responder.'));
-	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
-		message.channel.send('Si.');
 	} else if (message.content.toLowerCase().startsWith(`cierto grego`)) {
-		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego2:852589102804107264>", "<:Grego2:852589102804107264>:interrobang:", "Si."];
-		let random = Math.floor(Math.random() * 5);
-		message.channel.send(replies[random]);
+		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego2:852589102804107264>", "<:Grego2:852589102804107264>:interrobang:", "Si.", "se wn"];
+		let random = Math.floor(Math.random() * 6);
+		message.channel.sendTyping();
+		setTimeout(function(){
+			message.channel.send(replies[random]);
+		}, Number(900+randomKps));
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
 		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio", "fue el moreira wn"];
 		let random = Math.floor(Math.random() * 6);
@@ -527,21 +517,13 @@ bot.on('messageCreate', message => {
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
-	} else if (message.content.toLowerCase().includes(`lucho`)) {
-		let random = Math.floor(Math.random() * 250);
-		if (random == 0) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`cual lucho?`);
-			}, Number(550+randomKps));
-		}
 	} else if (message.content.toLowerCase().includes(`genshin`)) {
 		let random = Math.floor(Math.random() * 5);
 		if (random == 0) {
 			message.channel.sendTyping();
 			setTimeout(function(){
 			message.channel.send(`mas razones por odiar esa wea de juego`);
-		}, Number(1900+randomKps));//tomando en cuenta los keystrokes por segundo promedio de gr que seguramente es de 5.
+		}, Number(1900+randomKps));//tomando en cuenta los keystrokes por segundo promedio de gr que puede ser de 5.
 		} else if (random == 1) {
 			message.channel.sendTyping();
 			setTimeout(function(){
@@ -558,13 +540,26 @@ bot.on('messageCreate', message => {
 			message.channel.send(`otra razon mas para no volver a la mierda`);
 		}, Number(2000+randomKps));
 		};
-	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
-		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.startsWith(`grego decide `)) {
 		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
 	} else if (message.content.startsWith(`grego elige `)) {
 		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
-	} else if ((message.content.length > 899)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
+	} else if (message.content.toLowerCase().startsWith(`mañana `)) {
+		message.channel.send('no te creo nada')
+			.then(() => message.channel.send('mentiroso qlo'))
+			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
+			.catch(() => console.error('Que onda?? No pude responder.'));
+	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
+		message.channel.send({files: ['./memes/;momopatas;.png']});
+	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
+		message.channel.send('Si.');
+	} else if (message.content.toLowerCase().startsWith(`wena grego`)) {
+		message.channel.send('wena wena')
+			.then(() => message.channel.send('quien su lol?'))
+			.catch(() => console.error('Que onda?? No pude responder.'));
+	} else if (message.content.startsWith(`XD`)) {
+		message.channel.send({files: ['./memes/;momopatas;.png']});
+	} else if ((message.content.length > 800)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
 		message.channel.send(`increible`);
 		return message.delete();
     } else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
@@ -590,7 +585,7 @@ bot.on('messageCreate', message => {
 			try {
 				db.add(`booru.textCount`, 1);
 			} catch {
-				console.log(`Error en línea 600 de bot.js`);
+				console.log(`Error en línea 580 de bot.js`);
 			};
 			if ((textCounter!== null)&&(textCounter == 20)) {
 				console.log("Están hablando demasiado.");
@@ -642,7 +637,7 @@ bot.on('messageCreate', message => {
 		};
 	}
 	
-	const prefixes = ['Grego ', 'grego ', 'Gr ', 'gr '];
+	const prefixes = ['Grego ', 'grego ', 'Gr ', 'gr ', 'GREGO '];
 	const prefix = prefixes.find(p => message.content.startsWith(p));
 //	if (!prefix) return;
 	
