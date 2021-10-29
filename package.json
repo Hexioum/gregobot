@@ -40,6 +40,6 @@
     "zlib-sync": "^0.1.7"
   },
   "scripts": {
-    "start": "npm rebuild"
+    "start": "node ."
   }
 }
