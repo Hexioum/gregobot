@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const db = require('quick.db');
 const client = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS'] });
-const { gregorid } = require('../config.json');
+const { token, gregorid } = require('../config.json');
 module.exports = {
 	name: 'restart',
 	aliases: ['update','reinicia'],
@@ -18,7 +18,7 @@ module.exports = {
     bot.user.setAvatar(myUser.avatarURL())})
 	.then(() => console.log(myUser))
 	.catch((err) => console.log(`avatarURL:`+err));*/
-	const memberGr = client.users.fetch(gregorid);
+	//const memberGr = client.users.fetch(gregorid);
     try {
 		if (args[0] === "booru") {
 			db.delete(`booru_cd`);
@@ -32,7 +32,8 @@ module.exports = {
 		}
 		if (args[0] === "avatar") {
 			try {
-				client.user.setAvatar("https://cdn.discordapp.com/avatars/"+memberGr.id+"/"+memberGr.avatar+".jpeg");
+				//client.user.setAvatar(memberGr.avatarURL());
+				console.log(getAvatar());
 				try {
 					return message.react('✅');
 				} catch (err) {
@@ -51,7 +52,7 @@ module.exports = {
 				setTimeout(function(){
 					msg.edit("toc toc!");
 					msg.react('🆗');
-				}, 5000);
+				}, 4000);
 			})
 			.then(client.destroy())
 			.then(client.login(process.env.BOT_TOKEN))
@@ -60,5 +61,12 @@ module.exports = {
 		} catch(e) {
 			message.channel.send(`ERROR: ${e.message}`)
 		}
+
+		async function getAvatar (avUrl) {
+		const { displayAvatarURL } = await client.users.fetch(gregorid)
+		.catch(console.error);
+
+		return avUrl;
+		};
 	}
 }

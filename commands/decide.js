@@ -5,7 +5,7 @@ module.exports = {
 	args: true,
 	usage: '<opcion1>, <opcion2>',
 	execute(message, args) {
-	message.channel.startTyping();
+	message.channel.sendTyping();
 	var oneRegex = / gay+| homo+| trans+| lgbt+/gi ;
 	var oneMatch = args.some(e => oneRegex.test(e));
 	var twoRegex = / peruano+| venezolano+| venaco+| negro+| haitiano+/gi ;
@@ -85,6 +85,5 @@ setTimeout(function(){
 		}
 		//	Removes special symbols.
 		else message.channel.send(args[random].replace(/[^\w\s\xc0-\xff]/gi, ''))
-		return message.channel.stopTyping(true);
-	}, 1000);
+	}, 2000);
 }};

@@ -10,14 +10,11 @@ const clientId = process.env.IMGUR_CLIENTID;
 const albumId = process.env.IMGUR_ALBUMID;
 imgur.setClientId(clientId)
 imgur.setAPIUrl('https://api.imgur.com/3/')
-// Imgur V2
-/*const { ImgurClient } = require('imgur');
-//imgcli = new ImgurClient({ accessToken: process.env.IMGUR_SECRET });
-imgcli = new ImgurClient({
-	username: process.env.IMGUR_USERNAME,
-	password: process.env.IMGUR_PASSWORD,
-	clientId: process.env.IMGUR_CLIENTID,
-  });*/
+
+//Troubleshoot
+const disableCommand = false;
+const disableTyping = false;
+
 const bot = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] });
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
@@ -46,14 +43,14 @@ module.exports = {
 	usage: 'Alineación (numpad), Marco, Ángulo',
 	execute(message, args) {
 		if (message.channel.id === 441386860300730378) {
-			return message.channel.send('usa <#742472922093846588> po');
+			return message.reply('usa <#742472922093846588> po');
 		}
 
 		if (args.length > 4) {
-			return message.channel.send('demasiados argumentos');
+			return message.reply('demasiados argumentos');
 		}
 		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
-			return message.channel.send(helpEmbed);
+			return message.reply({ embeds: [helpEmbed] });
 		}
 		console.log(backgrounds);
 		let theImage = "PIC1.PNG";
@@ -77,11 +74,10 @@ module.exports = {
 		}
 		if (typeof args[0] === 'undefined') {
 			args[0] = 0;
-			console.log(args[0])
 		} 
 		try {if (backgrounds.includes("bg_"+args[0].toLowerCase()+".png") === false) {
 			console.log(args[0]);//Can't use args[0].toLowerCase() since it returns TypeError when args[0] is not specified.
-			return message.channel.send('no tengo ese fondo');
+			return message.reply('no tengo ese fondo');
 			}
 		} catch {
 			args[0] = 0;
@@ -206,7 +202,7 @@ module.exports = {
 					.then(function(outputBuffer) {
 					console.log(`Generando carta para ${member.username}, marco ${args[1]} y alineación ${alignment[Number(args[2])]}.`);
 					finalResult = outputBuffer;
-					message.channel.send(`<@${member.id}> toma amigo :))))))))`, { files: [outputBuffer] })
+					message.reply({ content:`toma amigo :))))))))`, files:[outputBuffer] })
 					.then((message) => deleteMessage(message, outputBuffer))
 					.catch(err => {
 						message.channel.send(`estoy hecho mierda <@${member.id}>`)
@@ -271,46 +267,25 @@ module.exports = {
 				try {
 					message.reactions.removeAll();
 					//hay que convertir el buffer de finalResult a base64
-					await cardUpload(finalResult);
+					await cardUpload(message);
 				} catch(err) {
 						console.log("Error al intentar remover los emojis.");
 				};
-				/*
-				*  Aqui despues borro el mensaje y redirijo a otra función async que subirá el archivo a imgur.
-				*/
 			}
 		}
 			
-		async function cardUpload () {
+		async function cardUpload (message) {
 			//fOutput = `./card_${random}.png`
-			message.channel.sendTyping();
-			console.log(`Iniciando subida a Imgur...\nArchivo: ${finalResult.toString('base64').substring(0,64)}`);
+			console.log(`Iniciando subida a Imgur...\nArchivo: ${finalResult.toString('base64').substring(0,32)}`);
 			imgur.setCredentials(process.env.IMGUR_USERNAME, process.env.IMGUR_PASSWORD, process.env.IMGUR_CLIENTID);
 			imgur.uploadBase64(finalResult.toString('base64'), albumId).then((json) => {
 				console.log(json.link);
-				return message.channel.send(`<@${member.id}>\n$ai **NOMBRE** $${json.link}`);
-				// .send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${json.link}\`\`\``);
+				//return message.channel.send(`<@${member.id}>\n$ai **NOMBRE** $${json.link}`);
+				return message.edit(`\`\`\`$ai NOMBRE $${json.link}\`\`\``);
 			}).catch((err) => {
-				message.reply(`no pude subirla 😦`);
+				message.edit(`no pude subirla 😦`);
 				return console.log("cardUpload: "+err);
 			});
-			
-			/*try {
-				//imgcli.on('uploadProgress', (progress) => console.log(progress));
-				const response = await imgcli.upload({
-					image: `${finalResult.toString('base64')}`,
-					album: 'xf1t75w',
-					type: 'base64',
-					title: 'Mudacrop',
-					description: `Requested by ${message.author.username}`,
-				});
-				console.log(response.data.link);
-				message.channel.send(`<@${member.id}>\n\`\`\`$ai NOMBRE $${response.data.link}\`\`\``)
-			} catch(err) {
-				//message.react(`⚠`);
-				message.channel.send(`no pude subirla 😦`);
-				return console.log("cardUpload: "+err);
-			}*/
 		}
 	},
 };

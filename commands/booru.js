@@ -7,6 +7,10 @@ const db = require('quick.db');
 const Discord = require('discord.js');
 const sharp = require('sharp');
 
+//Troubleshoot
+const disableCommand = false;
+const disableTyping = false;
+
 const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#00B0F4')
 	.setTitle('Aportes')
@@ -20,6 +24,13 @@ const helpEmbed = new Discord.MessageEmbed()
 	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, postea, sacate uno, skt1', false)
 	.setTimestamp()
 	.setFooter('gregobot® 2021');
+
+const booruEmbed = new Discord.MessageEmbed()
+    .setColor('#FF9C2C')
+    .setTitle('Post')
+    .setURL('https://vimeo.com/434895153')
+    .setDescription('Tags')
+    .setFooter('Booru');
 
 const alChars = [
     "amagi",
@@ -52,6 +63,7 @@ const fateapoChars = [
 
 const fateChars = [
     "benienma",
+    "euryale",
     "francis drake",
     "helena blavatsky",
     "ibaraki douji",
@@ -79,8 +91,20 @@ const fategoChars = [
     "ushiwakamaru"
 ]
 
+const gbfChars = [
+    "alba","alexiel","alicia","aliza","almeida","anila","anthuria","augusta","azrael",
+    "beatrix","cagliostro","camieux","carmelina","catura","charlotta","chloe","clarisse","cucouroux",
+    "danua","djeeta","erin","esser","europa","ferry","fraux","friday","gabriel",
+    "halluel","helel ben shalem","heles","illnott","ilsa","io","izmir","jessica",
+    "karva","katalina","korwa","kumbhira","la coiffe","lecia","leviathan","lily","lyria",
+    "magisa", "malluel", "maria theresa", "mary", "medusa", "metera", "mirin",
+    "narmaya","nier","nio","orchid","pholia","predator","razia","rosamia","rosetta",
+    "sarasa","satyr","scathacha","selfira","sen","shitori","shura","silva","societte","song","sturm",
+    "tabina","tanya","therese","vajra","vikala","vira","yggy","yuel","yuisis","zeta","zooey"
+]
+
 const gflChars = [//removed "bren ten"
-    "43m", "6p62", "9a-91", "a-91", "aa-12", "aat-52", "ads", "aek-999", "ak-12", "ak-15", "ak-47", "ak-74u", "ak-alfa",
+    "43m","6p62","9a-91","a-91","aa-12","aat-52","ads","aek-999","ak-12","ak-15","ak-47","ak-74u","ak-alfa",
     "ameli", "an94", "ar70", "art556", "arx-160", "as val", "ash-12.7", "astra", "aug", "ballista", "bren",
     "c-93", "c-ms", "c96", "carcano m1891", "carcano m91/38", "caws", "cf05",
     "contender", "cr-21", "cz-52", "cz-805", "cz2000", "cz75", "dp-12", "dp28", "dsr-50", "em-2", "evo 3",
@@ -134,8 +158,11 @@ module.exports = {
 	args: true,
 	usage: 'tags',
 	execute(message, args) {
-		if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
-			return message.channel.send(helpEmbed);
+        if (disableCommand == true) {
+            return message.reply("comando deshabilitado");
+        };
+        if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
+			return message.reply({ embeds: [helpEmbed] });
 		};
 		let member = message.author
         var lastFind = db.get('booruLastfind');
@@ -149,7 +176,7 @@ module.exports = {
                 wishlist = wishlist.split(',');
                 let random = Math.floor(Math.random() * 20);
                 console.log(`Random: ${random}\nWishlist contiene ${wishlist.length} personajes.`);
-                if (random > wishlist.length) {
+                if (random >= wishlist.length) {
                     console.log("El dado dice que será una búsqueda aleatoria.");
                     args[0] = '-rating:safe';
                 } else {
@@ -210,7 +237,7 @@ module.exports = {
             "breasts",
             "bikini",
             "cameltoe",
-            "censored",
+            "rating:q",
             "nipples",
             "pantsu",
             "uncensored"
@@ -239,18 +266,20 @@ module.exports = {
                     queryStringAddition: '&tbs=isz:l',  // Large images only
                     filterOutDomains: [
                         'blogspot.com',
-                        'hentai-img.com',
-                        'thatpervert.com',
-                        'sh-cdn.com',
-                        'preview.redd.it',
                         'external-preview.redd.it',
-                        'hentaifox.com'
+                        'hentai-img.com',
+                        'hentaifox.com',
+                        'preview.redd.it',
+                        'sh-cdn.com',
+                        'thatpervert.com',
+                        'wixmp.com'
                     ]
                 };
             };
         } else {
             if (random === 0) {
-                args[0] = imgofDay[Number(randomTopic)];
+                args[0] = '-rating:safe';
+                //args[0] = imgofDay[Number(randomTopic)];
             } else {
                 args[0] = '-rating:safe';
             };
@@ -322,18 +351,20 @@ module.exports = {
         }
 
         async function tagsFix() {
-		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
             if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('no');
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
+		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
             var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = / sopmod+| s0pm0d+| soppu+| sop mod+| gore+| grego+| gregorio+/gi ;
+            var twoRegex = / corpse+| decapitated+| gore+| guro+| sopmod+| s0pm0d+| soppu+/gi ;
             var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| milk+| lechita+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
             var fthRegex = / meao+| pichi+| pichí+/gi ;
             var fthMatch = args.some(e => fthRegex.test(e));
+            var fftRegex = / zorra pelua+| zorra peluda+/gi;
+            var fftMatch = args.some(e => fftRegex.test(e));
             if (oneMatch === true) {
                 poison.push('ass');
                 randomPo = poison.length-1;
@@ -350,22 +381,20 @@ module.exports = {
                 poison.push('urine');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
+            } else if (fftMatch === true) {
+                poison.push('pubic_hair');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ zorra pelua+| zorra peluda+/gi, '');
             }
 
-            if (args[0].toLowerCase().startsWith('zelda')) {
-                args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
-            } else if ((args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')) {
+            if ((args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')) {
                 args[0] = `loli`
-            } else if (args[0].toLowerCase() === 'pendejas rubias') {
-                if (random === 0) {
-                    args[0] = `loli`
-                } else {
-                    args[0] = `small_breasts`
-                };
-                poison.push('blonde_hair');
-                randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'leche') {
-                args[0] = `lactation`
+            } else if (args[0].toLowerCase() === 'akane inuwaka') {
+                args[0] = `inuwaka_akane`
+            } else if (args[0].toLowerCase() === 'beni-enma') {
+                args[0] = `benienma_(fate)`
+            } else if (args[0].toLowerCase() === 'calico m950a') {
+                args[0] = `m950a_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'cum eater') {
                 args[0] = `open_mouth`;
                 poison.push('cum');
@@ -374,54 +403,70 @@ module.exports = {
                 args[0] = `dungeon_ni_deai_wo_motomeru_no_wa_machigatteiru_darou_ka`
             } else if (args[0].toLowerCase() === 'fubuki') {
                 args[0] = `fubuki_(one-punch_man)`
-            } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
-                args[0] = `jujutsu_kaisen`
-            } else if ((args[0].toLowerCase() === 'mash')||(args[0].toLowerCase() === 'mashu')) {
-                args[0] = `mash_kyrielight`
-            } else if (args[0].toLowerCase() === 'beni-enma') {
-                args[0] = `benienma_(fate)`
             } else if (args[0].toLowerCase() === 'ganyu leche') {
                 args[0] = `ganyu_(genshin_impact)`;
                 poison.push('lactation');
                 randomPo = poison.length-1;
+            } else if ((args[0].toLowerCase() === 'javier perez')||(args[0].toLowerCase() === 'javier penes')) {
+                args[0] = `jujutsu_kaisen`
+            } else if (args[0].toLowerCase() === 'leche') {
+                args[0] = `lactation`
+            } else if (args[0].toLowerCase() === 'mash') {
+                args[0] = `mash_kyrielight`
+            } else if (args[0].toLowerCase() === 'matoi ryuko') {
+                args[0] = `matoi_ryuuko`
+            } else if (args[0].toLowerCase() === 'mercurows') {
+                args[0] = `nyto_mercurows_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'misty') {
                 args[0] = `kasumi_(pokemon)`
             } else if (args[0].toLowerCase() === 'nessa') {
                 args[0] = `rurina_(pokemon)`
-            } else if (args[0].toLowerCase() === 'rin tohsaka') {
-                args[0] = `toosaka_rin`
-            } else if (args[0].toLowerCase() === 'sabrina') {
-                args[0] = `natsume_(pokemon)`
-            } else if (args[0].toLowerCase() === 'whitney') {
-                args[0] = `akane_(pokemon)`
-            } else if (args[0].toLowerCase() === 'xiangling zorra pelua') {
-                args[0] = `xiangling_(genshin_impact)`;
-                poison.push('pubic_hair');
-                randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'super shorty') {
-                args[0] = `super_shorty_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'calico m950a') {
-                args[0] = `m950a_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'welrod mk2') {
-                args[0] = `welrod_mkii_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'nimogen') {
                 args[0] = `nyto_nimogen_(girls_frontline)`
-            } else if (args[0].toLowerCase() === 'mercurows') {
-                args[0] = `nyto_mercurows_(girls_frontline)`
+            } else if ((args[0].toLowerCase() === 'niña_moco')||(args[0].toLowerCase() === 'niñas_moco')) {
+                args[0] = `slime_girl`
+            } else if (args[0].toLowerCase().startsWith('zelda')) {
+                args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
             } else if (args[0].toLowerCase() === 'nyto') {
                 if (random === 0) {
                     args[0] = `nyto_black_(girls_frontline)`
                 } else {
                     args[0] = `nyto_polarday_(girls_frontline)`
                 }
+            } else if (args[0].toLowerCase() === 'pendejas rubias') {
+                if (random === 0) {
+                    args[0] = `loli`
+                } else {
+                    args[0] = `small_breasts`
+                };
+                poison.push('blonde_hair');
+                randomPo = poison.length-1;
+            } else if (args[0].toLowerCase() === 'porno') {
+                args[0] = `porno_(dohna_dohna)`
+            } else if (args[0].toLowerCase() === 'qwq') {
+                args[0] = `;_;`
+            } else if (args[0].toLowerCase() === 'rin tohsaka') {
+                args[0] = `toosaka_rin`
+            } else if (args[0].toLowerCase() === 'sabrina') {
+                args[0] = `natsume_(pokemon)`
+            } else if (args[0].toLowerCase() === 'satanichia') {
+                args[0] = `satanichia_kurumizawa_mcdowell`
+            } else if (args[0].toLowerCase() === 'super shorty') {
+                args[0] = `super_shorty_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'tummy') {
+                args[0] = `navel`
+            } else if (args[0].toLowerCase() === 'welrod mk2') {
+                args[0] = `welrod_mkii_(girls_frontline)`
+            } else if (args[0].toLowerCase() === 'whitney') {
+                args[0] = `akane_(pokemon)`
+            } else if (args[0].toLowerCase() === 'xiangling') {
+                args[0] = `xiangling_(genshin_impact)`;
+            } else if (args[0].toLowerCase().startsWith('zelda')) {
+                args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
             } else if (args[0].toLowerCase().startsWith('sexo')) {
                 args[0] = ``;
                 poison.push('sex');
                 randomPo = poison.length-1;
-            } else if (args[0].toLowerCase() === 'porno') {
-                args[0] = `porno_(dohna_dohna)`
-            } else if (args[0].toLowerCase() === 'satanichia') {
-                args[0] = `satanichia_kurumizawa_mcdowell`
             } else if (alChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
                 args[0] = `${args[0]}_(azur_lane)`
             } else if (fateapoChars.indexOf(args[0].toLowerCase()) > -1) {
@@ -432,6 +477,8 @@ module.exports = {
                 args[0] = `${args[0]}_(fate/extra)`
             } else if (fategoChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(fate/grand_order)`
+            } else if (gbfChars.indexOf(args[0].toLowerCase()) > -1) {
+                args[0] = `${args[0]}_(granblue_fantasy)`
             } else if (giChars.indexOf(args[0].toLowerCase()) > -1) {
                 args[0] = `${args[0]}_(genshin_impact)`
             } else if (gflChars.indexOf(args[0].toLowerCase()) > -1) {
@@ -450,6 +497,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
             args[0] = args[0].toLowerCase().replace(/\(hi\)+/gi, '(honkai_impact)');
             args[0] = args[0].toLowerCase().replace(/\(kc\)+/gi, '(kancolle)');//(kantai_collection)
+            args[0] = args[0].toLowerCase().replace(/\(opm\)+/gi, '(one-punch_man)');
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');
             args[0] = args[0].toLowerCase().replace(/\(dohna\)+|\(dd\)+/gi, '(dohna_dohna)');
             console.log(`Buscando ${args[0]}...`);
@@ -464,7 +512,9 @@ module.exports = {
             };
             if ((boorus.length > 0)&&(retries < 5)) {
                 try {
-                    message.channel.sendTyping();
+                    if (disableTyping == false) {
+                        message.channel.sendTyping();
+                    }
                     console.log(`Boorus restantes: `+boorus);
                     await searchBoorus();
                 } catch(err) {
@@ -483,7 +533,7 @@ module.exports = {
                 };
             } else {
                 db.subtract(`booru_cd.${member.id}.rolls`, 1);
-                message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
+                message.reply(`no encontre niuna wea con *${args[0]}* 🙁`);
                 return console.log("chucha: No encontré nada.");
             };
         };
@@ -504,24 +554,55 @@ module.exports = {
                 shuffle(poison);
             };
             
-
+            //Specific searches that prevents adding tags.
+            if ((args[0].startsWith('curss'))||(args[0].startsWith('slime_girl'))) {
+                tags[1] = "-rating:safe";
+            }
+            //TODO: Change specific tags from yande.re such as seifuku for school_uniform, or megane for glasses, nopan for no_panties.
             if ((boorus[0] === "danbooru")||(retries > 4)) {
+                //SERIES
                 args[0] = args[0].toLowerCase().replace(/\(fate\/grand_order+/gi, '(fate');
                 args[0] = args[0].toLowerCase().replace(/\(fate\/extra+/gi, '(fate');
                 args[0] = args[0].toLowerCase().replace(/girls_frontline+/gi, `girls'_frontline`);
-                //Removes topic if it's danbooru because they limit their tag search, also remove if isn't finding anything?
+                args[0] = args[0].toLowerCase().replace(/high_school_dxd+/gi, `highschool_dxd`);
+                //TAGS
+                args[0] = args[0].toLowerCase().replace(/megane+/gi, 'glasses');
+                args[0] = args[0].toLowerCase().replace(/nopan+/gi, 'no_panties');
+                args[0] = args[0].toLowerCase().replace(/seifuku+/gi, 'school_uniform');
+                //Removes topic if it's danbooru because they limit their tag search, also remove if does not find anything after 4 retries.
                 tags.splice(1,1);
-                //var booruRemoved = boorus.shift(); // Removes the first booru
+            } else if (boorus[0] === "gelbooru") {
+                imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/highschool_dxd+/gi, `high_school_dxd`);
+            } else if (boorus[0] === "konachan.com") {
+                if (args[0].startsWith('slime_girl')) {
+                    var booruRemoved = boorus.shift();
+                }
+            } else if (boorus[0] === "yande.re") {
+                if (args[0].startsWith('slime_girl')) {
+                    var booruRemoved = boorus.shift();
+                }
+                //TAGS
+                args[0] = args[0].toLowerCase().replace(/glasses+/gi, 'megane');
+                args[0] = args[0].toLowerCase().replace(/no_panties+/gi, 'nopan');
+                args[0] = args[0].toLowerCase().replace(/school_uniform+/gi, 'seifuku');
             }
             console.log(tags);
             
             console.log(`Se buscó el tag ${imgofDay[Number(day)-1]} y ${poison[Number(1)]} en ${boorus[Number(0)]}, para representar el día ${day}. Se supone que son las ${dayHours} hrs.`);
             
             // Check if the character exists
-            let posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
+            var posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
             
-            if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(posts[0].fileUrl) > -1)) {
-                console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+            if (lastFind == null) {
+                lastFind = ["empty"];
+            };
+            
+            if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(md5(posts[0].fileUrl)) > -1)) {
+                if (typeof posts[0] === 'undefined') {
+                    console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                } else {
+                    console.log(`Imagen repetida en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                };
                 if (nameIsflipped === true || !(args[0].includes("_"))) {
                     var booruRemoved = boorus.shift();  // Removes the first booru if the name was already flipped
                 };
@@ -549,7 +630,7 @@ module.exports = {
                     }
                 } else {
                     let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
-                    console.log(`Encontré esto: ${posts[0].fileUrl}\nScore: ${posts[0].score}\nRating: ${posts[0].rating}`);
+                    console.log(`Encontré esto: ${posts[0].fileUrl}\nRating: ${posts[0].rating}`);
 
                     if (typeof posts[0] === 'undefined') {
                         console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
@@ -563,27 +644,34 @@ module.exports = {
                         };
                     } else {
                         try {
-                            if ((boorus[0] === "danbooru")&&(posts[0].rating === 's')) {
+                            if ((boorus[0] === "danbooru")&&((posts[0].rating === 's')||(retries < 4))) {
                                 console.log("Meh, busco otra");
                                 var booruRemoved = boorus.shift();  // Removes the first booru
                                 // Retry without adding to the "retries" counter
                                 startBooru(); // Searches again
                             } else {
                                 console.log("Esta está buena, la envío altiro.");
-                                if (isWished) {
+                            /*    if (isWished) {
                                     try {
                                         message.react('🌟');
                                     } catch (err) {
                                         console.log(`No puedo reaccionar: ${err}`);
                                     };
-                                };
+                                };*/
                                 url = posts[0].fileUrl;
+                                if (typeof lastFind !== 'undefined') {
+                                    if (lastFind.length > 200) {
+                                        db.delete('booruLastfind');
+                                        console.log('Se ha reiniciado la lista de imagenes.');
+                                    };
+                                };
                                 db.push('booruLastfind', md5(posts[0].fileUrl));
                                 //const msg = message.channel.send({files: [posts[0].fileUrl]})
-                                const msg = message.reply(posts[0].fileUrl)
+                                //const msg = message.reply(posts[0].fileUrl)
+                                postEmbed(boorus, posts)
                                 .then(() => db.add(`booru_cd.${member.id}.rolls`, 1))
                                 .catch(() => imgReduce(posts, url));
-                                return esperarRespuesta(msg);
+                                return esperarRespuesta(message);
                             };
                         }
                         catch(err) {
@@ -601,7 +689,16 @@ module.exports = {
                 console.log(error);
             } else {
                 console.log(JSON.stringify(results, null, '  '));
-                if (results[Number(random)].width > 639) {
+                if (typeof results[Number(random)] === undefined) {
+                    retries = retries+1;
+                    if (retries < 8) {
+                        gisResults();
+                    } else {
+                        console.log("Me rindo, no encuentro nada.");
+                        //db.subtract(`booru_cd.${member.id}.rolls`, 1);
+                        return message.reply(`no encontre niuna wea 🙁`);
+                    }
+                } else {
                     try {
                         db.push('booruLastfind', md5(results[Number(random)].url));
                         console.log(`Enviando:\n${results[Number(random)].url}`);
@@ -611,15 +708,6 @@ module.exports = {
                         console.log("No puedo enviar el resultado de Google.");
                         retries = retries+1;
                         startBooru();
-                    }
-                } else {
-                    retries = retries+1;
-                    if (retries < 8) {
-                        gisResults();
-                    } else {
-                        console.log("Me rindo, no encuentro nada.");
-                        //db.subtract(`booru_cd.${member.id}.rolls`, 1);
-                        return message.channel.send(`<@${member.id}> no encontre niuna wea 🙁`);
                     }
                 };
             }
@@ -647,6 +735,114 @@ module.exports = {
                 };
             })
         };
+
+        async function postEmbed (boorus, posts) {
+            console.log(`ID: ${posts[0].id}\nURL: ${posts[0].postView}\nTags: ${posts[0].tags}\nScore: ${posts[0].score}\nDate: ${posts[0].createdAt}\nBooru: ${boorus[0]}`);
+            var booruTags = posts[0].tags,
+            filteredTags = [//Removed: "dakimakura","undressing","x3"
+                "!?","&gt;_&lt;","+_+",":/",":<",":>",":3",":c",":d",":i",":o",":p",":q",":t",";)",";<",";>",";3",";d",";o",";p",";q",">_<","@_@","^^^","^_^",
+                "1boy","1girl","2boys","2girls","3:","3boys","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
+                "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_wall","age_difference","ahoge","aliasing","all_fours","amulet",
+                "anal","anal_beads","anal_fingering","anal_hair","anal_object_insertion","anal_tail","anilingus","animal","animal_ears","animal_hands","animal_penis","ankle_boots","anthropomorphism","anus","alternate_costume","alternate_hair_color","angry","annoyed","aqua_dress","aqua_bikini","aqua_eyes","aqua_hair","aqua_shirt",
+                "areola","areolae","arm_garter","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","artist_name","artist_request","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_wings",
+                "back-print_panties","backboob","bad_feet","bad_id","bad_pixiv_id","badge","bag","bald","bandage","bandaid","bandaids_on_nipples","bangs","bar_censor","bare_legs","bare_shoulders","barefoot","baseball_cap","bathing","bathroom","bdsm","beach","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belt","bent_over",
+                "big_hair","bike_shorts","bikini","bikini_lift","bikini_top","bird","bisexual","black_bra","black_choker","black_collar","black_dress","black_eyes","black_footwear","black_gloves","black_hair","black_hairband","black_legwear","black_leotard","black_panties","black_pants","black_ribbon","black_skirt","blank_eyes","blazer","blindfold","blonde_hair","blood","bloomers","blouse",
+                "blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers","bodysuit","bondage","boots","border","bored","bottomless","bound","bow","bow_bra","bowtie",
+                "bra","bra_lift","bra_pull","bra_removed","bracelet","bracer","braid","braided_ponytail","braids","breast_grab","breast_hold","breast_press","breasts","breasts_apart","breasts_outside","breath","bridal_gauntlets","brown_eyes","brown_hair","buckle","bunny_ears","bustier","butt_crack","butterfly","buttons",
+                "c:","cameltoe","camera","camisole","cape","capelet","car","carrot","cat","cat_cutout","cat_ears","cat_girl","cat_smile","cat_tail","catgirl","censored","chain","chains","chair","cherry","chestnut_mouth","chibi","child_on_child","choker","cleavage","cleft_of_venus","clitoris","cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","close","clouds",
+                "coat","collar","collarbone","collared_dress","collared_shirt","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
+                "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","crinoline","crop_top","cropped","cross","crossed_arms","crown","crying","cuffs","cum","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_pussy","cum_on_upper_body","cumdrip","curtains",
+                "d:","dark_skin","dark-skinned_female","dark-skinned_male","demon","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","doggystyle","doyagao","dress","drolling","drunk","dutch_angle",
+                "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","elbow_gloves","embarassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyepatch","eyes_closed",
+                "facepalm","facial","facial_mark","fang","fangs","fat","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","floating_hair","floor","flower","flowers","flustered",
+                "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full-package_futanari","furrowed_brow","futanari",
+                "g-string","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","grin","groin","groping","group","gun","gym_uniform",
+                "hair_between_eyes","hair_bow","hair_ornament","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
+                "high_heels","high_ponytail","highlights","highres","hip_focus","holding","hood","hoop_earrings","horns","horrified","horse_ears","hug","huge_breasts",
+                "in_heat","indoors","interlocked_fingers",
+                "jacket","japanese_clothes","jewelry","jpeg_artifacts",
+                "kiss","kneehighs","kneeling","knotted_penis",
+                "large_breasts","lavender_eyes","lavender_hair","leaning_back","leaning_forward","legs","leotard","lifted_by_self","light_brown_hair","lingerie","loli","lolita_hairband","lonely","long_hair","long_sleeves","looking_at_viewer","looking_back","lying",
+                "maid","makeup","mask","male_masturbation","mask_on_head","medium_breasts","megane","mole","mole_on_breast","mole_under_eye","monochrome","mosaic_censoring","mouth_hold","multicolored_hair","multiple_boys","multiple_girls","muscular","muscular_female",
+                "navel","naked","neck_bell","necklace","nekomimi","nervous","nipples","no_bra","no_panties","nopan","nude",
+                "o_o","o3o","obi","on_back","one_eye_closed","one_knee","open_mouth","open_shirt",
+                "paizuri","panties","pants","pants_pull","pantsu","panty_pull","pantyhose","penis","penis_grab","phone","pink_bikini","pink_dress","pink_eyes","pink_hair","pink_shirt","pointed_ears","pointy_ears","ponytail","pout","pov_hands","precum","purple_dress","purple_eyes","purple_hair","purple_panties","pussy","pussy_juice",
+                "quaver",
+                "rabbit_ears","raccoon_ears","rape","rain","rainbow_hair","red_bikini","red_dress","red_eyes","red_hair","remote_control_vibrator","ribbon","ribbons","ribs",
+                "sagging_testicles","scan","see_through","seifuku","selfie","sex","sex_from_behind","sex_toy","school_uniform","shiny","shiny_skin","shirt","shirt_lift","shoes","short_hair","shorts","side_bun","side_ponytail","sidelocks","silver_hair","simple_background","sitting",
+                "skintight","skirt","skirt_lift","sky","small_breasts","smartphone","smelling_feet","smile","solo","solo_focus","speed_lines","spread_legs","spread_pussy","striped_panties","sweat","sweatdrop","sweater","swimsuit","swimsuit_pull","swimsuit_under_clothes","swimsuits",
+                "tagme","tail","tan_lines","tears","tentacles","thigh_gap","thighhighs","thighs","thong","thong_bikini","thong_leotard","tongue","tongue_out","topless","torn_bodysuit","torn_clothes","torn_dress","torn_panties","torn_pants","torn_shirt","torn_swimsuit","translated","trembling","triangle_mouth","twintails","twitter_username","two-tone_hair",
+                "uncensored","underboob","underwear","undressing","untied_bikini","upper_body","upset","used_condom","uwu",
+                "vaginal","very_long_hair","very_short_hair","vibrator",
+                "water","watermark","wavy_mouth","weapon","wet","wet_clothes","wet_hair","wet_shirt","wet_shorts","white_background","white_bikini","white_dress","white_gloves","white_hair","white_legwear","white_shirt","wide_sleeves","window","wings","wink","wolf_ears","wolf_tail","wristwear",
+                "xd",
+                "yellow_dress","yellow_eyes",
+                "zettai_ryouiki","zoom_layer"
+            ],
+            res = booruTags.filter(item => !filteredTags.includes(item));
+            res = res.slice(0,4).map(chars => capitalize(chars));
+            
+            if (res.indexOf("Animated") > -1) {
+                if (isWished) {
+                    try {
+                        message.react('🌟');
+                    } catch (err) {
+                        console.log(`No puedo reaccionar: ${err}`);
+                    };
+                }
+                return message.reply(posts[0].fileUrl);
+            };
+
+            if (posts[0].rating === 'e') {
+                booruEmbed.setColor('#670D08');
+            } else if (posts[0].rating === 'q') {
+                booruEmbed.setColor('#FF9C2C');
+            } else if (posts[0].rating === 's') {
+                booruEmbed.setColor('#14C234');
+            } else {
+                booruEmbed.setColor('#34D3EB');
+            };
+            booruEmbed.setImage(posts[0].fileUrl)
+            .setTitle(posts[0].id)
+            .setURL(posts[0].postView)
+            //.setAuthor(posts[0].tags.slice(0,1).join())
+            .setDescription(res.join('\n')+`\n**${posts[0].score}**<:KakeraR:877979665132818463>`)
+            .setTimestamp(posts[0].createdAt)
+            .setFooter(boorus[0]);
+
+            try {
+                if (isWished === true) {
+                    return message.channel.send({ content: `Deseado por <@${message.author.id}>`, embeds: [booruEmbed] });
+                } else {
+                    return message.channel.send({ embeds: [booruEmbed] });
+                }
+            } catch(err) {
+                console.log("Error al enviar embed: "+err);
+                return message.reply("estoy hecho mierda weon 😔");
+            }
+        }
+
+        function capitalize(msg) {//&#039;
+            msg = msg.replace(/&#039;+/gi, `'`);
+            var separateWord = msg.replace(/(\r\n|\n|\r)/gm, "").toLowerCase().split('_');
+            for (var i = 0; i < separateWord.length; i++) {
+                if ((separateWord[i].charAt(0) === '(')&&(separateWord[i].length > 2)) {
+                    if ((separateWord[i].charAt(2)===')')||(separateWord[i].charAt(3)===')')||(separateWord[i].charAt(4)===')')||((!separateWord[i].charAt(2)==='A')&&(!separateWord[i].charAt(4)==='E')&&(separateWord[i].charAt(5)===')'))) {
+                        separateWord[i] = separateWord[i].toUpperCase();//caps whole word inside parentheses
+                    } else {
+                        separateWord[i] = '(' + separateWord[i].charAt(1).toUpperCase() +
+                        separateWord[i].substring(2);//caps first char of something in parentheses
+                    }
+                } else if (!Number.isNaN(parseInt(separateWord[i].charAt(0)))&&(separateWord[i].length > 1)) {
+                    separateWord[i] = separateWord[i].charAt(0) + separateWord[i].charAt(1).toUpperCase() +
+                    separateWord[i].substring(2);
+                } else {
+                    separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+                    separateWord[i].substring(1);
+                };
+            }
+            return separateWord.join(' ');
+        }
         
 		// Interacciones con reacciones.
 		async function emojiMessage(message, validReactions) {
@@ -665,22 +861,6 @@ module.exports = {
 
         async function esperarRespuesta() {
             let filter = m => m.author.id === message.author.id;
-		/*	const emoji = await emojiMessage(message, ["👍", "🗑️"]);
-            message.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
-            { max: 1, time: 30000 }).then(collected => {
-                    if (collected.first().emoji.name == '🗑️') {
-                        message.edit('*MENSAJE BORRADO*');
-                        console.log('Mensaje borrado.');
-                    }
-                    else
-                        console.log('Operation canceled.')
-                        .then(() => message.reactions.remove(message.author.id))
-                        .catch(err => console.log("Oh: "+err));
-            }).catch(() => {
-                console.log('No reaction after 30 seconds, operation canceled')
-                .then(() => message.reactions.removeAll())
-                .catch(err => console.log("Oh: "+err));
-            });*/
             message.channel.awaitMessages(filter, {
                 max: 1,
                 time: 21000, // Wait 21 seconds

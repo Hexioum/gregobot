@@ -27,16 +27,16 @@ module.exports = {
   else if ((args[0] === 'dios')||(args[0] === 'planeta')||(args[0] === 'viviendo')||(args[0] === 'mierda')||(args[0].toLowerCase() === 'porque dios')||(args[0] === 'me pregunto')||(args[0] === 'planeta de mierda')) {
     page = 5;
   }
-  else if ((args[0].toLowerCase() === 'lucho')||(args[0].toLowerCase() === 'el lucho')||(args[0] === 'depre')||(args[0] === 'grausar')||(args[0] === 'krausar')||(args[0].toLowerCase() === 'mugen')||(args[0] === 'voice en off')||(args[0] === 'voz en off')) {
+  else if ((args[0].toLowerCase() === 'lucho')||(args[0] === 'depre')||(args[0] === 'grausar')||(args[0] === 'krausar')||(args[0].toLowerCase() === 'mugen')||(args[0] === 'voice en off')||(args[0] === 'voz en off')) {
     page = 6;
   }
   else if ((args[0].toLowerCase() === 'esteban')||(args[0] === 'dakimakura')||(args[0] === 'semen y lagrimas')||(args[0] === 'lagrimas y semen')||(args[0] === 'lágrimas')||(args[0] === 'semen')||(args[0] === 'cesar')||(args[0].toLowerCase() === 'césar')) {
     page = 7;
   }
-  else if ((args[0] === 'dominatrix')||(args[0] === 'mayor de edad')||(args[0] === 'mina de 13')||(args[0] === 'crimen')||(args[0] === 'guerra')||(args[0] === 'crimen de guerra')||(args[0].toLowerCase() === 'monke')) {
+  else if ((args[0] === 'dominatrix')||(args[0] === 'mayor de edad')||(args[0] === 'mina de 13')||(args[0] === 'crimen')||(args[0] === 'guerra')||(args[0] === 'crimen de guerra')) {
     page = 8;
   }
-  else if ((args[0] === 'negra')||(args[0] === 'perfecta')||(args[0] === 'si no fuera')) {
+  else if ((args[0] === 'si no fuera')||(args[0] === 'negra')||(args[0] === 'perfecta')) {
     page = 9;
   }
   else if ((args[0] === 'ira')||(args[0] === 'paranoia')||(args[0] === 'venganza')||(args[0] === 'mejores mentores')||(args[0] === 'mentores')) {
@@ -51,8 +51,11 @@ module.exports = {
   else if ((args[0] === 'homosexualidad')||(args[0] === 'magia')||(args[0] === 'hechizo')||(args[0] === 'lahomosexualidad')) {
     page = 13;
   }
-  else if ((args[0] === 'objetos')||(args[0] === 'mujeres como objetos')||(args[0] === 'como objetos')||(args[0] === 'tranqui')) {
+  else if ((args[0] === 'tranqui')||(args[0] === 'server')||(args[0] === 'tratamos')||(args[0] === 'objetos')) {
     page = 14;
+  }
+  else if ((args[0].toLowerCase() === 'me acuerdo')||(args[0].toLowerCase() === 'joteaba')||(args[0] === '6to')||(args[0] === '7mo')) {
+    page = 15;
   }
   else if ((args[0] === 'undefined')||(isNaN(args[0]))||(args[0] > entries.length)||(args[0] < 1)) {
     page = 1;
@@ -78,16 +81,16 @@ module.exports = {
       .setColor(1056085)
       .setTitle(`Frase **${page}** de ${entries.length}`)
       .setAuthor('Frases Funa', 'https://i.imgur.com/ZmtGJgz.png')
-      .setThumbnail("https://www.arcade-fighter.com/images/guilty-gear-xx-accent-core-plus/ggxx-ac-arcade-slayer.jpg")
+      .setThumbnail("https://i.imgur.com/OtQSmow.png")
       .setDescription(`*${stringField}*`)
       .setFooter(`- ${fraseField}`);
 
     // Edit/send embed.
-    if (listMsg) await listMsg.edit(embed);
-    else listMsg = await message.channel.send(embed);
+    if (listMsg) await listMsg.edit({ embeds: [embed] });
+    else listMsg = await message.channel.send({ embeds: [embed] });
 
     // Set up page reactions.
-    const lFilter = (reaction, user) => reaction.emoji.name === '◀' && user.id === message.author.id;
+/*  const lFilter = (reaction, user) => reaction.emoji.name === '◀' && user.id === message.author.id;
     const lCollector = listMsg.createReactionCollector({lFilter, max: 1 });
 
     lCollector.on('collect', async () => {
@@ -114,10 +117,10 @@ module.exports = {
       else {
         list(listMsg, page + 1, increment);
       }
-    });
+    });*/
 
-    await listMsg.react('◀');
-    await listMsg.react('▶');
+/*  await listMsg.react('◀');
+    await listMsg.react('▶');*/
   }
 
 /*  const removeReaction = async (m, msg, emoji) => {
@@ -128,5 +131,5 @@ module.exports = {
   // Send the list; page 1, and 1 shown on each page.
   list(undefined, page, 1)
     .catch(console.error);
-    },
+    }
 };
