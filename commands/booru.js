@@ -30,7 +30,7 @@ const booruEmbed = new Discord.MessageEmbed()
     .setTitle('Post')
     .setURL('https://vimeo.com/434895153')
     .setDescription('Tags')
-    .setFooter('Booru');
+    .setFooter({text:'Booru'});
 
 const alChars = [
     "amagi",
@@ -676,7 +676,7 @@ module.exports = {
                                 };*/
                                 url = posts[0].fileUrl;
                                 if (typeof lastFind !== 'undefined') {
-                                    if (lastFind.length > 200) {
+                                    if (lastFind.length > 128) {
                                         db.delete('booruLastfind');
                                         console.log('Se ha reiniciado la lista de imagenes.');
                                     };
@@ -825,7 +825,7 @@ module.exports = {
             //.setAuthor(posts[0].tags.slice(0,1).join())
             .setDescription(res.join('\n')+`\n**${posts[0].score}**<:KakeraR:877979665132818463>`)
             .setTimestamp(posts[0].createdAt)
-            .setFooter(boorus[0]);
+            .setFooter({text:`${boorus[0]}`});
 
             try {
                 if (isWished === true) {
