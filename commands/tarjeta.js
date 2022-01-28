@@ -23,7 +23,7 @@ const helpEmbed = new Discord.MessageEmbed()
 	.setColor('#00B0F4')
 	.setTitle('Mudacrop')
 	.setURL('https://vimeo.com/434895153')
-	.setAuthor('GregoBot Ayuda', 'https://i.imgur.com/ZmtGJgz.png')
+	.setAuthor({name:'GregoBot Ayuda',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
 	.setDescription('Gregorio te ayuda a cortar imágenes para su bot favorito.')
 	.setThumbnail('https://wiki.gbl.gg/images/8/88/Numpad.jpg')
 	.addFields(
@@ -33,7 +33,7 @@ const helpEmbed = new Discord.MessageEmbed()
 	)
 	.addField('Acercamiento', '`7 8 9`\n`4 5 6`\n`1 2 3`\n0 = Sin Zoom (Por defecto)', true)
 	.setTimestamp()
-	.setFooter('gregobot® 2021');
+	.setFooter({text:'gregobot® 2021'});
 
 module.exports = {
 	name: 'tarjeta',
