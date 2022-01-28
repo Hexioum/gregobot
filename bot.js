@@ -14,7 +14,7 @@ var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 // PostgreSQL is a hard-to-use database manager.
-const dbp = require('./models/index.js');
+//const dbp = require('./models/index.js');
 
 // create a new Discord client
 const bot = new Discord.Client({ 
@@ -25,7 +25,7 @@ bot.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
-const devMode = true; //ATTENTION
+const devMode = false; //ATTENTION
 const activitiesList = [
     "League of Legends",
     "League of Legends",
@@ -517,8 +517,8 @@ bot.on('messageCreate', message => {
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
-	} else if (message.content.toLowerCase().includes(`genshin`)) {
-		let random = Math.floor(Math.random() * 5);
+	} else if (message.content.toLowerCase().includes(` genshin`)) {
+		let random = Math.floor(Math.random() * 6);
 		if (random == 0) {
 			message.channel.sendTyping();
 			setTimeout(function(){
