@@ -14,7 +14,7 @@ var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
 const db = require('quick.db');
 // PostgreSQL is a hard-to-use database manager.
-const dbp = require('./models/index.js');
+//const dbp = require('./models/index.js');
 
 // create a new Discord client
 const bot = new Discord.Client({ 
@@ -25,7 +25,7 @@ bot.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
-const devMode = true; //ATTENTION
+const devMode = false; //ATTENTION
 const activitiesList = [
     "League of Legends",
     "League of Legends",
@@ -33,12 +33,12 @@ const activitiesList = [
     "Warframe",
 	"Spacewar",
     "OpenOSRS",
-    "OpenOSRS",
 	"Old School RuneScape",
 	"World of Warcraft Classic",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
+    "Fortnite",
 	"GUILTY GEAR -STRIVE-",
     "Mortal Kombat 11",
 	"DRAGON BALL FighterZ",
@@ -175,13 +175,14 @@ bot.on('ready', function () {
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
 			let randomChance = Math.floor(Math.random()*16);
-			let randomComment = Math.floor(Math.random()*6);
+			let randomComment = Math.floor(Math.random()*7);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
 				lockComment = 1
 				let jobsFri = [ `entonces nadie alguna wea?`,
 								`weon un viernes y no hay niun weon?`,
 								`quien un jugo?`,
+								`quien un lol?`,
 								`quien un nosgoth?`,
 								`alguien un nosgoth?`,
 								`quien apaña un nosgoth?`];
@@ -424,6 +425,18 @@ bot.on('messageCreate', message => {
 					.then(() => message.channel.send({files: ['./memes/;Grausar;.png']}))
 					.catch(() => console.error('Que onda?? No pude responder.'));
 				}, 520);
+			} else if (random === 12){
+				message.channel.sendTyping();
+				setTimeout(function(){
+					message.channel.reply('rica, la dejaria mas irreconocible que cuerpo abaleado por narcos de brasil')
+					.catch(() => console.error('Que onda?? No pude responder.'));
+				}, 520);
+			} else if (random === 13){
+				message.channel.sendTyping();
+				setTimeout(function(){
+					message.channel.reply('no esta mal')
+					.catch(() => console.error('Que onda?? No pude responder.'));
+				}, 520);
 			}
 			else console.log(`Me aguanté mandar algo porque random es ${random}`);
 			}, 480);
@@ -517,8 +530,8 @@ bot.on('messageCreate', message => {
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
 		message.channel.send('no tomemos concluciones apresuradas');
-	} else if (message.content.toLowerCase().includes(`genshin`)) {
-		let random = Math.floor(Math.random() * 5);
+	} else if (message.content.toLowerCase().includes(` genshin`)) {
+		let random = Math.floor(Math.random() * 6);
 		if (random == 0) {
 			message.channel.sendTyping();
 			setTimeout(function(){
@@ -544,7 +557,7 @@ bot.on('messageCreate', message => {
 		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
 	} else if (message.content.startsWith(`grego elige `)) {
 		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
-	} else if (message.content.toLowerCase().startsWith(`mañana `)) {
+	} else if (message.content.toLowerCase().startsWith(`mañana voy`)) {
 		message.channel.send('no te creo nada')
 			.then(() => message.channel.send('mentiroso qlo'))
 			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
