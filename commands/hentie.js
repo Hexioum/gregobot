@@ -62,14 +62,14 @@ module.exports = {
             .setColor('#ED2553')
             .setTitle(nhArray[0].english)
             .setURL(`https://nhentai.net/g/${nhArray[1]}`)
-            .setAuthor('Buscador de Conocimiento', 'https://i.imgur.com/ZmtGJgz.png')
+            .setAuthor({name:'Buscador de Conocimiento',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
             .setDescription(`**Tags:** ${nhTags}.`)
             //.setThumbnail('https://i.imgur.com/uLAimaY.png')
             .setImage(api.getImageURL(book.cover))
             .addField('Visitas', `${nhArray[2]}`, true)
             .addField('Favoritos', `${nhArray[3]}`, true)
             .setTimestamp(nhArray[5])
-            .setFooter('Fecha de publicación','https://i.imgur.com/uLAimaY.png');//gregobot® 2021
+            .setFooter({text:'Fecha de publicación',iconURL:'https://i.imgur.com/uLAimaY.png'});//gregobot® 2021
 			return message.reply({ embeds: [helpEmbed] });
         }
     },

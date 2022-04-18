@@ -80,10 +80,10 @@ module.exports = {
     var embed = new Discord.MessageEmbed()
       .setColor(1056085)
       .setTitle(`Frase **${page}** de ${entries.length}`)
-      .setAuthor('Frases Funa', 'https://i.imgur.com/ZmtGJgz.png')
+      .setAuthor({name:'Frases Funa',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
       .setThumbnail("https://i.imgur.com/OtQSmow.png")
       .setDescription(`*${stringField}*`)
-      .setFooter(`- ${fraseField}`);
+      .setFooter({text:`- ${fraseField}`});
 
     // Edit/send embed.
     if (listMsg) await listMsg.edit({ embeds: [embed] });
