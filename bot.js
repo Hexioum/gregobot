@@ -266,7 +266,7 @@ bot.on('guildMemberAdd', member => {
       console.log("You didn't mention the user to kick!");
     }
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
-// If user joins, get Principal and send a message.
+// If user joins, get #Principal and send a message.
 });
 bot.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.nickname === newMember.nickname) return;
