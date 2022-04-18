@@ -63,6 +63,7 @@ const topicList = [
 	"Pro Jumper! Guilty Gear Tangent!?",
     "Killer Instinct",
     "Garou: Mark of the Wolves",
+    "Garou: La Marca de los Lobos",
 	"Pocket Rumble",
 	"Tobal 2",
 	"Dengeki Bunko: Fighting Climax IGNITION",
@@ -86,7 +87,9 @@ const topicList = [
 	"juegos de mesa",
 	"rollback netcode",
 	"GGPO",
+	"los juegos de pelea",
 	"la paranoia y la venganza",
+	"su nosgoth",
     "estrategias para el Mudae"
     ];
 const react1List = [
@@ -175,7 +178,7 @@ bot.on('ready', function () {
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
 			let randomChance = Math.floor(Math.random()*16);
-			let randomComment = Math.floor(Math.random()*7);
+			let randomComment = Math.floor(Math.random()*8);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
 				lockComment = 1
@@ -185,6 +188,7 @@ bot.on('ready', function () {
 								`quien un lol?`,
 								`quien un nosgoth?`,
 								`alguien un nosgoth?`,
+								`ALGUIEN UN NOSGOTH?`,
 								`quien apaña un nosgoth?`];
 				day = 5;
 				bot.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
@@ -430,7 +434,7 @@ bot.on('messageCreate', message => {
 				setTimeout(function(){
 					message.channel.reply('rica, la dejaria mas irreconocible que cuerpo abaleado por narcos de brasil')
 					.catch(() => console.error('Que onda?? No pude responder.'));
-				}, 520);
+				}, 700);
 			} else if (random === 13){
 				message.channel.sendTyping();
 				setTimeout(function(){
