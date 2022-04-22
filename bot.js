@@ -215,10 +215,66 @@ bot.on('ready', function () {
 	);
 
 	var resetCd = new CronJob(
-		'0 0 */2 * * *',//“Every 2 hours”
+		'0 0 */2 * * *',//“Every 2 hours.”
 		function() {
 			db.delete(`booru_cd`);
 			console.log('Se ha reiniciado el cooldown.');
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+
+	var avtNormal1 = new CronJob(
+		'0 0 0 1,2,7 1-6 *',//“At 00:00 on day 1, 2, and 7 in every month from January through June.”
+		function() {
+			client.user.setAvatar('./memes/avatars/nachogbr.jpg')
+			.then(user => console.log(`Cambio de avatar.`))
+			.catch(console.error);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var avtLaborday = new CronJob(
+		'15 0 0 1 5 *',//“At 00:15 on May 1st.”
+		function() {
+			client.user.setAvatar('./memes/avatars/laborday.png')
+			.then(user => console.log(`Cambio de avatar.`))
+			.catch(console.error);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var avtKrausar = new CronJob(
+		'0 0 0 6 6 *',//“At 00:00 on June 6th.”
+		function() {
+			client.user.setAvatar('./memes/avatars/aprilfools.png')
+			.then(user => console.log(`Cambio de avatar.`))
+			.catch(console.error);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var avtNormal2 = new CronJob(
+		'0 0 0 1 7-12 *',//“At 00:00 on day-of-month 1 from July through December.”
+		function() {
+			client.user.setAvatar('./memes/avatars/nachogck.png')
+			.then(user => console.log(`Cambio de avatar.`))
+			.catch(console.error);
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+	var avtXmas = new CronJob(
+		'0 0 0 24 12 *',//“At 00:00 on December 24th.”
+		function() {
+			client.user.setAvatar('./memes/avatars/nachogpd.png')
+			.then(user => console.log(`Cambio de avatar.`))
+			.catch(console.error);
 		},
 		null,
 		true,
