@@ -9,6 +9,7 @@ module.exports = {
 	aliases: ['conversemos','cuentame','dime','hablemos'],
 	description: 'Gregorio te conversa',
 	execute(message) {
+        if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) return;
         if (message.content.toLowerCase().startsWith('<@749824051945537637> ')) {
             message.content = message.content.substring(22)
         } else if (message.content.toLowerCase().startsWith('gr conversemos, ')) {
