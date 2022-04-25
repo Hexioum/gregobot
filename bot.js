@@ -177,7 +177,7 @@ bot.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*16);
+			let randomChance = Math.floor(Math.random()*15);
 			let randomComment = Math.floor(Math.random()*8);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
@@ -237,7 +237,7 @@ bot.on('ready', function () {
 		'America/Santiago'
 	);
 	var avtLaborday = new CronJob(
-		'15 0 0 1 4 *',//“At 00:15 on May 1st.”
+		'9 0 0 1 4 *',//“At 00:00:09 on May 1st.”
 		function() {
 			client.user.setAvatar('./memes/avatars/laborday.png')
 			.then(user => console.log(`Cambio de avatar.`))
@@ -510,6 +510,13 @@ bot.on('messageCreate', message => {
 	} else if ((message.channel.id === 742472922093846588)&&(message.content.toLowerCase().includes(`gracias grego`))) {
 		message.channel.send({files: ['./memes/;tinttulo;.png']})
 		.catch(() => console.error('Que onda?? No pude mandar la imágen.'));
+	} else if (message.content.startsWith(`<@749824051945537637>`)) {
+		try {
+			bot.commands.get('chat').execute(message)
+		} catch (error) {
+			console.error(error);
+			console.log('No puedo responder.');
+		}
 	} else if (message.content.startsWith(`$tu`)) {
 		try {
 			bot.commands.get('reclamar').execute(message)
