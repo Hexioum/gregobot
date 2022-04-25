@@ -240,7 +240,7 @@ bot.on('ready', function () {
 		'9 0 0 1 4 *',//“At 00:00:09 on May 1st.”
 		function() {
 			client.user.setAvatar('./memes/avatars/laborday.png')
-			.then(user => console.log(`Cambio de avatar.`))
+			.then(user => console.log(`Cambio de avatar, Trabajador.`))
 			.catch(console.error);
 		},
 		null,
@@ -251,7 +251,7 @@ bot.on('ready', function () {
 		'0 0 0 6 5 *',//“At 00:00 on June 6th.”
 		function() {
 			client.user.setAvatar('./memes/avatars/aprilfools.png')
-			.then(user => console.log(`Cambio de avatar.`))
+			.then(user => console.log(`Cambio de avatar, Krausar.`))
 			.catch(console.error);
 		},
 		null,
@@ -273,7 +273,7 @@ bot.on('ready', function () {
 		'0 0 0 24 11 *',//“At 00:00 on December 24th.”
 		function() {
 			client.user.setAvatar('./memes/avatars/nachogpd.png')
-			.then(user => console.log(`Cambio de avatar.`))
+			.then(user => console.log(`Cambio de avatar, Felices fiestas.`))
 			.catch(console.error);
 		},
 		null,
@@ -284,7 +284,7 @@ bot.on('ready', function () {
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
-		console.log(`Channel's new topic is "${topicList[topic]}".`);
+		console.log(`El principal ahora se habla de "${topicList[topic]}".`);
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
