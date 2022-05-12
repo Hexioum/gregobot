@@ -12,68 +12,43 @@ module.exports = {
   const entries = Object.entries(frases);
   const random = Math.floor(Math.random() * (entries.length - 1) + 1);
   var page = 0;
+  var frase = "";
   if ((typeof args[0] === 'undefined')||(args[0] === 'random')||(args[0] === 'any')||(args[0] === 'al azar')||(args[0] === 'azar')||(args[0] === 'cualquiera')||(args[0] === 'al achunte')||(args[0] === 'a la chuña')||(args[0] === 'me siento con suerte')||(args[0] === 'feeling lucky')||(args[0] === `I'm feeling lucky`)||(args[0] === `i'm feeling lucky`)) {
     page = random;
+    list(undefined, page, 1).catch(console.error);
   }
-  else if ((args[0] === 'que no sepas')||(args[0] === 'tener amigas')||(args[0] === 'amigas')||(args[0] === 'caliente')||(args[0] === 'caliente de mierda')||(args[0] === 'cosa tuya')) {
-    page = 2;
+  else if ((args[0].length < 3)&&(parseInt(args[0]) > 0)&&(parseInt(args[0]) <= entries.length)) {
+    page = args[0];
+    list(undefined, page, 1).catch(console.error);
   }
-  else if ((args[0] === 'cabrita chica')||(args[0] === 'cabrita')||(args[0] === 'chica')||(args[0] === 'hombres')||(args[0] === 'si somos hombres')||(args[0] === 'admitirlo')||(args[0] === 'hay que admitirlo')) {
-    page = 3;
-  }
-  else if ((args[0] === 'lado furry')||(args[0] === 'furry')||(args[0] === 'gustan')||(args[0].toLowerCase() === 'jill')||(args[0] === 'me sigue gustan')||(args[0] === 'igual me pasaría')) {
-    page = 4;
-  }
-  else if ((args[0] === 'dios')||(args[0] === 'planeta')||(args[0] === 'viviendo')||(args[0] === 'mierda')||(args[0].toLowerCase() === 'porque dios')||(args[0] === 'me pregunto')||(args[0] === 'planeta de mierda')) {
-    page = 5;
-  }
-  else if ((args[0].toLowerCase() === 'lucho')||(args[0] === 'depre')||(args[0] === 'grausar')||(args[0] === 'krausar')||(args[0].toLowerCase() === 'mugen')||(args[0] === 'voice en off')||(args[0] === 'voz en off')) {
-    page = 6;
-  }
-  else if ((args[0].toLowerCase() === 'esteban')||(args[0] === 'dakimakura')||(args[0] === 'semen y lagrimas')||(args[0] === 'lagrimas y semen')||(args[0] === 'lágrimas')||(args[0] === 'semen')||(args[0] === 'cesar')||(args[0].toLowerCase() === 'césar')) {
-    page = 7;
-  }
-  else if ((args[0] === 'dominatrix')||(args[0] === 'mayor de edad')||(args[0] === 'mina de 13')||(args[0] === 'crimen')||(args[0] === 'guerra')||(args[0] === 'crimen de guerra')) {
-    page = 8;
-  }
-  else if ((args[0] === 'si no fuera')||(args[0] === 'negra')||(args[0] === 'perfecta')) {
-    page = 9;
-  }
-  else if ((args[0] === 'ira')||(args[0] === 'paranoia')||(args[0] === 'venganza')||(args[0] === 'mejores mentores')||(args[0] === 'mentores')) {
-    page = 10;
-  }
-  else if ((args[0] === 'las minas')||(args[0] === 'fomes')||(args[0] === 'enpelotan')||(args[0] === 'empelotan')) {
-    page = 11;
-  }
-  else if ((args[0] === 'lgtb')||(args[0] === 'picklez')||(args[0] === 'donando')||(args[0] === 'cura')) {
-    page = 12;
-  }
-  else if ((args[0] === 'homosexualidad')||(args[0] === 'magia')||(args[0] === 'hechizo')||(args[0] === 'lahomosexualidad')) {
-    page = 13;
-  }
-  else if ((args[0] === 'tranqui')||(args[0] === 'server')||(args[0] === 'tratamos')||(args[0] === 'objetos')) {
-    page = 14;
-  }
-  else if ((args[0].toLowerCase() === 'me acuerdo')||(args[0].toLowerCase() === 'joteaba')||(args[0] === '6to')||(args[0] === '7mo')) {
-    page = 15;
-  }
-  else if ((args[0] === 'undefined')||(isNaN(args[0]))||(args[0] > entries.length)||(args[0] < 1)) {
+  else if ((args[0] === 'undefined')||(args[0] > entries.length)||(args[0] < 1)) {
     page = 1;
+    list(undefined, page, 1).catch(console.error);
   }
   else {
-    page = args[0]
+    for (var i = 0; i < entries.length; i++){
+      frase = entries[i].slice(1).toString();
+      if (frase.toLowerCase().includes(args[0].toLowerCase())){
+        const page = i+1;
+        console.log(`Frase encontrada: #${page}.- "${frase}"`);
+        return list(undefined, page, 1).catch(console.error);
+      }
+      else if (i == entries.length) {
+        return message.reply('no hay niuna frase que diga esa wea');
+      }
+    }
   }
 
-  // Define our function.
+  // Define the function.
   async function list(listMsg, page, increment) {
     console.log(`Mostrando la página ${page} de Frases Funa`);
 
+    var autorField = ""
     var fraseField = ""
-    var stringField = ""
 
     for (let [frase, string] of entries.slice(page - 1, page)) {
-      fraseField = fraseField+frase;
-      stringField = stringField+string;
+      autorField = autorField+frase;
+      fraseField = fraseField+string;
     }
 
     // Set up base embed.
@@ -82,8 +57,8 @@ module.exports = {
       .setTitle(`Frase **${page}** de ${entries.length}`)
       .setAuthor({name:'Frases Funa',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
       .setThumbnail("https://i.imgur.com/OtQSmow.png")
-      .setDescription(`*${stringField}*`)
-      .setFooter({text:`- ${fraseField}`});
+      .setDescription(`*${fraseField}*`)
+      .setFooter({text:`- ${autorField}`});
 
     // Edit/send embed.
     if (listMsg) await listMsg.edit({ embeds: [embed] });
@@ -127,9 +102,5 @@ module.exports = {
     try { m.reactions.find(r => r.emoji.name == emoji).users.remove(msg.author.id); }
     catch(err) {console.log("chucha: "+err)}
   }*/
-
-  // Send the list; page 1, and 1 shown on each page.
-  list(undefined, page, 1)
-    .catch(console.error);
     }
 };

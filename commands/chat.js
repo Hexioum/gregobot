@@ -38,12 +38,14 @@ module.exports = {
         var replies = [
             "calmao que estoy viendo una wea",
             "ah?",
+            "eh?",
+            "mmmm",
             "estoy hecho pico",
             "sry manito ando subiendo la montaña",
             "calmao",
             "su cs?"
         ];
-        var random = Math.floor(Math.random() * 6);
+        var random = Math.floor(Math.random() * 8);
 
         if (message.content.startsWith("https://")) {
             let url = message.content;
