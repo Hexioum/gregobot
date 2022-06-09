@@ -36,6 +36,7 @@
     "sharp": "^0.29.1",
     "tslib": "^2.3.0",
     "utf-8-validate": "^5.0.2",
+    "wikijs": "^6.3.3",
     "winston": "^3.3.3",
     "xmlhttprequest": "^1.8.0",
     "zlib-sync": "^0.1.7"
