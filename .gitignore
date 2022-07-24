@@ -4,3 +4,4 @@ commandsOFF
 config
 migrations
 node_modules
+bot(slash).js

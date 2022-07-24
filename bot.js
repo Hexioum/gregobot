@@ -25,19 +25,26 @@ bot.commands = new Discord.Collection();
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
-const devMode = false; //ATTENTION
+
+const devMode = false; // >>ATTENTION<<
+
+const wiki = require('wikijs').default;
+//var parseInfo = require("infobox-parser");
+
 const activitiesList = [
     "League of Legends",
     "League of Legends",
     "Warframe",
     "Warframe",
 	"Spacewar",
+	"Cube Racer",
     "OpenOSRS",
 	"Old School RuneScape",
 	"World of Warcraft Classic",
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
+	"Paladins",
     "Fortnite",
 	"GUILTY GEAR -STRIVE-",
     "Mortal Kombat 11",
@@ -45,6 +52,8 @@ const activitiesList = [
 	"Borderlands 2",
     "Super Mario 64",
 	"Where's Waldo?",
+    "Blue Archive",
+    "Folio Azul",
     "Girls' Frontline",
 	"RAID: Shadow Legends",
 	"Diablo® Immortal™",
@@ -90,6 +99,7 @@ const topicList = [
 	"GGPO",
 	"los juegos de pelea",
 	"la paranoia y la venganza",
+	"ricas recetas de cocina",
 	"su nosgoth",
     "estrategias para el Mudae"
     ];
@@ -292,6 +302,42 @@ bot.on('ready', function () {
         bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }); // sets bot's activities to one of the phrases in the arraylist.
 		console.log(`Ahora jugando a ${activitiesList[index]}`);
     }, 420000); // Runs this every 420 seconds.
+});
+bot.on('interactionCreate', async interaction => {
+	if (!interaction.isSelectMenu()) return;
+	//console.log(interaction.commandName);
+	if (interaction.customId === 'dustloop') {
+		var results = ''
+		var wikiApi = 'http://www.dustloop.com/wiki/api.php'
+		let search = interaction.values;
+		fetchPage(search, results)
+		.then(console.log(results))
+		.catch(err => {
+			console.error(err);
+		});
+		async function fetchPage(msg, results) {
+			msg = msg.toString();
+            results = wiki({
+                apiUrl: wikiApi,
+                origin: null
+            }).page(msg).then(console.log)
+            return results;
+        }
+		try {
+			const infoEmbed = new Discord.MessageEmbed()
+			.setAuthor({name:'Tech Finder',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
+			.setColor('#E85A5A')
+			.setTitle(interaction.label)
+			.setURL(results.fullurl)
+			.setDescription('overview')
+			.setFooter({text:'dustloop o mizuumi idk'});
+			await interaction.update({ embeds: [infoEmbed], components: [] });
+		} catch(err) {
+			console.log(`Error en interacción de Dustloop: `+err);
+		}
+	/*	let message = interaction.message
+		bot.commands.get('dustloop').execute(message, interaction.values);*/
+	}
 });
 //	async member*
 bot.on('guildMemberAdd', member => {

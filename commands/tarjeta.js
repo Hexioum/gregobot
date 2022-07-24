@@ -56,7 +56,7 @@ module.exports = {
 		let theImage = "PIC1.PNG";
 		var alignX = 0;
 		var alignY = 0;
-		let member = message.author
+		let member = message.author;
 		const random = Math.floor(Math.random()*1000000000000);
 		var url1 = "https://i.imgur.com/Fr6MFsI.png";
 		var finalResult;
