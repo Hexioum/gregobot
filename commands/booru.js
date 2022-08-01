@@ -755,7 +755,7 @@ module.exports = {
             var booruTags = posts[0].tags,
             filteredTags = [//Removed: "bandaids_on_nipples","dakimakura","undressing","x3"
                 "!?","&gt;_&lt;","+_+",":/",":<",":>",":3",":c",":d",":i",":o",":p",":q",":t",";)",";<",";>",";3",";d",";o",";p",";q",">_<","@_@","^^^","^_^",
-                "1boy","1girl","2boys","2girls","3:","3boys","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
+                "10s","1boy","1girl","2boys","2girls","3:","3boys","3d","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
                 "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_table","against_wall","age_difference","ahoge","aliasing","all_fours","alternate_breast_size","alternate_costume","alternate_hair_color","amulet",
                 "anal","anal_beads","anal_fingering","anal_hair","anal_object_insertion","anal_tail","angel_wings","anilingus","animal","animal_ears","animal_hands","animal_penis","ankle_boots","anklet","anthropomorphism","anus","angry","annoyed","apron","aqua_dress","aqua_bikini","aqua_eyes","aqua_hair","aqua_shirt",
                 "areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","artist_name","artist_request","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings",
@@ -781,7 +781,7 @@ module.exports = {
                 "maid","makeup","male","mask","male_masturbation","mask_on_head","medium_breasts","megane","mole","mole_on_breast","mole_under_eye","monochrome","mosaic_censoring","mouth_hold","multicolored_hair","multiple_boys","multiple_girls","muscular","muscular_female",
                 "navel","naked","neck_bell","necklace","nekomimi","nervous","nipples","no_bra","no_panties","nopan","nude",
                 "o_o","o3o","obi","on_back","one_eye_closed","one_knee","open_mouth","open_shirt",
-                "paizuri","panties","pants","pants_pull","pantsu","panty_pull","pantyhose","penis","penis_grab","phone","pink_bikini","pink_dress","pink_eyes","pink_hair","pink_shirt","pointed_ears","pointy_ears","ponytail","pout","pov_hands","precum","purple_dress","purple_eyes","purple_hair","purple_panties","pussy","pussy_juice",
+                "paizuri","panties","pants","pants_pull","pantsu","panty_pull","pantyhose","parted_lips","penis","penis_grab","phone","pink_bikini","pink_dress","pink_eyes","pink_hair","pink_shirt","pointed_ears","pointy_ears","ponytail","pout","pov_hands","precum","purple_dress","purple_eyes","purple_hair","purple_panties","pussy","pussy_juice",
                 "quaver",
                 "rabbit_ears","raccoon_ears","rape","rain","rainbow_hair","raw_scan","red_bikini","red_dress","red_eyes","red_hair","remote_control_vibrator","ribbon","ribbons","ribs",
                 "sagging_testicles","scan","see_through","seifuku","selfie","sex","sex_from_behind","sex_toy","school_uniform","shiny","shiny_skin","shirt","shirt_lift","shoes","short_hair","shorts","side_bun","side_ponytail","sideboob","sidelocks","signed","silver_hair","simple_background","sitting",

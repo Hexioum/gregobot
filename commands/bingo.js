@@ -72,7 +72,7 @@ module.exports = {
               }
             }
             if (tempArr[j].length > 1) {
-              tempStr = tempStr+`<tspan x="${xPos+dxPos*0.2}%" dy="1em">${tempArr[j]}</tspan>
+              tempStr = tempStr+`<tspan x="${xPos+dxPos*0.22}%" dy="1em">${tempArr[j]}</tspan>
               `
             }
             // Auto ajuste para lineas multiples.
@@ -80,7 +80,7 @@ module.exports = {
           }
           arr[i] = tempStr;
         }
-        arr[i] = `<text x="`+xPos+`%" y="`+yPos+`%" text-anchor="middle" dx="`+dxPos+`px" dy="`+dyPos+`px" `+`fill="#fff" font-family="Ubuntu Condensed" font-size="22px">
+        arr[i] = `<text x="`+xPos+`%" y="`+yPos+`%" text-anchor="middle" dx="`+dxPos+`px" dy="`+dyPos+`px" `+`fill="#fff" font-family="Ubuntu Condensed" font-size="20px">
         ${arr[i]}
         </text>
         `
