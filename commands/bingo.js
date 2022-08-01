@@ -80,7 +80,7 @@ module.exports = {
           }
           arr[i] = tempStr;
         }
-        arr[i] = `<text x="`+xPos+`%" y="`+yPos+`%" text-anchor="middle" dx="`+dxPos+`px" dy="`+dyPos+`px" `+`fill="#fff" font-family="Oswald" font-size="24px">
+        arr[i] = `<text x="`+xPos+`%" y="`+yPos+`%" text-anchor="middle" dx="`+dxPos+`px" dy="`+dyPos+`px" `+`fill="#fff" font-family="Ubuntu Condensed" font-size="22px">
         ${arr[i]}
         </text>
         `
