@@ -365,7 +365,7 @@ module.exports = {
             var fthMatch = args.some(e => fthRegex.test(e));
             var fftRegex = / zorra pelua+| zorra peluda+/gi;
             var fftMatch = args.some(e => fftRegex.test(e));
-            var sixRegex = / 💤+| 🛌+| 😴+| 😪+/gi;           //cannot parse at the moment
+            var sixRegex = / alitas+| armpit+| axilas+| sobaco+/gi;           //cannot parse at the moment
             var sixMatch = args.some(e => sixRegex.test(e));
             if (oneMatch === true) {
                 poison.push('ass');
@@ -388,9 +388,9 @@ module.exports = {
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ zorra pelua+| zorra peluda+/gi, '');
             } else if (sixMatch === true) {
-                poison.push('sleeping');
+                poison.push('armpits');
                 randomPo = poison.length-1;
-                args[0] = args[0].toLowerCase().replace(/ 💤+| 🛌+| 😴+| 😪+/gi, '');
+                args[0] = args[0].toLowerCase().replace(/ alitas+| armpit+| axilas+| sobaco+/gi, '');
             }
 
             if ((args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')) {
@@ -767,7 +767,7 @@ module.exports = {
                 "cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","clothes_pull","close","clothing_aside","clouds",
                 "coat","collar","collarbone","collared_dress","collared_shirt","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
                 "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","creature","crinoline","crop_top","cropped","cross","crossed_arms","crown","crying","cuffs","cum","cum_in_pussy","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cup","curtains",
-                "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","doyagao","dress","dress_shirt","drolling","drunk","dutch_angle",
+                "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","doyagao","dress","dress_shirt","drolling","drunk","dutch_angle",
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
                 "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
