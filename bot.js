@@ -62,8 +62,10 @@ const activitiesList = [
 	"Multi Theft Auto",
 	"Grand Theft Auto: San Andreas",
 	"Desert Bus",
+	"bailar a lo GTA",
 	"el 6 y el 7",
 	"estar hecho mierda",
+	"dar vueltas alrededor de Dust2 con PP-Bison",
     "Hentai Furry",
 	"Orc Massage"
     ];
@@ -109,15 +111,7 @@ const react1List = [
 	"804617300824948756"
     ];
 const reactList = [
-	"🔩",
-	"🍴",
-	"🥄",
-	"🙏",
-    "👌",
-    "🥛",
-    "🧻",
-    "🥃",
-	"🔩"
+	"🔩","🍴","🥄","🙏","👌","🥛","🧻","🥃","🔩"
     ];
 const ignoreList = [
 	'565330655915933696',
