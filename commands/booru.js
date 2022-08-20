@@ -227,7 +227,7 @@ module.exports = {
         var boorus = [
             "konachan.com",
             "yande.re",
-            "gelbooru",   //API changes, must be tested.
+            "gelbooru",
             "danbooru"
         ];
         
@@ -365,8 +365,10 @@ module.exports = {
             var fthMatch = args.some(e => fthRegex.test(e));
             var fftRegex = / zorra pelua+| zorra peluda+/gi;
             var fftMatch = args.some(e => fftRegex.test(e));
-            var sixRegex = / alitas+| armpit+| axilas+| sobaco+/gi;           //cannot parse at the moment
+            var sixRegex = / alitas+| armpit+| axilas+| sobaco+/gi;
             var sixMatch = args.some(e => sixRegex.test(e));
+            var sthRegex = / culeando+| culiando+| fuck+| sexo+/gi;
+            var sthMatch = args.some(e => sthRegex.test(e));
             if (oneMatch === true) {
                 poison.push('ass');
                 randomPo = poison.length-1;
@@ -391,9 +393,13 @@ module.exports = {
                 poison.push('armpits');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ alitas+| armpit+| axilas+| sobaco+/gi, '');
+            } else if (sthMatch === true) {
+                poison.push('sex');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ culeando+| culiando+| fuck+| sexo+/gi, '');
             }
 
-            if ((args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')) {
+            if ((args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')||(args[0].toLowerCase() === 'monas chistosas')) {
                 args[0] = `loli`
             } else if (args[0].toLowerCase() === 'anie del lol') {
                 args[0] = `annie_(league_of_legends)`
@@ -771,7 +777,7 @@ module.exports = {
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
                 "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
-                "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
+                "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_eyes","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
                 "hair_between_eyes","hair_bow","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
                 "high_heels","high_ponytail","highlights","highres","hip_focus","holding","hood","hoop_earrings","horns","horrified","horse_ears","hug","huge_ass","huge_breasts",
                 "in_heat","indoors","interlocked_fingers",
@@ -780,7 +786,7 @@ module.exports = {
                 "lactation","large_breasts","lavender_eyes","lavender_hair","leaning_back","leaning_forward","legs","legs_apart","leotard","lifted_by_self","light_brown_hair","lingerie","logo","loli","lolita_hairband","lonely","long_hair","long_sleeves","looking_at_viewer","looking_away","looking_back","looking_down","lying",
                 "maid","makeup","male","mask","male_masturbation","mask_on_head","medium_breasts","megane","mole","mole_on_breast","mole_under_eye","monochrome","mosaic_censoring","mouth_hold","multicolored_hair","multiple_boys","multiple_girls","muscular","muscular_female",
                 "navel","naked","neck_bell","necklace","nekomimi","nervous","nipples","no_bra","no_panties","nopan","nude",
-                "o_o","o3o","obi","on_back","one_eye_closed","one_knee","open_mouth","open_shirt",
+                "o_o","o3o","obi","on_back","one_eye_closed","one_knee","open_mouth","open_shirt","orange",
                 "paizuri","panties","pants","pants_pull","pantsu","panty_pull","pantyhose","parted_lips","penis","penis_grab","phone","pink_bikini","pink_dress","pink_eyes","pink_hair","pink_shirt","pointed_ears","pointy_ears","ponytail","pout","pov_hands","precum","purple_dress","purple_eyes","purple_hair","purple_panties","pussy","pussy_juice",
                 "quaver",
                 "rabbit_ears","raccoon_ears","rape","rain","rainbow_hair","raw_scan","red_bikini","red_dress","red_eyes","red_hair","remote_control_vibrator","ribbon","ribbons","ribs",
