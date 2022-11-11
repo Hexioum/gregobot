@@ -353,15 +353,15 @@ module.exports = {
         async function tagsFix() {
             if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('no');
             if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
-		    if (args[0].toLowerCase().startsWith('w (a')) return message.channel.send('chancho qlo ojala te salga un tumor');
+		    if (args[0].toLowerCase().startsWith('m4 mod')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
-            var oneRegex = / poto+| culo+| ass+| raja+| posaderas+/gi ;
+            var oneRegex = / ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = / corpse+| decapitated+| gore+| guro+| sopmod+| s0pm0d+| soppu+/gi ; //shows something else
+            var twoRegex = / brutal+| cadaver+| child+| corpse+| death+| decapitat+| eviscerat+| gore+| guro+| impale+| kill+| suicid+| torture+| viscera+/gi ; //shows something else
             var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| lechesita+| lechita+| milk+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
-            var fthRegex = / meao+| pichi+| pichí+/gi ;
+            var fthRegex = / m4 mod+| meao+| pichi+| pichí+/gi ;
             var fthMatch = args.some(e => fthRegex.test(e));
             var fftRegex = / zorra pelua+| zorra peluda+/gi;
             var fftMatch = args.some(e => fftRegex.test(e));
@@ -372,7 +372,7 @@ module.exports = {
             if (oneMatch === true) {
                 poison.push('ass');
                 randomPo = poison.length-1;
-                args[0] = args[0].toLowerCase().replace(/ poto+| culo+| ass+| raja+| posaderas+/gi, '');
+                args[0] = args[0].toLowerCase().replace(/ ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi, '');
                 // Para remover las palabras pero conservar el resto
             } else if (twoMatch === true) {
                 //randomPo = 10;
@@ -384,7 +384,7 @@ module.exports = {
             } else if (fthMatch === true) {
                 poison.push('urine');
                 randomPo = poison.length-1;
-                args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
+                args[0] = args[0].toLowerCase().replace(/ m4 mod+| meao+| pichi+| pichí+/gi, '');
             } else if (fftMatch === true) {
                 poison.push('pubic_hair');
                 randomPo = poison.length-1;
