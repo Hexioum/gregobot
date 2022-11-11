@@ -96,7 +96,7 @@ const gbfChars = [
     "beatrix","cagliostro","camieux","carmelina","catura","charlotta","chloe","clarisse","cucouroux",
     "danua","djeeta","erin","esser","europa","ferry","fraux","friday","gabriel",
     "halluel","helel ben shalem","heles","illnott","ilsa","io","izmir","jessica",
-    "karva","katalina","korwa","kumbhira","la coiffe","lecia","leviathan","lily","lyria",
+    "karva","katalina","katarina","korwa","kumbhira","la coiffe","lecia","leviathan","lily","lyria",
     "magisa", "malluel", "maria theresa", "mary", "medusa", "metera", "mirin",
     "narmaya","nier","nio","orchid","pholia","predator","razia","rosamia","rosetta",
     "sarasa","satyr","scathacha","selfira","sen","shitori","shura","silva","societte","song","sturm",
@@ -134,11 +134,11 @@ const gflChars = [//removed "bren ten"
 ]
 
 const giChars = [
-    "amber", "arlecchino", "barbara", "beidou", "cloud retainer", "collei",
+    "amber", "arlecchino", "barbara", "beidou", "candace", "cloud retainer", "collei",
     "diona", "eula", "fischl", "ganyu", "hu tao", "iansan", "jean",
     "kamisato ayaka", "katheryne", "kazari", "keqing", "kitsune saiguu", "klee",
     "la signora", "lisa", "lumine", "lynette", "madame ping", "mikoshi chiyo", "mirror maiden", "mona",
-    "ningguang", "noelle", "paimon", "qiqi", "raiden shogun", "rosaria", "sasayuri", "sayu", "shenhe", "sucrose",
+    "nahida", "ningguang", "noelle", "paimon", "qiqi", "raiden shogun", "rosaria", "sasayuri", "sayu", "shenhe", "sucrose",
     "tubby", "vennessa", "xiangling", "xinyan", "yanfei", "yaoyao", "yelan", "yoimiya", "yunjin"
 ]
 //kujou_sara and sangonomiya_kokomi do not have "gi" in parentheses
