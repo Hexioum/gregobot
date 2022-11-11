@@ -44,6 +44,8 @@ const activitiesList = [
     "Counter-Strike: Global Offensive",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
+	"Overwatch 2",
+	"Moira en Overwatch 2",
 	"Paladins",
     "Fortnite",
 	"GUILTY GEAR -STRIVE-",
@@ -65,7 +67,6 @@ const activitiesList = [
 	"bailar a lo GTA",
 	"el 6 y el 7",
 	"estar hecho mierda",
-	"dar vueltas alrededor de Dust2 con PP-Bison",
     "Hentai Furry",
 	"Orc Massage"
     ];

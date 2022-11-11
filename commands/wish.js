@@ -29,7 +29,7 @@ module.exports = {
                         };
                     } else {
                         console.log(`Lista de deseados excede el máximo permitido.`);
-                        message.channel.send(`15 deseos máximos para no premium. Sintaxis: para eliminar un deseo: **$wishremove** <personaje> (o **$wishremoveall**)\nPara varios nombres, sepárelos con un $`);
+                        message.reply(`15 deseos máximos para no premium. Sintaxis: para eliminar un deseo: **$wishremove** <personaje> (o **$wishremoveall**)\nPara varios nombres, sepárelos con un $`);
                         try {
                             return message.react('❌');
                         } catch (err) {
@@ -47,7 +47,7 @@ module.exports = {
                         };
                     } else {
                         console.log(`Lista de deseados excede el máximo permitido.`);
-                        message.channel.send(`15 deseos máximos para no premium. Sintaxis: para eliminar un deseo: **$wishremove** <personaje> (o **$wishremoveall**)\nPara varios nombres, sepárelos con un $`);
+                        message.reply(`15 deseos máximos para no premium. Sintaxis: para eliminar un deseo: **$wishremove** <personaje> (o **$wishremoveall**)\nPara varios nombres, sepárelos con un $`);
                         try {
                             return message.react('❌');
                         } catch (err) {
@@ -64,7 +64,7 @@ module.exports = {
                 };
             };
         } else {
-            return message.channel.send("⁉");
+            return message.reply("⁉");
         };
 
         function capitalize(msg) {
