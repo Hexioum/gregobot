@@ -5,7 +5,6 @@
   "main": "bot.js",
   "author": "Hexioum",
   "engines": {
-    "node": ">=16.7.0"
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
