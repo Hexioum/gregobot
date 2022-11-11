@@ -5,8 +5,7 @@
   "main": "bot.js",
   "author": "Hexioum",
   "engines": {
-    "node": ">=16.7.0",
-    "npm": ">=7.20.3"
+    "node": ">=16.7.0"
   },
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
@@ -38,6 +37,7 @@
     "sequelize": "^6.8.0",
     "sequelize-cli": "^6.2.0",
     "sharp": "^0.30.7",
+    "steamapi": "^2.2.0",
     "tslib": "^2.3.0",
     "utf-8-validate": "^5.0.2",
     "wikijs": "^6.3.3",
