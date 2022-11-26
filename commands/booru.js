@@ -1,9 +1,10 @@
 const Booru = require('booru');
 const axios = require('axios');
 const parser = require('cron-parser');
-var gis = require('g-i-s');
+//var gis = require('g-i-s');
 var md5 = require('md5');
-const db = require('quick.db');
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
 const Discord = require('discord.js');
 const sharp = require('sharp');
 
@@ -11,7 +12,7 @@ const sharp = require('sharp');
 const disableCommand = false;
 const disableTyping = false;
 
-const helpEmbed = new Discord.MessageEmbed()
+const helpEmbed = new Discord.EmbedBuilder()
 	.setColor('#00B0F4')
 	.setTitle('Aportes')
 	.setURL('https://vimeo.com/434895153')
@@ -21,11 +22,10 @@ const helpEmbed = new Discord.MessageEmbed()
 	.addFields(
 		{ name: 'Uso del comando', value: '**Ejemplo**: `Grego sacate uno`\nDa una imagen aleatoria buscando en 5 sitios booru distintos.\n\nSe puede especificar el personaje a buscar.\n**Ejemplo**: `gr postea, zelda`\n\nSi no se encuentra, intentar buscar con nombres de serie en paréntesis.\n**Ejemplo**: `gr aporta, type 95 (gfl)`\nO si es un nombre y apellido, intercambiarlos.\n**Ejemplo**: `gr busca, sakurai momoka`' }
 	)
-	.addField('Aliases adicionales', 'aporta, busca, colabora, comparte, postea, sacate uno, skt1', false)
 	.setTimestamp()
 	.setFooter({text:'gregobot® 2021'});
 
-const booruEmbed = new Discord.MessageEmbed()
+const booruEmbed = new Discord.EmbedBuilder()
     .setColor('#FF9C2C')
     .setTitle('Post')
     .setURL('https://vimeo.com/434895153')
@@ -660,7 +660,8 @@ module.exports = {
                             startBooru();                       // Searches again
                         } else {
                             //getFileSize(url);
-                            gis(gisOptions, gisResults);
+                            //gis(gisOptions, gisResults);
+                            console.log('Sorry nothing.')
                         };
                     } else {
                         try {
@@ -789,7 +790,7 @@ module.exports = {
                 "o_o","o3o","obi","on_back","one_eye_closed","one_knee","open_mouth","open_shirt","orange",
                 "paizuri","panties","pants","pants_pull","pantsu","panty_pull","pantyhose","parted_lips","penis","penis_grab","phone","pink_bikini","pink_dress","pink_eyes","pink_hair","pink_shirt","pointed_ears","pointy_ears","ponytail","pout","pov_hands","precum","purple_dress","purple_eyes","purple_hair","purple_panties","pussy","pussy_juice",
                 "quaver",
-                "rabbit_ears","raccoon_ears","rape","rain","rainbow_hair","raw_scan","red_bikini","red_dress","red_eyes","red_hair","remote_control_vibrator","ribbon","ribbons","ribs",
+                "rabbit_ears","raccoon_ears","rape","rain","rainbow_hair","raw_scan","red","red_bikini","red_dress","red_eyes","red_hair","remote_control_vibrator","ribbon","ribbons","ribs",
                 "sagging_testicles","scan","see_through","seifuku","selfie","sex","sex_from_behind","sex_toy","school_uniform","shiny","shiny_skin","shirt","shirt_lift","shoes","short_hair","shorts","side_bun","side_ponytail","sideboob","sidelocks","signed","silver_hair","simple_background","sitting",
                 "skintight","skirt","skirt_lift","sky","sleeping","small_breasts","smartphone","smelling_feet","smile","solo","solo_focus","speed_lines","spread_legs","spread_pussy","stockings","striped_panties","sweat","sweatdrop","sweater","swimsuit","swimsuit_pull","swimsuit_under_clothes","swimsuits",
                 "tagme","tail","tan_lines","tears","tentacles","thigh_gap","thighhighs","thighs","thong","thong_bikini","thong_leotard","tongue","tongue_out","topless","torn_bodysuit","torn_clothes","torn_dress","torn_panties","torn_pants","torn_shirt","torn_swimsuit","translated","trembling","triangle_mouth","twintails","twitter_username","two-tone_hair",

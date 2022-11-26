@@ -1,13 +1,12 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
-const dbq = require('quick.db');
-// PostgreSQL is an advanced database manager.
-//const { Pool, Client } = require('pg')
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
+
 const dbEngine = process.env.DATABASE_ENV || "development";
 //const db = require('../models/index.js');
 
-const bot = new Discord.Client({ intents: ['GUILDS','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] });
 module.exports = {
 	name: 'wishlist',
 	aliases: ['wl','lista','wlt'],
@@ -16,6 +15,7 @@ module.exports = {
 	usage: '$wishlist',
 	execute(message, args) {
         const member = message.mentions.users.first() || message.author;
+        
         //const member = message.author;
     /*    db.User.findAll().then(users => {
             users.map(user_id => {
@@ -37,7 +37,7 @@ module.exports = {
         console.log(wishlist);
         var page = Math.floor(length%15);
         if (length > -1) {
-            const wishEmbed = new Discord.MessageEmbed()
+            const wishEmbed = new Discord.EmbedBuilder()
                 .setColor('#095527')
                 .setAuthor({name:`${member.username}'s wishlist (${length}/15)`,iconURL:"https://cdn.discordapp.com/avatars/"+member.id+"/"+member.avatar+".jpeg"})
                 .setDescription(`${wishlist.join("\n")}`)

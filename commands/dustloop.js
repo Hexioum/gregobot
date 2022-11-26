@@ -1,11 +1,8 @@
 const Discord = require('discord.js');
 const wiki = require('wikijs').default;
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const bot = new Discord.Client({ 
-    intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] }
-    );
 
-const helpEmbed = new Discord.MessageEmbed()
+const helpEmbed = new Discord.EmbedBuilder()
 	.setColor('#00B0F4')
 	.setTitle('Dustloop')
 	.setURL('https://www.dustloop.com/wiki/index.php?title=Main_Page')
@@ -14,12 +11,14 @@ const helpEmbed = new Discord.MessageEmbed()
 	.setThumbnail('https://www.dustloop.com/wiki/images/thumb/3/30/Dustloop_Wiki.png/175px-Dustloop_Wiki.png')
 	.addFields(
 		{ name: 'Uso del comando', value: '**Ejemplo**: grego fd, ky, dp' }
-	)
-	.addField('Aliases adicionales', 'dl, dustloop, fd, frame data, miz, mizuumi, wiki', false)
+        )
+	.addFields(
+        { name: 'Aliases adicionales', value: 'dl, dustloop, fd, frame data, miz, mizuumi, wiki'}
+        )
 	.setTimestamp()
 	.setFooter({text:'gregobot® 2021'});
 
-const infoEmbed = new Discord.MessageEmbed()
+const infoEmbed = new Discord.EmbedBuilder()
     .setColor('#FF9C2C')
     .setTitle('Post')
 	.setURL('https://www.dustloop.com/wiki/index.php?title=Main_Page')

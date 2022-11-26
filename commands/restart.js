@@ -1,8 +1,7 @@
-const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
-const db = require('quick.db');
-const client = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS'] });
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
 const { token, gregorid } = require('../config.json');
 module.exports = {
 	name: 'restart',

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
-const db = require('quick.db');
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
 module.exports = {
 	name: 'wishremove',
 	aliases: ['wr','remover'],
@@ -10,6 +11,7 @@ module.exports = {
 	usage: '$wr <remover>',
 	execute(message, args) {
         var prefix = message.content.slice(prefix).trim().split(" ");
+        
         prefix = prefix[0].length;
         if (message.content.length > prefix) {
             var member = message.author;

@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
-const db = require('quick.db');
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
 module.exports = {
 	name: 'wish',
 	aliases: ['w','wishea'],

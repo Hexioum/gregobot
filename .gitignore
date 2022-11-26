@@ -5,3 +5,4 @@ config
 migrations
 node_modules
 bot(slash).js
+yarn-error.log

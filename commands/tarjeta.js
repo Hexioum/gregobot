@@ -15,11 +15,8 @@ imgur.setAPIUrl('https://api.imgur.com/3/')
 const disableCommand = false;
 const disableTyping = false;
 
-const bot = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] });
-// a class that extend JS's native Map class and include more extensive functionality.
-bot.commands = new Discord.Collection();
 const backgrounds = fs.readdirSync('./mdcards/bgs');
-const helpEmbed = new Discord.MessageEmbed()
+const helpEmbed = new Discord.EmbedBuilder()
 	.setColor('#00B0F4')
 	.setTitle('Mudacrop')
 	.setURL('https://vimeo.com/434895153')
@@ -30,8 +27,8 @@ const helpEmbed = new Discord.MessageEmbed()
 		{ name: 'Uso de el comando', value: 'Todos los valores son opcionales.\n*Ejemplos:*\n`gr mudacrop` Fondo blanco, marco blanco, sin zoom.\n`gr card, 1, 4, 8` Fondo azulado, marco amarillo (Amarillo!), acercamiento hacia arriba.\n`gr tarjeta, 0, 0, 5` Fondo y marco por defecto, acercamiento hacia el centro.' },
 		{ name: 'Fondo', value: '`  0` Blanco\n`  1` Negro\n`  2` Azulado\n`  3` Verde Lima\n`  4` Amarillo\n`  5` Naranja\n`  6` Rojo\n`  7` Morado\n`  8` Dorado\n`DGN` Líneas Diagonales\n`GFL` GFrontline (gris)\n`KKA` Koikatsu 1\n`KKU` Koikatsu 2\n`PAT` Patronato\n`UM1` Uma Musume\n`UM2` Uma Musume (Hall)\n`WXP` WinXP Bliss', inline: true },
 		{ name: 'Marco', value: '0) Blanco (Default)\n1) Negro\n2) Rojo\n3) Naranja\n4) Amarillo 2077\n5) Verde Radioactivo\n6) Celestito\n7) Azul\n8) Morita\n9) Gamer', inline: true },
+		{ name: 'Acercamiento', value: '`7 8 9`\n`4 5 6`\n`1 2 3`\n0 = Sin Zoom (Por defecto)'}
 	)
-	.addField('Acercamiento', '`7 8 9`\n`4 5 6`\n`1 2 3`\n0 = Sin Zoom (Por defecto)', true)
 	.setTimestamp()
 	.setFooter({text:'gregobot® 2021'});
 

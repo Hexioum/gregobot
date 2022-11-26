@@ -5,7 +5,7 @@ dotenv.config();
 const SteamAPI = require('steamapi');
 const steam = new SteamAPI(process.env.STEAM_KEY);
 
-const steamEmbed = new Discord.MessageEmbed()
+const steamEmbed = new Discord.EmbedBuilder()
     .setColor('#231F20')
     .setTitle('Steamcharts')
     .setURL('https://vimeo.com/434895153')

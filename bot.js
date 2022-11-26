@@ -2,6 +2,7 @@
 const fs = require('fs');
 // require the discord.js module
 const Discord = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { token, gregorid } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -12,13 +13,21 @@ const worker = createWorker({
 });*/
 var CronJob = require('cron').CronJob;
 // Quick.db is an easy-to-use database manager built with better-sqlite3.
-const db = require('quick.db');
+const { QuickDB } = require('quick.db');
+const db = new QuickDB();
 // PostgreSQL is a hard-to-use database manager.
 //const dbp = require('./models/index.js');
 
 // create a new Discord client
-const bot = new Discord.Client({ 
-intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS','GUILD_MESSAGES','GUILD_MESSAGE_REACTIONS'] }
+const bot = new Discord.Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.GuildPresences
+		]
+	}
 );
 // a class that extend JS's native Map class and include more extensive functionality.
 bot.commands = new Discord.Collection();
@@ -319,7 +328,7 @@ bot.on('interactionCreate', async interaction => {
             return results;
         }
 		try {
-			const infoEmbed = new Discord.MessageEmbed()
+			const infoEmbed = new Discord.EmbedBuilder()
 			.setAuthor({name:'Tech Finder',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
 			.setColor('#E85A5A')
 			.setTitle(interaction.label)

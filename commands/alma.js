@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const bot = new Discord.Client({ intents: ['GUILDS','GUILD_PRESENCES','GUILD_MEMBERS'] });
 let { gregorid, ownnick } = require('./../config.json');
 let gifreaction = 'https://thumbs.gfycat.com/VioletAcrobaticHound-size_restricted.gif'
 module.exports = {
