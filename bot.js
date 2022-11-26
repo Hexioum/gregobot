@@ -418,7 +418,7 @@ bot.on('messageCreate', message => {
 			try {
 				message.delete();
 				return console.log(`Se ha borrado el mensaje: ${message}`);
-			} catch {
+			} catch(err) {
 				return console.log(`No se ha borrado el mensaje: ${message}\nFaltan permisos?`);
 			};
 		};
