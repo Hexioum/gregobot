@@ -76,7 +76,7 @@ const activitiesList = [
 	"bailar a lo GTA",
 	"el 6 y el 7",
 	"estar hecho mierda",
-    "Hentai Furry",
+    "Pokémon Hentai",
 	"Orc Massage"
     ];
 const topicList = [
@@ -128,15 +128,10 @@ const ignoreList = [
 	'164473940532527104'
 	]; // banned from image reactions.
 const bannedNames = [
-    "m4",
-	"sopmod", "sopñod",	"sipmid", "simpid",	"spmid", "sipmd", "sopm", "sópm", "s0pm0d", "søpmød", "s°pm°d",	"sºpmºd", "søpmºd", "sºpmød",
-    "opmod", "ompod", "dompo", "oppo", "pmd", "soppo", "soppu",	"spand", "mdand", "spnd", "ndmd", "spmd", "smpd", "zpmd", "zmpd", "zpmód",
-	"spmod", "sopmd", "sodmop", "dompos", "posmod", "sompod", "splec", "zplec", "splch", "lechemod", "pleched", "dleches", "zompod", "zopmod",
-	"dompoz", "hup", "spm", "mod", "mbercita", "amber", "4mber", "amb3r", "4mb3r", "zandmod", "zandmd", "jeell", "stingray", "stngray",
-	"stngry", "stingry", "shadowm", "sh4dowm", "sh4d0wm", "shadwm", "shdowm", "hadowm", "shdwm", "j1ll", "jll", "jill"
+    "arknights","pleche","wlech"
     ]; // Don't ever say them out loud.
 const bannedWords = [
-    "dmps", "dpms", "psmd", "opmod", "spmd", "smpd", "smdp", "sopmd", "spmod"
+    "borra este mensaje","dompos","hupt","hup tao"
     ]; // Shorter version
 const bannedSymbols = [
     "sᴏᴘᴍᴏᴅ", "ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝", "ˢᵒᵖᵐᵒᵈ", "𝔖𝔬𝔭𝔪𝔬𝔡", "𝕾𝖔𝖕𝖒𝖔𝖉", "𝔰𝔬𝔭𝔪𝔬𝔡", "𝔖𝔒𝔓𝔐𝔒𝔇", "𝕾𝕺𝕻𝕸𝕺𝕯", "丂口尸从口刀"
