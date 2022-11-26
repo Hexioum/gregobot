@@ -430,7 +430,7 @@ bot.on('messageCreate', message => {
 		try {
 			message.delete();
 			return console.log(`Se ha borrado el mensaje: ${message}`);
-		} catch {
+		} catch(err) {
 			return console.log(`No se ha borrado el mensaje: ${message}\nFaltan permisos?`);
 		};
     }
@@ -715,7 +715,7 @@ bot.on('messageCreate', message => {
 			textCounter = db.get(`booru.textCount`);
 			try {
 				db.add(`booru.textCount`, 1);
-			} catch {
+			} catch(err) {
 				console.log(`Error en línea 580 de bot.js`);
 			};
 			if ((textCounter!== null)&&(textCounter == 20)) {
