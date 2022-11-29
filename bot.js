@@ -174,9 +174,12 @@ bot.once('ready', () => {
 	.then(() => console.log(myUser))
 	.catch((err) => console.log(`avatarURL:`+err));*/
 	// Setting the ammount of nuts.
-	if (db.has('gregoBot') == 0) {
-		db.set('gregoBot', { nuts: 0 });
-		console.log(`Se ha creado una nueva partida.`);
+	loadData();
+	async function loadData() {
+		if (await db.has('gregoBot') == 0) {
+			db.set('gregoBot', { nuts: 0 });
+			console.log(`Se ha creado una nueva partida.`);
+		}
 	}
 });
 bot.on('ready', function () {
