@@ -2,7 +2,9 @@
 backups
 commandsOFF
 config
+json.sqlite
 migrations
 node_modules
 bot(slash).js
 yarn-error.log
+yarn.lock
