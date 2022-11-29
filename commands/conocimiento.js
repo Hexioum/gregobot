@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const { API, } = require('nhentai-api');
+const { EmbedBuilder } = require('discord.js');
+const { API } = require('nhentai-api');
 
 module.exports = {
 	name: 'hentie',
@@ -56,7 +56,7 @@ module.exports = {
             }
             nhTags = x.substring(2);
             console.log(api.getImageURL(book.cover));
-            const helpEmbed = new Discord.MessageEmbed()
+            const helpEmbed = new EmbedBuilder()
             .setColor('#ED2553')
             .setTitle(nhArray[0].english)
             .setURL(`https://nhentai.net/g/${nhArray[1]}`)

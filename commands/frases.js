@@ -1,5 +1,5 @@
 const fs = require("fs")
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'frases',
 	aliases: ['quotes','frase funa','funas','ff'],
@@ -52,7 +52,7 @@ module.exports = {
     }
 
     // Set up base embed.
-    var embed = new Discord.MessageEmbed()
+    var embed = new EmbedBuilder()
       .setColor(1056085)
       .setTitle(`Frase **${page}** de ${entries.length}`)
       .setAuthor({name:'Frases Funa',iconURL:'https://i.imgur.com/ZmtGJgz.png'})

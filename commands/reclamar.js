@@ -30,7 +30,7 @@ module.exports = {
         Puedes votar nuevamente en 7h 09 min.
         => $tuarrange */
 
-        if (message.member.hasPermission('ATTACH_FILES')) {
+        if (message.member.permissions.has('ATTACH_FILES')) {
             try {
                 message.channel.send(`**${message.author.username}**, __puedes__ reclamar ahora mismo. El siguiente reclamo será en **${1+random}** min.\nTienes **0** rolls restantes.\nEl siguiente reinicio será en **${1+random}** min.\nSiguiente reinicio de $daily en **20h ${59-minutos}** min.\n\n¡Puedes reaccionar a kakera en este momento!\nPoder: **110%**\nCada reacción de kakera consume 96% de su poder de reacción.\nTus personajes con 10+ llaves, consumen la mitad del poder (48%)\nCapital: **${capital}**💎\n\n¡$rt está disponible!\nSiguiente reinicio de $dk en **8h ${59-minutos}** min.\nPuedes votar nuevamente en **5h ${59-minutos}** min.\n**=>** $tuarrange`);
                 return console.log("Alguien comprobó sus kakas.");

@@ -1,5 +1,4 @@
-const Discord = require('discord.js');
-let { gregorid, ownnick } = require('./../config.json');
+// const { gregorid } = require('../config.json');
 let gifreaction = 'https://thumbs.gfycat.com/VioletAcrobaticHound-size_restricted.gif'
 module.exports = {
 	name: 'alma',
@@ -8,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<Nombre> o <Usuario>, <Victima> (opcional)',
 	execute(message, args) {
-	const ownnick = process.env.BOT_NICKNAME //Improvement Pending
+	const ownnick = 'GREGORIO'//bot.users.fetch(gregorid);
 	console.log(args)
 	if (args.length < 1) {
 		let victim = message.author.id

@@ -1,11 +1,11 @@
 const axios = require("axios");
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const SteamAPI = require('steamapi');
 const steam = new SteamAPI(process.env.STEAM_KEY);
 
-const steamEmbed = new Discord.EmbedBuilder()
+const steamEmbed = new EmbedBuilder()
     .setColor('#231F20')
     .setTitle('Steamcharts')
     .setURL('https://vimeo.com/434895153')
@@ -19,7 +19,6 @@ module.exports = {
 	args: true,
 	usage: '<Nombre del juego> (opcional)',
 	execute(message, args) {
-        //message.channel.sendTyping();
         async function steamappFetch (appId) {
             console.log(games);
         }
@@ -68,7 +67,7 @@ module.exports = {
             var itemsProcessed = 0;
             appIds.forEach(function (appId, index) {
                 try {
-                    //steamappFetch(appId);
+                    steamappFetch(appId);
                     steam.getGamePlayers(appId).then(result => {
                         games.push(result)
                         itemsProcessed++;

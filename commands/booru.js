@@ -5,14 +5,15 @@ const parser = require('cron-parser');
 var md5 = require('md5');
 const { QuickDB } = require('quick.db');
 const db = new QuickDB();
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const sharp = require('sharp');
+// const wish = require('./wish');
 
 //Troubleshoot
-const disableCommand = false;
+const disableCommand = true;
 const disableTyping = false;
 
-const helpEmbed = new Discord.EmbedBuilder()
+const helpEmbed = new EmbedBuilder()
 	.setColor('#00B0F4')
 	.setTitle('Aportes')
 	.setURL('https://vimeo.com/434895153')
@@ -25,7 +26,7 @@ const helpEmbed = new Discord.EmbedBuilder()
 	.setTimestamp()
 	.setFooter({text:'gregobot® 2021'});
 
-const booruEmbed = new Discord.EmbedBuilder()
+const booruEmbed = new EmbedBuilder()
     .setColor('#FF9C2C')
     .setTitle('Post')
     .setURL('https://vimeo.com/434895153')
@@ -159,16 +160,27 @@ module.exports = {
 	usage: 'tags',
 	execute(message, args) {
         if (disableCommand == true) {
-            return message.reply("comando deshabilitado");
+            return message.reply("deshabilitado hasta nuevo aviso");
         };
         if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
 			return message.reply({ embeds: [helpEmbed] });
 		};
 		let member = message.author
-        var lastFind = db.get('booruLastfind');
-        var cdBooru = db.add(`booru_cd.${member.id}.rolls`, 0);
-        var wishlist = db.get(`wishlists.${member.id}`);
-        var isWished = false
+        var isWished = false;
+        var rolls = getDatabase(2)
+        var wishlist = getDatabase(3)
+
+        async function getDatabase(x) {
+            var cdBooru = await db.add(`booru_cd.${member.id}.rolls`, 0);
+            if (x == 1) {
+                return await db.get('booruLastfind');
+            } else if (x == 2) {
+                return await db.get(`booru_cd.${member.id}.rolls`);
+            } else if (x == 3) {
+                return await db.get(`wishlists.${member.id}`);
+            };
+        };
+
         if ((typeof args[0]==='undefined')&&(wishlist!== null)&&(typeof wishlist!=='undefined')) {
             console.log("Comprobando wishlist...");
             if (wishlist.length > 0) {
@@ -285,7 +297,7 @@ module.exports = {
             };
         };
         
-        console.log(db.get(`booru_cd.${member.id}.rolls`));
+        console.log(rolls);
         try {
             console.log(`Memory: ${lastFind.length}`);
         } catch {

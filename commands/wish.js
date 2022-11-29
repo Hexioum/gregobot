@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const { QuickDB } = require('quick.db');
@@ -16,7 +15,13 @@ module.exports = {
             var member = message.author;
             var msg = capitalize(message.content);
             var args = msg.slice(prefix).trim().split(/ \$ | \$|\$ |\$/).filter(Boolean); //slices the prefix, trims spaces, splits the message with $, removes empty elements.
-            var wishlist = db.get(`wishlists.${member.id}`);
+            (async () => {
+                const wishlist = await db.get(`wishlists.${member.id}`);
+                doCommand(wishlist, args)
+                })();
+
+                
+            async function doCommand(wishlist, args) {
             if ((typeof args!=='undefined')&&(args.length > 0)) {
                 args = args.map(ar => ar.substring(0, 32));
                 if (wishlist == null) {
@@ -64,6 +69,7 @@ module.exports = {
                     return console.log(`No puedo reaccionar: ${err}`);
                 };
             };
+        }
         } else {
             return message.reply("⁉");
         };

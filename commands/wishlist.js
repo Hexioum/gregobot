@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const dotenv = require('dotenv');
 dotenv.config();
 const { QuickDB } = require('quick.db');
@@ -25,26 +25,38 @@ module.exports = {
             });
         }); */
         //return;
-        var wishlist = dbq.get(`wishlists.${member.id}`);
-        if ((wishlist == null)||(wishlist.toString() === '')) {
-            wishlist = [`(No hay resultados)`];
-            var length = 0;
-        } else {
-            wishlist = wishlist.join().split(',').map(chars => capitalize(chars));
-            var length = (wishlist.length);
-        }
-        console.log(`Mostrando lista de deseados de ${member.username}`);
-        console.log(wishlist);
-        var page = Math.floor(length%15);
-        if (length > -1) {
-            const wishEmbed = new Discord.EmbedBuilder()
-                .setColor('#095527')
-                .setAuthor({name:`${member.username}'s wishlist (${length}/15)`,iconURL:"https://cdn.discordapp.com/avatars/"+member.id+"/"+member.avatar+".jpeg"})
-                .setDescription(`${wishlist.join("\n")}`)
-                .setFooter({text:`Page 1/1`});//${page}
-                return message.channel.send({ embeds: [wishEmbed] });
-        } else {
-            return console.log("Se intentó usar el comando wishlist.");
+        (async () => {
+            const wishlist = await db.get(`wishlists.${member.id}`)
+            check(wishlist)
+            })();
+
+        async function check(wishlist, length) {
+            if ((wishlist == null)||(wishlist.toString() === '')) {
+                wishlist = [`(No hay resultados)`];
+                var length = 0;
+            } else {
+                try {
+                    wishlist = wishlist.join().split(',').map(chars => capitalize(chars));
+                    var length = (wishlist.length);
+                } catch(err) {
+                    console.log(`WISHLIST: ${wishlist}`)
+                    message.react('❌');
+                    return message.reply('aah rar')
+                }
+            }
+            console.log(`Mostrando lista de deseados de ${member.username}`);
+            console.log(wishlist);
+            var page = Math.floor(length%15);
+            if (length > -1) {
+                const wishEmbed = new EmbedBuilder()
+                    .setColor('#095527')
+                    .setAuthor({name:`${member.username}'s wishlist (${length}/15)`,iconURL:"https://cdn.discordapp.com/avatars/"+member.id+"/"+member.avatar+".jpeg"})
+                    .setDescription(`${wishlist.join("\n")}`)
+                    .setFooter({text:`Page 1/1`});//${page}
+                    return message.channel.send({ embeds: [wishEmbed] });
+            } else {
+                return console.log("Se intentó usar el comando wishlist.");
+            }
         }
         
         function capitalize(msg) {

@@ -1,8 +1,21 @@
+const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const bot = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent
+		]
+	}
+);
+bot.commands = new Collection();
+
 const dotenv = require('dotenv');
 dotenv.config();
 const { QuickDB } = require('quick.db');
 const db = new QuickDB();
-const { token, gregorid } = require('../config.json');
+const { gregorid } = require('../config.json');
+
 module.exports = {
 	name: 'restart',
 	aliases: ['update','reinicia'],
@@ -53,19 +66,21 @@ module.exports = {
 					msg.react('🆗');
 				}, 4000);
 			})
-			.then(client.destroy())
-			.then(client.login(process.env.BOT_TOKEN))
+			.then(bot.destroy())
+			.then(bot.login(process.env.BOT_TOKEN))
 		}
 
 		} catch(e) {
 			message.channel.send(`ERROR: ${e.message}`)
 		}
 
-		async function getAvatar (avUrl) {
-		const { displayAvatarURL } = await client.users.fetch(gregorid)
-		.catch(console.error);
-
-		return avUrl;
-		};
+		async function getAvatar () {
+			const response = await fetch(`https://discord.com/api/v9/users/${gregorid}`, {
+				headers: {
+					'Authorization': 'Bot ' + (process.env.BOT_TOKEN)
+				}
+			})
+			return JSON.stringify(await response.json(), null, 4)
+		}		
 	}
 }

@@ -1,9 +1,8 @@
 // Node's native file system module.
 const fs = require('fs');
 // require the discord.js module
-const Discord = require('discord.js');
-const { Client, GatewayIntentBits } = require('discord.js');
-const { token, gregorid } = require('./config.json');
+const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { gregorid } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
 //const Booru = require('booru');
@@ -19,18 +18,20 @@ const db = new QuickDB();
 //const dbp = require('./models/index.js');
 
 // create a new Discord client
-const bot = new Discord.Client({
+const bot = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.GuildPresences
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.MessageContent
 		]
 	}
 );
 // a class that extend JS's native Map class and include more extensive functionality.
-bot.commands = new Discord.Collection();
+bot.commands = new Collection();
+
 // will return an array of all the file names in that directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
