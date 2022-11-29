@@ -36,7 +36,6 @@ module.exports = {
                 )
                 itemsProcessed++;
                 if(itemsProcessed === 3) {
-                    //var sortedGames = games.sort(function(a, b) { return a - b; });
                     steamEmbed.setTitle(`Los juegos de pelea...`)
                     .setURL(`https://fgcharts.com`)
                     .setAuthor({ name: 'FG Charts', iconURL: 'https://i.imgur.com/ZmtGJgz.png', url: `https://fgcharts.com` })
