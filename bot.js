@@ -175,8 +175,8 @@ bot.once('ready', () => {
 	.catch((err) => console.log(`avatarURL:`+err));*/
 	// Setting the ammount of nuts.
 	if (db.has('gregoBot') == 0) {
-	db.set('gregoBot', { nuts: 0 });
-	console.log(`Se ha creado una nueva partida.`);
+		db.set('gregoBot', { nuts: 0 });
+		console.log(`Se ha creado una nueva partida.`);
 	}
 });
 bot.on('ready', function () {
@@ -299,7 +299,7 @@ bot.on('ready', function () {
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
-        bot.user.setActivity(activitiesList[index], { type: 'PLAYING' }); // sets bot's activities to one of the phrases in the arraylist.
+        bot.user.setPresence({ activities: [{ name: activitiesList[index] }], status: 'playing' }); // sets bot's activities to one of the phrases in the arraylist.
 		console.log(`Ahora jugando a ${activitiesList[index]}`);
     }, 420000); // Runs this every 420 seconds.
 });
