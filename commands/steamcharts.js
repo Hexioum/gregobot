@@ -20,9 +20,6 @@ module.exports = {
 	usage: '<Nombre del juego> (opcional)',
 	execute(message, args) {
         async function steamappFetch (appId) {
-            console.log(games);
-        }
-        async function steamappFetch (appId) {
             const options = {
                 method: 'GET',
                 url: `https://steamcharts.p.rapidapi.com/api/v1/games/${appId}`,
@@ -81,6 +78,13 @@ module.exports = {
                 }
             })
         } else {
+            if (args[0] == 'samsho') {
+                args[0] = 'samurai shodown'
+            } else if (args[0] == 'ki' || args[0] == 'killer') {
+                args[0] = 'killer instinct'
+            } else if (args[0] == 'uniclr' || args[0] == 'unist') {
+                args[0] = 'under night in-birth'
+            }
             const options = {
                 method: 'GET',
                 url: `https://steamcharts.p.rapidapi.com/api/v1/games/search/${args}`,
@@ -96,7 +100,7 @@ module.exports = {
                 .setURL(`https://steamdb.info/app/${response.data[0].id}/`)
                 .setAuthor({ name: 'Steam Search', iconURL: 'https://i.imgur.com/ZmtGJgz.png', url: `https://steamcharts.com/app/${response.data[0].id}` })
                 .setDescription(`Gente jugando ahora: **${response.data[0].currentPlayers}**`)
-                .addFields(
+                .setFields(
                     { name: 'Promedio mensual', value: `${response.data[0].thirtyDayGainAverage}`, inline: true },
                     { name: 'Variación mensual', value: `${response.data[0].thirtyDayGain}`, inline: true },
                     { name: 'Variación en porcentaje', value: `${response.data[0].thirtyDayGainPercent}%`, inline: true },
