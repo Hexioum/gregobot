@@ -1,8 +1,13 @@
 const Booru = require('booru');
 const axios = require('axios');
 const parser = require('cron-parser');
-//var gis = require('g-i-s');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const gis = require('async-g-i-s');
+//const gis = new GoogleImages('375563de81aaa42ba', process.env.GOOGLE_KEY);
 var md5 = require('md5');
+
 const { QuickDB } = require('quick.db');
 const db = new QuickDB();
 const { EmbedBuilder } = require('discord.js');
@@ -10,7 +15,7 @@ const sharp = require('sharp');
 // const wish = require('./wish');
 
 //Troubleshoot
-const disableCommand = true;
+const disableCommand = false;
 const disableTyping = false;
 
 const helpEmbed = new EmbedBuilder()
@@ -165,157 +170,158 @@ module.exports = {
         if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
 			return message.reply({ embeds: [helpEmbed] });
 		};
-		let member = message.author
+		let member = message.author;
         var isWished = false;
-        var rolls = getDatabase(2)
-        var wishlist = getDatabase(3)
+        var load = getDatabase().then((data) => {
+            //console.log(`Received response: ${data}`);
+            search(data[0],data[1],data[2]);
+        });
 
-        async function getDatabase(x) {
+        async function getDatabase() {
             var cdBooru = await db.add(`booru_cd.${member.id}.rolls`, 0);
-            if (x == 1) {
-                return await db.get('booruLastfind');
-            } else if (x == 2) {
-                return await db.get(`booru_cd.${member.id}.rolls`);
-            } else if (x == 3) {
-                return await db.get(`wishlists.${member.id}`);
-            };
+            wl = await db.get(`wishlists.${member.id}`);
+            rl = await db.get(`booru_cd.${member.id}.rolls`);
+            lf = await db.get('booruLastfind');
+            return load = [wl,rl,lf];
         };
 
-        if ((typeof args[0]==='undefined')&&(wishlist!== null)&&(typeof wishlist!=='undefined')) {
-            console.log("Comprobando wishlist...");
-            if (wishlist.length > 0) {
-                wishlist = wishlist.join();
-                wishlist = wishlist.split(',');
-                let random = Math.floor(Math.random() * 21);
-                console.log(`Random: ${random}\nWishlist contiene ${wishlist.length} personajes.`);
-                if (random >= wishlist.length) {
-                    console.log("El dado dice que será una búsqueda aleatoria.");
-                    args[0] = '-rating:safe';
-                } else {
-                    console.log("El dado dice que estás de suerte.");
-                    args[0] = wishlist[random];
-                    isWished = true;
+        async function search(wishlist,rolls,lastFound) {
+            
+            if ((typeof args[0]==='undefined')&&(wishlist!== null)&&(typeof wishlist!=='undefined')) {
+                console.log("Comprobando wishlist...");
+                if (wishlist.length > 0) {
+                    wishlist = wishlist.join();
+                    wishlist = wishlist.split(',');
+                    let random = Math.floor(Math.random() * 21);
+                    console.log(`Random: ${random}\nWishlist contiene ${wishlist.length} personajes.`);
+                    if (random >= wishlist.length) {
+                        console.log("El dado dice que será una búsqueda aleatoria.");
+                        args[0] = '-rating:safe';
+                    } else {
+                        console.log("El dado dice que estás de suerte.");
+                        args[0] = wishlist[random];
+                        isWished = true;
+                    }
                 }
+            };
+            const date = new Date(); // for reference, PST is UTC-8
+            let day = date.getDay();
+            const dayHours = date.getHours();
+            var hours = "";
+            var minutes = "";
+
+            var cnOptions = {
+                currentDate: date,
+                tz: 'America/Santiago'
+            };
+            const cronExpression = '0 0 */2 * * *';
+        
+            try {
+                const interval = parser.parseExpression(cronExpression, cnOptions);
+                const dateDiff = interval.next(); // Date:  01:00:00 GMT+0200
+                difference = ddMinutes(dateDiff, date);
+                hours = `${Math.floor(difference/60)}h `;
+                minutes = `${difference%60}`;
+                if (hours === '0h ') {
+                    console.log("Menos de una hora restante");
+                    hours = ""
+                }
+            } catch (err) {
+                console.log('Error: '+err.message);
             }
-        };
-        const date = new Date(); // for reference, PST is UTC-8
-        let day = date.getDay();
-        const dayHours = date.getHours();
-        var hours = "";
-        var minutes = "";
 
-        var cnOptions = {
-            currentDate: date,
-            tz: 'America/Santiago'
-        };
-        const cronExpression = '0 0 */2 * * *';
-        
-        try {
-        const interval = parser.parseExpression(cronExpression, cnOptions);
-        const dateDiff = interval.next(); // Date:  01:00:00 GMT+0200
-        difference = ddMinutes(dateDiff, date);
-        hours = `${Math.floor(difference/60)}h `;
-        minutes = `${difference%60}`;
-        if (hours === '0h ') {
-            console.log("Menos de una hora restante");
-            hours = ""
-        }
-        } catch (err) {
-        console.log('Error: '+err.message);
-        }
+            function ddMinutes(dateDiff, date) {
+                var difference =(dateDiff.getTime() - date.getTime()) / 1000;
+                difference /= 60;
+                return Math.abs(Math.round(difference));
+            }
 
-        function ddMinutes(dateDiff, date) {
-        var difference =(dateDiff.getTime() - date.getTime()) / 1000;
-        difference /= 60;
-        return Math.abs(Math.round(difference));
-        }
+            var retries = 0
+            let nameIsflipped = false
+            let random = Math.floor(Math.random() * 2);
+            var url = "";
+            var fileSize = '';
+            let posts = [""]
+            var boorus = [
+                "konachan.com",
+                "yande.re",
+                "gelbooru",
+                "danbooru"
+            ];
+            
+            let poison = [
+                "rating:explicit",
+                "ass",
+                "breasts",
+                "bikini",
+                "cameltoe",
+                "rating:q",
+                "nipples",
+                "panties",
+                "uncensored"
+            ];
+            let randomPo = Math.floor(Math.random() * (poison.length - 1) + 1);
 
-        let retries = 0
-        let nameIsflipped = false
-		let random = Math.floor(Math.random() * 2);
-        var url = "";
-        var fileSize = '';
-        let posts = [""]
-        var boorus = [
-            "konachan.com",
-            "yande.re",
-            "gelbooru",
-            "danbooru"
-        ];
+            let imgofDay = [
+                "ass",//cow_print, monster_girl, lolita_fashion
+                "breasts",//maid
+                "bikini",//heterocromiércoles, wedding_dress, nurse
+                "nipples",//thong thursday, japanese_clothes
+                "pussy",//animal_ears, thong
+                "sex",//demon_girl, succubus, horns
+                "panties"//nun,petite
+            ];
         
-        let poison = [
-            "rating:explicit",
-            "ass",
-            "breasts",
-            "bikini",
-            "cameltoe",
-            "rating:q",
-            "nipples",
-            "panties",
-            "uncensored"
-        ];
-        let randomPo = Math.floor(Math.random() * (poison.length - 1) + 1);
-
-        let imgofDay = [
-            "ass",//cow_print, monster_girl, lolita_fashion
-            "breasts",//maid
-            "bikini",//heterocromiércoles, wedding_dress, nurse
-            "nipples",//thong thursday, japanese_clothes
-            "pussy",//animal_ears, thong
-            "sex",//demon_girl, succubus, horns
-            "panties"//nun,petite
-        ];
-        
-        let randomTopic = Math.floor(Math.random() * (imgofDay.length - 1) + 1);
-        
-        if ((typeof args[0] !== 'undefined')) {
-            if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 32)) {
-                return message.channel.send('meh');
+            let randomTopic = Math.floor(Math.random() * (imgofDay.length - 1) + 1);
+            
+            if ((typeof args[0] !== 'undefined')) {
+                if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 32)) {
+                    return message.channel.send('meh');
+                } else {
+                    tagsFix(args[0]);
+                    var gisOptions = {
+                        searchTerm: `${args[0]} hentai`,
+                        queryStringAddition: '&tbs=isz:l',  // Large images only
+                        filterOutDomains: [
+                            'blogspot.com',
+                            'external-preview.redd.it',
+                            'hentai-img.com',
+                            'hentaifox.com',
+                            'preview.redd.it',
+                            'sh-cdn.com',
+                            'thatpervert.com',
+                            'wixmp.com'
+                        ]
+                    };
+                };
             } else {
-                tagsFix(args[0]);    
-                var gisOptions = {
-                    searchTerm: `${args[0]} hentai`,
-                    queryStringAddition: '&tbs=isz:l',  // Large images only
-                    filterOutDomains: [
-                        'blogspot.com',
-                        'external-preview.redd.it',
-                        'hentai-img.com',
-                        'hentaifox.com',
-                        'preview.redd.it',
-                        'sh-cdn.com',
-                        'thatpervert.com',
-                        'wixmp.com'
-                    ]
+                if (random === 0) {
+                    args[0] = '-rating:safe';
+                    //args[0] = imgofDay[Number(randomTopic)];
+                } else {
+                    args[0] = '-rating:safe';
                 };
             };
-        } else {
-            if (random === 0) {
-                args[0] = '-rating:safe';
-                //args[0] = imgofDay[Number(randomTopic)];
-            } else {
-                args[0] = '-rating:safe';
-            };
-        };
         
-        console.log(rolls);
-        try {
-            console.log(`Memory: ${lastFind.length}`);
-        } catch {
-            console.log(`Memory: 0`);
-        };
-        
-		if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
-			return message.channel.send('en <#441386860300730378> si');
-        } else {
-            if (db.get(`booru_cd.${member.id}.rolls`) < 3) {
-                shuffle(boorus);
-                boorus.push("paheal");  // Add rule34 at the end of the array
-                startBooru();
-            } else {
-                difference = hours+minutes;
-                message.channel.send(`**${message.author.username}**, la ruleta está limitada a 3 usos cada 2 horas (la hora punta). **${difference}** min restante(s).`);
+            console.log(`Rolls: ${rolls}`);
+            try {
+                console.log(`Memory: ${lastFound.length}`);
+            } catch {
+                console.log(`Memory: 0`);
             };
-        };
+            
+            if ((message.channel.nsfw === false)&&(message.channel.id != 438754239494357004)) {
+                return message.channel.send('en <#441386860300730378> si');
+            } else {
+                if (rolls < 3) {
+                    shuffle(boorus);
+                    boorus.push("paheal");  // Add rule34 at the end of the array
+                    startBooru(boorus,retries);
+                } else {
+                    difference = hours+minutes;
+                    message.channel.send(`**${message.author.username}**, la ruleta está limitada a 3 usos cada 2 horas (la hora punta). **${difference}** min restante(s).`);
+                };
+            };
 
         function shuffle(array) {
             var currentIndex = array.length, temporaryValue, randomIndex;
@@ -360,7 +366,7 @@ module.exports = {
             } else {
                 return console.log("No hay nada que voltear.")
             }
-        }
+        };
 
         async function tagsFix() {
             if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('no');
@@ -532,7 +538,7 @@ module.exports = {
             return args[0];//.trim()?
         };
 
-		async function startBooru () {
+		async function startBooru (boorus,retries) {
             try {
                 db.delete(`booru.textCount`);
             } catch(err) {
@@ -547,20 +553,34 @@ module.exports = {
                     await searchBoorus();
                 } catch(err) {
                     retries = retries+1;
-                    startBooru();
+                    startBooru(boorus,retries);
                     console.log("chucha:"+err+"\nReintentando...");
                 };
             } else if (retries === 5) {
                 console.log("Buscando en Google Imágenes...");
                 try {
-                    gis(gisOptions, gisResults);
+                    await gis(gisOptions, gisResults);
+                    /*gis(`${args[0]} hentai`,{safe:"off"},[
+                        'blogspot.com',
+                        'external-preview.redd.it',
+                        'hentai-img.com',
+                        'hentaifox.com',
+                        'preview.redd.it',
+                        'sh-cdn.com',
+                        'thatpervert.com',
+                        'wixmp.com'
+                    ]);*/
+                    /*gis.search(`${args[0]} hentai`, {safe: 'off'})
+                    .then(images => {
+                        console.log(images);
+                    });*/
                 } catch(err) {
                     retries = retries+1;
-                    startBooru();
+                    startBooru(boorus,retries);
                     console.log("chucha:"+err+"\nReintentando...");
                 };
             } else {
-                db.subtract(`booru_cd.${member.id}.rolls`, 1);
+                db.sub(`booru_cd.${member.id}.rolls`, 1);
                 message.reply(`no encontre niuna wea con *${args[0]}* 🙁`);
                 return console.log("chucha: No encontré nada.");
             };
@@ -625,11 +645,11 @@ module.exports = {
             // Check if the character exists
             var posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
             
-            if (lastFind == null) {
-                lastFind = ["empty"];
+            if (lastFound == null) {
+                lastFound = ["empty"];
             };
             
-            if ((typeof posts[0] === 'undefined')||(lastFind.indexOf(md5(posts[0].fileUrl)) > -1)) {
+            if ((typeof posts[0] === 'undefined')||(lastFound.indexOf(md5(posts[0].fileUrl)) > -1)) {
                 if (typeof posts[0] === 'undefined') {
                     console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
                 } else {
@@ -640,7 +660,7 @@ module.exports = {
                 };
                 await flipName(args[0]);                // Flip the name
                 retries = retries+1;
-                startBooru();                           // Searches again
+                startBooru(boorus,retries);                           // Searches again
             } else {
                 if (boorus[0] === "paheal") {
                     if (isWished) {
@@ -669,10 +689,9 @@ module.exports = {
                         var booruRemoved = boorus.shift();  // Removes the first booru
                         retries = retries+1;
                         if (retries < 5) {
-                            startBooru();                       // Searches again
+                            startBooru(boorus,retries); // Searches again
                         } else {
                             //getFileSize(url);
-                            //gis(gisOptions, gisResults);
                             console.log('Sorry nothing.')
                         };
                     } else {
@@ -681,7 +700,7 @@ module.exports = {
                                 console.log("Meh, busco otra");
                                 var booruRemoved = boorus.shift();  // Removes the first booru
                                 // Retry without adding to the "retries" counter
-                                startBooru(); // Searches again
+                                startBooru(boorus,retries); // Searches again
                             } else {
                                 console.log("Esta está buena, la envío altiro.");
                             /*    if (isWished) {
@@ -692,8 +711,8 @@ module.exports = {
                                     };
                                 };*/
                                 url = posts[0].fileUrl;
-                                if (typeof lastFind !== 'undefined') {
-                                    if (lastFind.length > 128) {
+                                if (typeof lastFound !== 'undefined') {
+                                    if (lastFound.length > 128) {
                                         db.delete('booruLastfind');
                                         console.log('Se ha reiniciado la lista de imagenes.');
                                     };
@@ -728,7 +747,7 @@ module.exports = {
                         gisResults();
                     } else {
                         console.log("Me rindo, no encuentro nada.");
-                        //db.subtract(`booru_cd.${member.id}.rolls`, 1);
+                        //db.sub(`booru_cd.${member.id}.rolls`, 1);
                         return message.reply(`no encontre niuna wea 🙁`);
                     }
                 } else {
@@ -740,7 +759,7 @@ module.exports = {
                     } catch {
                         console.log("No puedo enviar el resultado de Google.");
                         retries = retries+1;
-                        startBooru();
+                        startBooru(boorus,retries);
                     }
                 };
             }
@@ -777,7 +796,7 @@ module.exports = {
                 "10s","1boy","1girl","2boys","2girls","3:","3boys","3d","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
                 "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_table","against_wall","age_difference","ahoge","aliasing","all_fours","alternate_breast_size","alternate_costume","alternate_hair_color","amulet",
                 "anal","anal_beads","anal_fingering","anal_hair","anal_object_insertion","anal_tail","angel_wings","anilingus","animal","animal_ears","animal_hands","animal_penis","ankle_boots","anklet","anthropomorphism","anus","angry","annoyed","apron","aqua_dress","aqua_bikini","aqua_eyes","aqua_hair","aqua_shirt",
-                "areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","artist_name","artist_request","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings",
+                "areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","artist_name","artist_request","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings","autographed",
                 "back-print_panties","backboob","backless_outfit","bad_feet","bad_id","bad_pixiv_id","badge","bag","bald","ball","bamboo_broom","bandage","bandaid","bandaids_on_nipples","bangs","bar_censor","bare_legs","bare_shoulders","barefoot","baseball_cap","bat","bathing","bathroom","bdsm","beach","beachball","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belly_chain","belt","bent_over",
                 "big_hair","bike_shorts","bikini","bikini_lift","bikini_top","bird","bisexual","black_bikini","black_bow","black_bra","black_choker","black_collar","black_dress","black_eyes","black_footwear","black_gloves","black_hair","black_hairband","black_headwear","black_jacket","black_legwear","black_leotard","black_panties","black_pants","black_ribbon","black_skirt","blank_eyes","blazer","blindfold","blonde_hair","blood","bloomers","blouse",
                 "blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers","bodysuit","bondage","boots","border","bored","bottomless","bound","bound_arms","bow","bow_bra","bowtie",
@@ -788,7 +807,7 @@ module.exports = {
                 "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","creature","crinoline","crop_top","cropped","cross","crossed_arms","crown","crying","cuffs","cum","cum_in_pussy","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cup","curtains",
                 "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","doyagao","dress","dress_shirt","drolling","drunk","dutch_angle",
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
-                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","floating_hair","floor","flower","flowers","flustered",
+                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
                 "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_eyes","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
                 "hair_between_eyes","hair_bow","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
@@ -806,7 +825,7 @@ module.exports = {
                 "sagging_testicles","scan","see_through","seifuku","selfie","sex","sex_from_behind","sex_toy","school_uniform","shiny","shiny_skin","shirt","shirt_lift","shoes","short_hair","shorts","side_bun","side_ponytail","sideboob","sidelocks","signed","silver_hair","simple_background","sitting",
                 "skintight","skirt","skirt_lift","sky","sleeping","small_breasts","smartphone","smelling_feet","smile","solo","solo_focus","speed_lines","spread_legs","spread_pussy","stockings","striped_panties","sweat","sweatdrop","sweater","swimsuit","swimsuit_pull","swimsuit_under_clothes","swimsuits",
                 "tagme","tail","tan_lines","tears","tentacles","thigh_gap","thighhighs","thighs","thong","thong_bikini","thong_leotard","tongue","tongue_out","topless","torn_bodysuit","torn_clothes","torn_dress","torn_panties","torn_pants","torn_shirt","torn_swimsuit","translated","trembling","triangle_mouth","twintails","twitter_username","two-tone_hair",
-                "uncensored","underboob","underwear","undressing","untied_bikini","upper_body","upset","used_condom","uwu",
+                "uncensored","underboob","underwear","undressing","untied_bikini","upper_body","upset","upskirt","used_condom","uwu",
                 "vaginal","very_long_hair","very_short_hair","vibrator",
                 "water","watermark","wavy_mouth","weapon","wet","wet_clothes","wet_hair","wet_shirt","wet_shorts","white_background","white_bikini","white_dress","white_gloves","white_hair","white_legwear","white_shirt","wide_sleeves","window","wings","wink","wolf_ears","wolf_tail","wristwear",
                 "xd",
@@ -877,6 +896,8 @@ module.exports = {
             }
             return separateWord.join(' ');
         }
+        
+    }
         
 		// Interacciones con reacciones.
 		async function emojiMessage(message, validReactions) {
