@@ -11,11 +11,11 @@ module.exports = {
         let member = message.author;
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
-            if (args.length > 280) {
+            if (args.length > 400) {
                 message.reply('XD');
             } else {
                 //wrap(args[0])
-                var arr = wrapText(args, 13+(Math.floor(args.length*0.07)));
+                var arr = wrapText(args, 12+(Math.floor(args.length*0.07)));
                 var topOffset = 0;
                 arr = wrap(arr, topOffset);
                 drawImage(arr, topOffset);
@@ -27,6 +27,7 @@ module.exports = {
 
         function wrap(arr, topOffset) {
             // Escape certain characters. Prevents crashes.
+            arr = arr.charAt(0).toUpperCase() + arr.slice(1);
             arr = arr.replace(/<+/gi, `&lt;`);
             arr = arr.replace(/>+/gi, `&gt;`);
             arr = arr.split('\n');
