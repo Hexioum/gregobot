@@ -11,7 +11,6 @@ module.exports = {
         let member = message.author;
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
-
             if (args.length > 280) {
                 message.reply('XD');
             } else {
@@ -27,12 +26,14 @@ module.exports = {
         };
 
         function wrap(arr, topOffset) {
+            // Escape certain characters. Prevents crashes.
+            arr = arr.replace(/<+/gi, `&lt;`);
+            arr = arr.replace(/>+/gi, `&gt;`);
             arr = arr.split('\n');
             var size = (14/Math.sqrt(args.length))+1;
             var font = "Arial";
             var offset = (arr.length-1)*3;
             for (var i = 0; i < arr.length; i++) {
-              // Fixes the first line offset
               arr[i] = `
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>

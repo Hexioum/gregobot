@@ -877,6 +877,9 @@ module.exports = {
 
         function capitalize(msg) {//&#039;
             msg = msg.replace(/&#039;+/gi, `'`);
+            msg = msg.replace(/&amp;+/gi, `&`);
+            msg = msg.replace(/&lt;+/gi, `<`);
+            msg = msg.replace(/&gt;+/gi, `>`);
             var separateWord = msg.replace(/(\r\n|\n|\r)/gm, "").toLowerCase().split('_');
             for (var i = 0; i < separateWord.length; i++) {
                 if ((separateWord[i].charAt(0) === '(')&&(separateWord[i].length > 2)) {
