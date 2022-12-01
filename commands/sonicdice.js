@@ -16,7 +16,7 @@ module.exports = {
                 message.reply('XD');
             } else {
                 //wrap(args[0])
-                var arr = wrapText(args, 24);
+                var arr = wrapText(args, 22);
                 var topOffset = 0;
                 arr = wrap(arr, topOffset);
                 drawImage(arr, topOffset);
