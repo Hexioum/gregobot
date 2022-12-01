@@ -9,12 +9,13 @@ module.exports = {
 	usage: 'Debe especificar mensaje.',
 	execute(message, args) {
         let member = message.author;
+        message.channel.sendTyping();
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
-            if (args.length > 400) {
+            if (args.length > 435) {
                 message.reply('XD');
             } else {
-                //wrap(args[0])
+                // TODO: Prevent new lines from wrapping when it shouldn't
                 var arr = wrapText(args, 12+(Math.floor(args.length*0.07)));
                 var topOffset = 0;
                 arr = wrap(arr, topOffset);
@@ -30,12 +31,14 @@ module.exports = {
             arr = arr.charAt(0).toUpperCase() + arr.slice(1);
             arr = arr.replace(/<+/gi, `&lt;`);
             arr = arr.replace(/>+/gi, `&gt;`);
+            arr = arr.replace(/\n\s*\n/g, '\n');
             arr = arr.split('\n');
             var size = (14/Math.sqrt(args.length))+1;
             var font = "Arial";
             var offset = (arr.length-1)*3;
             for (var i = 0; i < arr.length; i++) {
               arr[i] = `
+              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.045em" dy="${topOffset+.295}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.03em" dy="${topOffset+.28}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
@@ -43,7 +46,6 @@ module.exports = {
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.02em" dy="${topOffset+.27}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.015em" dy="${topOffset+.265}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.01em" dy="${topOffset+.26}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.005em" dy="${topOffset+.255}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="${50-offset}%" text-anchor="middle" dy="${topOffset+.25}em" fill="#fff" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               `
               if (i == 0) {
@@ -51,9 +53,13 @@ module.exports = {
               }
               if (arr.length == 2) {
                 topOffset = topOffset+(size*0.25);
-              } else {
+              } else if (arr.length > 8) {
+                topOffset = topOffset+(size*0.7);
+              } else if (arr.length > 5) {
                 topOffset = topOffset+(size*0.5);
-              }
+              } else {
+                topOffset = topOffset+(size*arr.length*0.1);
+              };
             }
             return arr;
           }
