@@ -12,11 +12,11 @@ module.exports = {
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
 
-            if (args.length > 255) {
+            if (args.length > 280) {
                 message.reply('XD');
             } else {
                 //wrap(args[0])
-                var arr = wrapText(args, 22);
+                var arr = wrapText(args, 13+(Math.floor(args.length*0.07)));
                 var topOffset = 0;
                 arr = wrap(arr, topOffset);
                 drawImage(arr, topOffset);
@@ -47,7 +47,11 @@ module.exports = {
               if (i == 0) {
                 topOffset = 0;
               }
-              topOffset = topOffset+(size*0.5);
+              if (arr.length == 2) {
+                topOffset = topOffset+(size*0.25);
+              } else {
+                topOffset = topOffset+(size*0.5);
+              }
             }
             return arr;
           }
