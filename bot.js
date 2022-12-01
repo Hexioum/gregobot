@@ -242,7 +242,7 @@ bot.on('ready', function () {
 	var avtNormal1 = new CronJob(
 		'0 0 0 1,2,7 0-5 *',//“At 00:00 on day 1, 2, and 7 in every month from January through June.”
 		function() {
-			client.user.setAvatar('./memes/avatars/nachogbr.jpg')
+			bot.user.setAvatar('./memes/avatars/nachogbr.jpg')
 			.then(user => console.log(`Cambio de avatar.`))
 			.catch(console.error);
 		},
@@ -253,7 +253,7 @@ bot.on('ready', function () {
 	var avtLaborday = new CronJob(
 		'9 0 0 1 4 *',//“At 00:00:09 on May 1st.”
 		function() {
-			client.user.setAvatar('./memes/avatars/laborday.png')
+			bot.user.setAvatar('./memes/avatars/laborday.png')
 			.then(user => console.log(`Cambio de avatar, Trabajador.`))
 			.catch(console.error);
 		},
@@ -264,7 +264,7 @@ bot.on('ready', function () {
 	var avtKrausar = new CronJob(
 		'0 0 0 6 5 *',//“At 00:00 on June 6th.”
 		function() {
-			client.user.setAvatar('./memes/avatars/aprilfools.png')
+			bot.user.setAvatar('./memes/avatars/aprilfools.png')
 			.then(user => console.log(`Cambio de avatar, Krausar.`))
 			.catch(console.error);
 		},
@@ -275,7 +275,7 @@ bot.on('ready', function () {
 	var avtNormal2 = new CronJob(
 		'0 0 0 1 5-11 *',//“At 00:00 on day-of-month 1 from July through December.”
 		function() {
-			client.user.setAvatar('./memes/avatars/nachogck.png')
+			bot.user.setAvatar('./memes/avatars/nachogck.png')
 			.then(user => console.log(`Cambio de avatar.`))
 			.catch(console.error);
 		},
@@ -286,7 +286,7 @@ bot.on('ready', function () {
 	var avtXmas = new CronJob(
 		'0 0 0 24 11 *',//“At 00:00 on December 24th.”
 		function() {
-			client.user.setAvatar('./memes/avatars/nachogpd.png')
+			bot.user.setAvatar('./memes/avatars/nachogpd.png')
 			.then(user => console.log(`Cambio de avatar, Felices fiestas.`))
 			.catch(console.error);
 		},
