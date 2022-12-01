@@ -9,7 +9,6 @@ module.exports = {
 	usage: 'Debe especificar mensaje.',
 	execute(message, args) {
         let member = message.author;
-        console.log(args);
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
 
@@ -29,7 +28,6 @@ module.exports = {
 
         function wrap(arr, topOffset) {
             arr = arr.split('\n');
-            console.log(topOffset);
             var size = (14/Math.sqrt(args.length))+1;
             var font = "Arial";
             var offset = (arr.length-1)*3;
@@ -55,7 +53,7 @@ module.exports = {
           }
 
         function drawImage(arr, topOffset) {
-          console.log(`Generando imagen con texto: ${args}\nOffset: ${topOffset}`);
+          console.log(`Generando imagen con texto: ${args}`);
           // y=ab^x
           const width = 622;
           const height = 334;
