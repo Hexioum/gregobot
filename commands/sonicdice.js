@@ -1,3 +1,4 @@
+const fs = require('fs');
 const sharp = require('sharp');
 const wrapText = require('wrap-text');
 
@@ -10,6 +11,9 @@ module.exports = {
 	execute(message, args) {
         let member = message.author;
         message.channel.sendTyping();
+        const template = fs.readdirSync(`./memes/sonicsays`);
+        const tempRand = Math.floor(Math.random()*(template.length-1));
+
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
             if (args.length > 435) {
@@ -86,7 +90,7 @@ module.exports = {
           </svg>
           `;
           const svg_buffer = Buffer.from(svg);
-          const image = sharp(`./memes/SonicSays.png`)
+          const image = sharp(`./memes/sonicsays/${template[tempRand]}`)
           .composite([{
               input: svg_buffer,
               top: topOffset,
