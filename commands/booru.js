@@ -375,7 +375,7 @@ module.exports = {
 
             var oneRegex = / ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = / brutal+| cadaver+| child+| corpse+| death+| decapitat+| eviscerat+| gore+| guro+| impale+| kill+| suicid+| torture+| viscera+/gi ; //shows something else
+            var twoRegex = /abuse+|agoni+|agony+|agoní+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
             var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| lechesita+| lechita+| milk+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
