@@ -69,9 +69,9 @@ module.exports = {
             if (arr.length == 1) {
               var offset = 13;
             } else if (arr.length == 2) {
-              var offset = -13;
+              var offset = -14;
             } else if (arr.length == 3) {
-              var offset = -37;
+              var offset = -36;
             } else if (arr.length == 4) {
               var offset = -60;
             } else if (arr.length == 5) {
