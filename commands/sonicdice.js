@@ -16,11 +16,15 @@ module.exports = {
 
         if ((typeof args!=='undefined')&&(args.length > 0)) {
             args = args.join(', ');
+            var argWidth = 12+(Math.floor(args.length*0.07));
+            if (argWidth > 38) {
+              argWidth = 38;
+            }
             if (args.length > 435) {
                 message.reply('XD');
             } else {
-                // TODO: Prevent new lines from wrapping when it shouldn't
-                var arr = wrapText(args, 12+(Math.floor(args.length*0.07)));
+                // FIX: Long words from NOT wrapping.
+                var arr = wrapText(args, argWidth);
                 var topOffset = 0;
                 arr = wrap(arr, topOffset);
                 drawImage(arr, topOffset);
@@ -44,7 +48,7 @@ module.exports = {
             } else if (arr.length == 2) {
               var offset = -13;
             } else if (arr.length == 3) {
-              var offset = -36;
+              var offset = -37;
             } else if (arr.length == 4) {
               var offset = -60;
             } else if (arr.length == 5) {
@@ -53,6 +57,8 @@ module.exports = {
               var offset = -80;
             } else if (arr.length == 7) {
               var offset = -86;
+            } else if (arr.length > 11) {
+              var offset = (arr.length-1)*-11;
             } else {
               var offset = (arr.length-1)*-12;
             }
@@ -87,12 +93,11 @@ module.exports = {
 
         function drawImage(arr, topOffset) {
           console.log(`Generando imagen con texto: ${args}`);
-          // y=ab^x
-          const width = 622;
+          const weight = 622;
           const height = 334;
 
           const svg = `
-          <svg width="${width}" height="${height}" viewBox="0 0 ${height} ${height + 2}">
+          <svg width="${weight}" height="${height}" viewBox="0 0 ${height} ${height + 2}">
           <defs>
               <linearGradient id="rainbow" x1="0" x2="80%" y1="10%" y2="90%" gradientUnits="userSpaceOnUse" >
               <stop stop-color="#4FCB6B" offset="0%"/>
