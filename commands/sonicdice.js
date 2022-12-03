@@ -4,7 +4,7 @@ const wrapText = require('wrap-text');
 
 module.exports = {
 	name: 'sonicdice',
-	aliases: ['test','sonicdice','sonicsays'],
+	aliases: ['sd','sonicdice','sonicsays'],
 	description: 'Genera un mensaje inspiracional.',
 	args: true,
 	usage: 'Debe especificar mensaje.',
