@@ -4,7 +4,7 @@ const wrapText = require('wrap-text');
 
 module.exports = {
 	name: 'sonicdice',
-	aliases: ['sd','sonicdice','sonicsays','ss'],
+	aliases: ['test','sonicdice','sonicsays'],
 	description: 'Genera un mensaje inspiracional.',
 	args: true,
 	usage: 'Debe especificar mensaje.',
@@ -15,28 +15,51 @@ module.exports = {
         const tempRand = Math.floor(Math.random()*(template.length-1));
 
         if ((typeof args!=='undefined')&&(args.length > 0)) {
-            args = args.join(', ');
-            var argWidth = 12+(Math.floor(args.length*0.07));
-            if (argWidth > 38) {
-              argWidth = 38;
-            }
-            if (args.length > 435) {
-                message.reply('XD');
-            } else {
-                // FIX: Long words from NOT wrapping.
-                var arr = wrapText(args, argWidth);
-                var topOffset = 0;
-                arr = wrap(arr, topOffset);
-                drawImage(arr, topOffset);
-            }
+          args = args.join(', ');
+          evaluate(args);
 			//args = args.charAt(0).toUpperCase() + args.substring(1);
-		    } else {
-            return message.reply("⁉");
+		    } else if (message.reference!==null) {
+          fetchMsg(message.reference.messageId);
+        } else {
+          return message.reply("⁉");
         };
+
+        async function fetchMsg(msg) {
+          const reply = await message.channel.messages.fetch(msg);
+          console.log(`[Sonic] Copiando texto: ${reply}`);
+          if (reply.content.startsWith('grego sd,')||reply.content.startsWith('grego sonicdice,')||reply.content.startsWith('grego sonicsays,')) {
+            args = reply.content.split(',')[1];
+          } else {
+            args = reply.content;
+          }
+          if (args.length > 0) {
+            evaluate(args);
+          } else {
+            return message.reply("⁉");
+          }
+        };
+
+        function evaluate(args) {
+          var argWidth = 12+(Math.floor(args.length*0.07));
+          if (argWidth > 38) {
+            argWidth = 38;
+          }
+          if (args.length > 435) {
+              message.reply('XD');
+          } else {
+              // FIX: Long words from NOT wrapping.
+              var arr = wrapText(args, argWidth);
+              var topOffset = 0;
+              arr = wrap(arr, topOffset);
+              drawImage(arr, topOffset);
+          };
+        }
 
         function wrap(arr, topOffset) {
             // Escape certain characters. Prevents crashes.
             arr = arr.charAt(0).toUpperCase() + arr.slice(1);
+            arr = arr.replace(/\*{2}/gi, ``);//Only two *s.
+            arr = arr.replace(/"+/gi, `&quot;`);
             arr = arr.replace(/<+/gi, `&lt;`);
             arr = arr.replace(/>+/gi, `&gt;`);
             arr = arr.replace(/\n\s*\n/g, '\n');
@@ -65,11 +88,11 @@ module.exports = {
             //(arr.length-1)*3;//2 lineas debe ser 3, y 11 lineas 33, pero hay que hacer que la curva decrezca
             for (var i = 0; i < arr.length; i++) {
               arr[i] = `
-              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.045em" dy="${topOffset+.295}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.03em" dy="${topOffset+.28}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.025em" dy="${topOffset+.275}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.045em" dy="${topOffset+.295}em" fill="#003B79" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#001B36" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#001224" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.03em" dy="${topOffset+.28}em" fill="#000912" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.025em" dy="${topOffset+.275}em" fill="#000304" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.02em" dy="${topOffset+.27}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.015em" dy="${topOffset+.265}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.01em" dy="${topOffset+.26}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
