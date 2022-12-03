@@ -39,30 +39,47 @@ module.exports = {
             arr = arr.split('\n');
             var size = (14/Math.sqrt(args.length))+1;
             var font = "Arial";
-            var offset = (arr.length-1)*3;
+            if (arr.length == 1) {
+              var offset = 13;
+            } else if (arr.length == 2) {
+              var offset = -13;
+            } else if (arr.length == 3) {
+              var offset = -36;
+            } else if (arr.length == 4) {
+              var offset = -60;
+            } else if (arr.length == 5) {
+              var offset = -66;
+            } else if (arr.length == 6) {
+              var offset = -80;
+            } else if (arr.length == 7) {
+              var offset = -86;
+            } else {
+              var offset = (arr.length-1)*-12;
+            }
+            //(arr.length-1)*3;//2 lineas debe ser 3, y 11 lineas 33, pero hay que hacer que la curva decrezca
             for (var i = 0; i < arr.length; i++) {
               arr[i] = `
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.045em" dy="${topOffset+.295}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.03em" dy="${topOffset+.28}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.025em" dy="${topOffset+.275}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.02em" dy="${topOffset+.27}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.015em" dy="${topOffset+.265}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dx="0.01em" dy="${topOffset+.26}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
-              <text x="81%" y="${50-offset}%" text-anchor="middle" dy="${topOffset+.25}em" fill="#fff" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.045em" dy="${topOffset+.295}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.04em" dy="${topOffset+.29}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.035em" dy="${topOffset+.285}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.03em" dy="${topOffset+.28}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.025em" dy="${topOffset+.275}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.02em" dy="${topOffset+.27}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.015em" dy="${topOffset+.265}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dx="0.01em" dy="${topOffset+.26}em" fill="#000" font-family="${font}" font-size="${size}em">${arr[i]}</text>
+              <text x="81%" y="50%" transform="translate(0, ${offset})" text-anchor="middle" dy="${topOffset+.25}em" fill="#fff" font-family="${font}" font-size="${size}em">${arr[i]}</text>
               `
               if (i == 0) {
                 topOffset = 0;
               }
-              if (arr.length == 2) {
-                topOffset = topOffset+(size*0.25);
-              } else if (arr.length > 8) {
+              if (arr.length > 8) {
                 topOffset = topOffset+(size*0.7);
               } else if (arr.length > 5) {
                 topOffset = topOffset+(size*0.5);
+              } else if (arr.length > 4) {
+                topOffset = topOffset+(size*0.425);
               } else {
-                topOffset = topOffset+(size*arr.length*0.1);
+                topOffset = topOffset+(size*arr.length*0.125);
               };
             }
             return arr;
