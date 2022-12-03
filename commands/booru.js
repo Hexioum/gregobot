@@ -251,13 +251,13 @@ module.exports = {
             
             let poison = [
                 "rating:explicit",
-                "ass",
-                "breasts",
-                "bikini",
-                "cameltoe",
+                "rating:explicit",
+                "rating:explicit",
+                "rating:explicit",
                 "rating:q",
-                "nipples",
-                "panties",
+                "rating:q",
+                "rating:q",
+                "rating:q",
                 "uncensored"
             ];
             let randomPo = Math.floor(Math.random() * (poison.length - 1) + 1);
