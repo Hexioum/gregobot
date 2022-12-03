@@ -877,6 +877,7 @@ module.exports = {
 
         function capitalize(msg) {//&#039;
             msg = msg.replace(/&#039;+/gi, `'`);
+            msg = msg.replace(/&quot;+/gi, `"`);
             msg = msg.replace(/&amp;+/gi, `&`);
             msg = msg.replace(/&lt;+/gi, `<`);
             msg = msg.replace(/&gt;+/gi, `>`);
