@@ -2,19 +2,6 @@ const fs = require('fs');
 const sharp = require('sharp');
 const wrapText = require('wrap-text');
 
-const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.GuildPresences,
-		GatewayIntentBits.MessageContent
-		]
-	}
-);
-
 module.exports = {
 	name: 'sonicdice',
 	aliases: ['sd','sonicdice','sonicsays'],
@@ -61,12 +48,13 @@ module.exports = {
               mentions[i] = mentions[i].slice(3, 21);
               mentions[i] = await message.guild.roles.fetch(mentions[i]);
               mentions[i] = "@"+mentions[i].name;
+            } else if (mentions[i].startsWith('<:')) {
+              mentions[i] = mentions[i].match(/:.*:/g).toString();
               console.log(mentions[i]);
             } else {
               mentions[i] = mentions[i].slice(2, 20);
               mentions[i] = await message.guild.members.fetch(mentions[i]);
               mentions[i] = "@"+mentions[i].nickname;
-              console.log(mentions[i]);
             }
             args = args.replace(/<.*>/, mentions[i]);
           }
