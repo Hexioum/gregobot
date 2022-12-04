@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField, Collection } = require('discord.js');
 const bot = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -24,7 +24,7 @@ module.exports = {
 	usage: 'grego reinicia',
 	execute(message, args) {
 //	Check the server owner ID
-	if(message.author.id != "360892991499665408") return message.channel.send("no");
+	if (!member.permissions.has(PermissionsBitField.Flags.BanMembers)) return message.channel.send("no");
 	// resolve(guildID) and get gregoID	(GET AVATAR)
 /*	bot.users.fetch(gregorid).then(myUser => {
     bot.user.setAvatar(myUser.avatarURL())})
