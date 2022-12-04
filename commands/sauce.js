@@ -8,8 +8,8 @@ const client = sagiri(process.env.SAUCE_TOKEN, {
 });
 module.exports = {
 	name: 'saucenao',
-	aliases: ['source','sauce','salsa','fuente','reverse search','rs'],
-	description: 'Obtiene el origen de la imágen mediante SauceNAO',
+	aliases: ['test','salsa','sauce','source'],//rs
+	description: 'Obtiene el origen de la imagen mediante SauceNAO',
 	args: true,
 	usage: 'cantidad de resultados',
 	execute(message, args) {
@@ -24,13 +24,30 @@ module.exports = {
 		for (var i = 0; i < memes.length; i++) {
 			memes[i] = memes[i].replace(/[!$&'()*+,;=]/gi, '');
 		}
+
+		try {
+			fetchMsg();
+		} catch(err) {
+			return console.log(`Sauce: ${err}`);
+		};
 		
 		async function fetchMsg () {
 			try {
-				console.log(memes);
 				message.channel.sendTyping();
 				if (args[0].toLowerCase().startsWith(`http`)) {
-					sauceGet();
+					sauceGet(args[0]);
+				} else if (message.reference!==null) {
+					const reply = await message.channel.messages.fetch(message.reference.messageId);
+					if (reply.content.startsWith('grego rs,')||reply.content.startsWith('grego salsa,')||reply.content.startsWith('grego sauce,')||reply.content.startsWith('grego source,')) {
+						args = reply.content.split(',')[1];
+					} else if (reply.content.includes('http')) {
+						args = reply.content;
+					} else if (reply.attachments.size > 0) {
+						args = reply.attachments.first().url;
+					} else {
+						args = reply.content;
+					}
+					sauceGet(args);
 				} else {
 					await getURL();
 				}
@@ -39,6 +56,7 @@ module.exports = {
 				return console.log("chucha:"+err);
 			}
 		}
+
 		async function getURL () {
 			message.channel.messages.fetch({limit: 44}).then((messages) => {
 				const lastMessages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp).filter(
@@ -103,14 +121,9 @@ module.exports = {
 					};
 				}
 			});
-		}
-		try {
-			fetchMsg();
-		} catch(err) {
-			return console.log(`fetchMsg: ${err}`);
 		};
 		
-		async function sauceGet () {
+		async function sauceGet (url1) {
 			console.log(`Buscando el source de `+url1.substring(url1.lastIndexOf('/')+1))
 			try {
 				results = await client(url1);
@@ -137,7 +150,7 @@ module.exports = {
 		/*	if (results[1].url.startsWith("https://danbooru.donmai.us/")) {
 				return message.channel.send(results[1].url);
 			}*/
-			return message.channel.send(`<@${member.id}> ${results[0].url}`);
+			return message.channel.reply(`${results[0].url}`);
 		}
 	},
 };
