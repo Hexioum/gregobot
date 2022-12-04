@@ -150,7 +150,7 @@ module.exports = {
 		/*	if (results[1].url.startsWith("https://danbooru.donmai.us/")) {
 				return message.channel.send(results[1].url);
 			}*/
-			return message.channel.reply(`${results[0].url}`);
+			return message.reply(`${results[0].url}`);
 		}
 	},
 };
