@@ -50,7 +50,6 @@ module.exports = {
               mentions[i] = "@"+mentions[i].name;
             } else if (mentions[i].startsWith('<:')) {
               mentions[i] = mentions[i].match(/:.*:/g).toString();
-              console.log(mentions[i]);
             } else {
               mentions[i] = mentions[i].slice(2, 20);
               mentions[i] = await message.guild.members.fetch(mentions[i]);
@@ -84,7 +83,7 @@ module.exports = {
       arr = arr.replace(/"+/gi, `&quot;`);
       arr = arr.replace(/<+/gi, `&lt;`);
       arr = arr.replace(/>+/gi, `&gt;`);
-      arr = arr.replace(/\n\s*\n/g, '\n');
+      arr = arr.replace(/\n\s*\n/g, '\n');//Multiple new lines.
       arr = arr.split('\n');
       for (var i = 0; i < arr.length; i++) {
         // Wraps very long words.
