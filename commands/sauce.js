@@ -8,7 +8,7 @@ const client = sagiri(process.env.SAUCE_TOKEN, {
 });
 module.exports = {
 	name: 'saucenao',
-	aliases: ['test','salsa','sauce','source'],//rs
+	aliases: ['rs','salsa','sauce','source'],
 	description: 'Obtiene el origen de la imagen mediante SauceNAO',
 	args: true,
 	usage: 'cantidad de resultados',
