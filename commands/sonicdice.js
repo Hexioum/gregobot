@@ -45,11 +45,15 @@ module.exports = {
         if (mentions!==null) {
           for (var i = 0; i < mentions.length; i++) {
             if (mentions[i].startsWith('<@&')) {
-              mentions[i] = mentions[i].slice(3, 21);
+              mentions[i] = mentions[i].slice(3,mentions[i].length-1);
               mentions[i] = await message.guild.roles.fetch(mentions[i]);
               mentions[i] = "@"+mentions[i].name;
             } else if (mentions[i].startsWith('<:')) {
-              mentions[i] = mentions[i].match(/:.*:/g).toString();
+              mentions[i] = mentions[i].slice(2,mentions[i].length-1);
+            } else if (mentions[i].startsWith('<#')) {
+              mentions[i] = mentions[i].slice(2,mentions[i].length-1);
+              mentions[i] = await message.guild.channels.fetch(mentions[i]);
+              mentions[i] = "#"+mentions[i].name;
             } else {
               mentions[i] = mentions[i].slice(2, 20);
               mentions[i] = await message.guild.members.fetch(mentions[i]);
