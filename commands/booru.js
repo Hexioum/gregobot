@@ -275,7 +275,7 @@ module.exports = {
             let randomTopic = Math.floor(Math.random() * (imgofDay.length - 1) + 1);
             
             if ((typeof args[0] !== 'undefined')) {
-                if ((args[0].toLowerCase().startsWith('sopp'))||(args[0].toLowerCase().includes('sopmod'))||(args[0].length > 32)) {
+                if ((args[0].toLowerCase().startsWith('hombres'))||(args[0].length > 32)) {
                     return message.channel.send('meh');
                 } else {
                     tagsFix(args[0]);
@@ -369,8 +369,6 @@ module.exports = {
         };
 
         async function tagsFix() {
-            if (args[0].toLowerCase().startsWith('m4 sop')) return message.channel.send('no');
-            if (args[0].toLowerCase().startsWith('sopmod')) return args[0] = `warframe`;
 		    if (args[0].toLowerCase().startsWith('m4 mod')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
             var oneRegex = / ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi ;
@@ -379,7 +377,7 @@ module.exports = {
             var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| lechesita+| lechita+| milk+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
-            var fthRegex = / m4 mod+| meao+| pichi+| pichí+/gi ;
+            var fthRegex = / meao+| pichi+| pichí+/gi;
             var fthMatch = args.some(e => fthRegex.test(e));
             var fftRegex = / zorra pelua+| zorra peluda+/gi;
             var fftMatch = args.some(e => fftRegex.test(e));
@@ -402,7 +400,7 @@ module.exports = {
             } else if (fthMatch === true) {
                 poison.push('urine');
                 randomPo = poison.length-1;
-                args[0] = args[0].toLowerCase().replace(/ m4 mod+| meao+| pichi+| pichí+/gi, '');
+                args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
             } else if (fftMatch === true) {
                 poison.push('pubic_hair');
                 randomPo = poison.length-1;
@@ -485,6 +483,8 @@ module.exports = {
                 args[0] = `natsume_(pokemon)`
             } else if (args[0].toLowerCase() === 'satanichia') {
                 args[0] = `satanichia_kurumizawa_mcdowell`
+            } else if (args[0].toLowerCase() === 'sopmod') {
+                args[0] = `m4_sopmod_ii_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'super shorty') {
                 args[0] = `super_shorty_(girls_frontline)`
             } else if (args[0].toLowerCase() === 'tummy') {
