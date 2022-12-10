@@ -623,6 +623,7 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/nopan+/gi, 'no_panties');
                 args[0] = args[0].toLowerCase().replace(/pantsu+/gi, 'panties');
                 //tags.push('-bara');
+                tags.push('-injury');
                 imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/highschool_dxd+/gi, `high_school_dxd`);
             } else if (boorus[0] === "konachan.com") {
                 if (args[0].startsWith('slime_girl')) {
@@ -712,7 +713,7 @@ module.exports = {
                                 };*/
                                 url = posts[0].fileUrl;
                                 if (typeof lastFound !== 'undefined') {
-                                    if (lastFound.length > 128) {
+                                    if (lastFound.length > 99) {
                                         db.delete('booruLastfind');
                                         console.log('Se ha reiniciado la lista de imagenes.');
                                     };
