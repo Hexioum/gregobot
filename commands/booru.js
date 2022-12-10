@@ -371,7 +371,7 @@ module.exports = {
         async function tagsFix() {
 		    if (args[0].toLowerCase().startsWith('m4 mod')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
-            var regex18G = /abuse+|agoni+|agony+|agoní+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
+            var regex18G = /abuse+|agoni+|agony+|agoní+|amput+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
             var match18G = args.some(e => regex18G.test(e));
             var oneRegex = / ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
@@ -657,7 +657,7 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/nopan+/gi, 'no_panties');
                 args[0] = args[0].toLowerCase().replace(/pantsu+/gi, 'panties');
                 //tags.push('-bara');
-                tags.push('-injury');
+                tags.push('-guro');
                 imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/highschool_dxd+/gi, `high_school_dxd`);
             } else if (boorus[0] === "konachan.com") {
                 if (args[0].startsWith('slime_girl')) {
@@ -871,7 +871,7 @@ module.exports = {
             res = res.slice(0,4).map(chars => capitalize(chars));
 
             // Please don't show these.
-            if (res.indexOf("Death") > -1 || res.indexOf("Gore") > -1 || res.indexOf("Guro") > -1 || res.indexOf("Injury") > -1) {
+            if ((res.indexOf("Death") > -1)||(res.indexOf("Gore") > -1)||(res.indexOf("Guro") > -1)||(res.indexOf("Injury") > -1)) {
                 db.sub(`booru_cd.${member.id}.rolls`, 1);
                 return message.reply('resultado omitido por demaciado\n*rollcito reembolsado*');
             };
