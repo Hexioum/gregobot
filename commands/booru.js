@@ -731,7 +731,7 @@ module.exports = {
                         };
                     } else {
                         try {
-                            if ((boorus[0] === "danbooru")&&((posts[0].rating === 's')&&(retries < 2))) {
+                            if ((boorus[0] === "danbooru")&&((posts[0].rating === 's')&&(retries < 3))) {
                                 console.log("Meh, busco otra");
                                 var booruRemoved = boorus.shift();  // Removes the first booru
                                 // Retry without adding to the "retries" counter
@@ -747,7 +747,7 @@ module.exports = {
                                 };*/
                                 url = posts[0].fileUrl;
                                 if (typeof lastFound !== 'undefined') {
-                                    if (lastFound.length > 99) {
+                                    if (lastFound.length > 80) {
                                         db.delete('booruLastfind');
                                         console.log('Se ha reiniciado la lista de imagenes.');
                                     };
