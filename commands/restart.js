@@ -23,6 +23,7 @@ module.exports = {
 	args: true,
 	usage: 'grego reinicia',
 	execute(message, args) {
+		let member = message.author;
 //	Check the server owner ID
 	if (!member.permissions.has(PermissionsBitField.Flags.BanMembers)) return message.channel.send("no");
 	// resolve(guildID) and get gregoID	(GET AVATAR)
