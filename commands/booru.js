@@ -371,7 +371,7 @@ module.exports = {
         async function tagsFix() {
 		    if (args[0].toLowerCase().startsWith('m4 mod')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
-            var regex18G = /abuse+|agoni+|agony+|agoní+|amput+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|cortada+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|severed+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
+            var regex18G = /abuse+|agoni+|agony+|agoní+|amput+|asfixia+|asphyxia+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|cortada+|death+|decapitat+|estrangul+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|severed+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
             var match18G = args.some(e => regex18G.test(e));
             var oneRegex = / ass+| arse+| butt+| culo+| poto+| posaderas+| raja+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
