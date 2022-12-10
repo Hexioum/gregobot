@@ -24,8 +24,11 @@ module.exports = {
 	usage: 'grego reinicia',
 	execute(message, args) {
 		let member = message.author;
-//	Check the server owner ID
-	if (member.roles.has('438748454823526400')) return message.channel.send("no");
+		if (member.permissions.has([PermissionsBitField.Flags.KickMembers, PermissionsBitField.Flags.BanMembers])) {
+			console.log('[Reinicia] El usuario tiene permisos.');
+		} else {
+			return message.channel.send("no");
+		}
 	// resolve(guildID) and get gregoID	(GET AVATAR)
 /*	bot.users.fetch(gregorid).then(myUser => {
     bot.user.setAvatar(myUser.avatarURL())})
