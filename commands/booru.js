@@ -371,10 +371,10 @@ module.exports = {
         async function tagsFix() {
 		    if (args[0].toLowerCase().startsWith('m4 mod')) return message.channel.send('chancho qlo ojala te salga un tumor');
 
+            var regex18G = /abuse+|agoni+|agony+|agoní+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
+            var match18G = args.some(e => regex18G.test(e));
             var oneRegex = / ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi ;
             var oneMatch = args.some(e => oneRegex.test(e));
-            var twoRegex = /abuse+|agoni+|agony+|agoní+|bad end+|broken+|brutal+|cadaver+|child+|corpse+|death+|decapitat+|eviscerat+|gore+|guro+|impale+|injury+|kill+|muert+|r18g+|suicid+|torture+|twisted+|violent+|viscera+/gi ; //shows something else
-            var twoMatch = args.some(e => twoRegex.test(e));
             var trdRegex = / leche+| lechesita+| lechita+| milk+/gi ;
             var trdMatch = args.some(e => trdRegex.test(e));
             var fthRegex = / meao+| pichi+| pichí+/gi;
@@ -385,34 +385,72 @@ module.exports = {
             var sixMatch = args.some(e => sixRegex.test(e));
             var sthRegex = / culeando+| culiando+| fuck+| sexo+/gi;
             var sthMatch = args.some(e => sthRegex.test(e));
+            var egtRegex = / pasada a ala+| sopeada+| sopeá+| sudor+/gi;
+            var egtMatch = args.some(e => egtRegex.test(e));
+            var nthRegex = / pechos+| pechugas+| tetas+| tetitas+| tetonas+| tetotas+/gi;
+            var nthMatch = args.some(e => nthRegex.test(e));
+            var calRegex = / calor+| caliente+| hot+| steamy+/gi;
+            var calMatch = args.some(e => calRegex.test(e));
+
+            if (match18G === true) {
+                //randomPo = 10;
+                args[0] = `warframe`;
+            }
+
             if (oneMatch === true) {
                 poison.push('ass');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ ass+| arse+| butt+| culo+| poto+| raja+| posaderas+/gi, '');
                 // Para remover las palabras pero conservar el resto
-            } else if (twoMatch === true) {
-                //randomPo = 10;
-                args[0] = `warframe`;
-            } else if (trdMatch === true) {
+            }
+
+            // Mejorar: Ordenar, pensar en lo que pasa cuando se busca varias etiquetas.
+            if (trdMatch === true) {
                 poison.push('lactation');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ leche+| milk+| lechita+/gi, '');
-            } else if (fthMatch === true) {
+            }
+            
+            if (fthMatch === true) {
                 poison.push('urine');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ meao+| pichi+| pichí+/gi, '');
-            } else if (fftMatch === true) {
+            }
+            
+            if (fftMatch === true) {
                 poison.push('pubic_hair');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ zorra pelua+| zorra peluda+/gi, '');
-            } else if (sixMatch === true) {
+            }
+
+            if (sixMatch === true) {
                 poison.push('armpits');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ alitas+| armpit+| axilas+| sobaco+/gi, '');
-            } else if (sthMatch === true) {
+            } 
+            
+            if (sthMatch === true) {
                 poison.push('sex');
                 randomPo = poison.length-1;
                 args[0] = args[0].toLowerCase().replace(/ culeando+| culiando+| fuck+| sexo+/gi, '');
+            } 
+            
+            if (egtMatch === true) {
+                poison.push('sweat');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ pasada a ala+| sopeada+| sopeá+| sudor+/gi, '');
+            } 
+            
+            if (nthMatch === true) {
+                poison.push('breasts');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ pechos+| pechugas+| tetas+| tetitas+| tetonas+| tetotas+/gi, '');
+            }
+
+            if (calMatch === true) {
+                poison.push('steam');
+                randomPo = poison.length-1;
+                args[0] = args[0].toLowerCase().replace(/ calor+| caliente+| hot+| steamy+/gi, '');
             }
 
             if ((args[0].toLowerCase() === 'cabras chicas')||(args[0].toLowerCase() === 'cp')||(args[0].toLowerCase() === 'cunny')||(args[0].toLowerCase() === 'cute and funny')||(args[0].toLowerCase() === 'monas chistosas')) {
@@ -497,10 +535,6 @@ module.exports = {
                 args[0] = `yunjin_(genshin_impact)`;
             } else if (args[0].toLowerCase().startsWith('zelda')) {
                 args[0] = args[0].toLowerCase().replace(/zelda+/gi, 'princess_zelda');
-            } else if (args[0].toLowerCase().startsWith('sexo')) {
-                args[0] = ``;
-                poison.push('sex');
-                randomPo = poison.length-1;
             } else if (alChars.indexOf(args[0].toLowerCase()) > -1) {   //FILTER
                 args[0] = `${args[0]}_(azur_lane)`
             } else if (fateapoChars.indexOf(args[0].toLowerCase()) > -1) {
@@ -835,7 +869,14 @@ module.exports = {
             ],
             res = booruTags.filter(item => !filteredTags.includes(item));
             res = res.slice(0,4).map(chars => capitalize(chars));
+
+            // Please don't show these.
+            if (res.indexOf("Death") > -1 || res.indexOf("Gore") > -1 || res.indexOf("Guro") > -1 || res.indexOf("Injury") > -1) {
+                db.sub(`booru_cd.${member.id}.rolls`, 1);
+                return message.reply('resultado omitido por demaciado\n*rollcito reembolsado*');
+            };
             
+            // Si es un video...
             if (res.indexOf("Animated") > -1) {
                 if (isWished) {
                     try {
@@ -847,12 +888,6 @@ module.exports = {
                 return message.reply(posts[0].fileUrl);
             };
             
-            // Please don't show these.
-            if (res.indexOf("Death") > -1 || res.indexOf("Gore") > -1 || res.indexOf("Guro") > -1 || res.indexOf("Injury") > -1) {
-                db.sub(`booru_cd.${member.id}.rolls`, 1);
-                return message.reply('resultado omitido por demaciado');
-            };
-
             if (posts[0].rating === 'e') {
                 booruEmbed.setColor('#670D08');
             } else if (posts[0].rating === 'q') {
