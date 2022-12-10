@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, PermissionsBitField, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const bot = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -18,13 +18,13 @@ const { gregorid } = require('../config.json');
 
 module.exports = {
 	name: 'restart',
-	aliases: ['update','reinicia'],
+	aliases: ['reinicia','update'],
 	description: 'Gregorio volverá en breve.',
 	args: true,
 	usage: 'grego reinicia',
 	execute(message, args) {
 		let member = message.author;
-		if (member.permissions.has([PermissionsBitField.Flags.KickMembers, PermissionsBitField.Flags.BanMembers])) {
+		if (member.id === '360892991499665408') {
 			console.log('[Reinicia] El usuario tiene permisos.');
 		} else {
 			return message.channel.send("no");
