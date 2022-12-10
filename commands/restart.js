@@ -25,7 +25,7 @@ module.exports = {
 	execute(message, args) {
 		let member = message.author;
 //	Check the server owner ID
-	if (member.roles.cache.has('438748454823526400')) return message.channel.send("no");
+	if (member.roles.has('438748454823526400')) return message.channel.send("no");
 	// resolve(guildID) and get gregoID	(GET AVATAR)
 /*	bot.users.fetch(gregorid).then(myUser => {
     bot.user.setAvatar(myUser.avatarURL())})
