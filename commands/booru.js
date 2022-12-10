@@ -845,6 +845,12 @@ module.exports = {
                 }
                 return message.reply(posts[0].fileUrl);
             };
+            
+            // Please don't show these.
+            if (res.indexOf("death") > -1 || res.indexOf("gore") > -1 || res.indexOf("guro") > -1) {
+                db.sub(`booru_cd.${member.id}.rolls`, 1);
+                return message.reply('resultado omitido por demaciado');
+            };
 
             if (posts[0].rating === 'e') {
                 booruEmbed.setColor('#670D08');
