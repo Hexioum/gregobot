@@ -639,6 +639,8 @@ bot.on('messageCreate', message => {
 		setTimeout(function(){
 			message.channel.send(replies[random]);
 		}, Number(900+randomKps));
+	} else if (message.content.toLowerCase().includes(`demaciado`)) {
+		message.channel.send('DEMACIADO');
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
 		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio", "fue el moreira wn"];
 		let random = Math.floor(Math.random() * 6);
@@ -670,11 +672,7 @@ bot.on('messageCreate', message => {
 			message.channel.send(`otra razon mas para no volver a la mierda`);
 		}, Number(2000+randomKps));
 		};
-	} else if (message.content.startsWith(`grego decide `)) {
-		message.channel.send(`na que ver wn, es: \`grego decide, una wea, otra wea\``);
-	} else if (message.content.startsWith(`grego elige `)) {
-		message.channel.send(`na que ver wn, es: \`grego elige, una wea, otra wea\``);
-	} else if (message.content.toLowerCase().startsWith(`mañana voy`)) {
+	} else if (message.content.toLowerCase().startsWith(`mañana voy `)) {
 		message.channel.send('no te creo nada')
 			.then(() => message.channel.send('mentiroso qlo'))
 			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
@@ -689,7 +687,7 @@ bot.on('messageCreate', message => {
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.startsWith(`XD`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
-	} else if ((message.content.length > 800)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
+	} else if ((message.content.length > 750)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
 		message.channel.send(`increible`);
 		return message.delete();
     } else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
@@ -777,8 +775,7 @@ bot.on('messageCreate', message => {
 	//.split(/ +/g) will cut any ammount of spaces in between.
 	const commandName = args.shift().toLowerCase();
 	
-	const command = bot.commands.get(commandName)
-		|| bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command = bot.commands.get(commandName) || bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
 
