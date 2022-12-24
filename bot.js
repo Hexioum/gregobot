@@ -173,6 +173,8 @@ bot.once('ready', () => {
     bot.user.setAvatar(myUser.avatarURL())})
 	.then(() => console.log(myUser))
 	.catch((err) => console.log(`avatarURL:`+err));*/
+	const guildId = process.env.MAIN_GUILD;
+	const myGuild = bot.guilds.cache.get(guildId);
 	// Setting the ammount of nuts.
 	loadData();
 	async function loadData() {
@@ -241,8 +243,8 @@ bot.on('ready', function () {
 
 	var avtNormal1 = new CronJob(
 		'0 0 0 1,2,7 0-5 *',//“At 00:00 on day 1, 2, and 7 in every month from January through June.”
-		function() {
-			bot.user.setAvatar('./memes/avatars/nachogbr.jpg')
+		async function() {
+			await myGuild.setIcon('./memes/avatars/nachogbr.jpg')
 			.then(user => console.log(`Cambio de avatar.`))
 			.catch(console.error);
 		},
@@ -252,8 +254,8 @@ bot.on('ready', function () {
 	);
 	var avtLaborday = new CronJob(
 		'9 0 0 1 4 *',//“At 00:00:09 on May 1st.”
-		function() {
-			bot.user.setAvatar('./memes/avatars/laborday.png')
+		async function() {
+			await myGuild.setIcon('./memes/avatars/laborday.png')
 			.then(user => console.log(`Cambio de avatar, Trabajador.`))
 			.catch(console.error);
 		},
@@ -263,8 +265,8 @@ bot.on('ready', function () {
 	);
 	var avtKrausar = new CronJob(
 		'0 0 0 6 5 *',//“At 00:00 on June 6th.”
-		function() {
-			bot.user.setAvatar('./memes/avatars/aprilfools.png')
+		async function() {
+			await myGuild.setIcon('./memes/avatars/aprilfools.png')
 			.then(user => console.log(`Cambio de avatar, Krausar.`))
 			.catch(console.error);
 		},
@@ -274,8 +276,8 @@ bot.on('ready', function () {
 	);
 	var avtNormal2 = new CronJob(
 		'0 0 0 1 5-11 *',//“At 00:00 on day-of-month 1 from July through December.”
-		function() {
-			bot.user.setAvatar('./memes/avatars/nachogck.png')
+		async function() {
+			await myGuild.setIcon('./memes/avatars/nachogck.png')
 			.then(user => console.log(`Cambio de avatar.`))
 			.catch(console.error);
 		},
@@ -285,8 +287,8 @@ bot.on('ready', function () {
 	);
 	var avtXmas = new CronJob(
 		'0 0 0 24 11 *',//“At 00:00 on December 24th.”
-		function() {
-			bot.user.setAvatar('./memes/avatars/nachogpd.png')
+		async function() {
+			await myGuild.setIcon('./memes/avatars/nachogpd.png')
 			.then(user => console.log(`Cambio de avatar, Felices fiestas.`))
 			.catch(console.error);
 		},
