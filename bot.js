@@ -80,7 +80,7 @@ const activitiesList = [
 	"DRAGON BALL FighterZ",
 	"Borderlands 2",
     "Super Mario 64",
-	"Where's Waldo?",
+	"Fall Guys",
     "Blue Archive",
     "Folio Azul",
     "Girls' Frontline",
@@ -331,8 +331,8 @@ client.on('ready', function () {
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
         client.user.setPresence({ activities: [{ name: activitiesList[index] }], status: 'playing' }); // sets bot's activities to one of the phrases in the arraylist.
-		console.log(`Ahora jugando a ${activitiesList[index]}`);
-    }, 420000); // Runs this every 420 seconds.
+		//console.log(`Ahora jugando a ${activitiesList[index]}`);
+    }, 480000); // Runs this every 480 seconds.
 });
 
 //	async member*
