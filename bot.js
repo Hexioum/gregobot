@@ -1,8 +1,9 @@
 // Node's native file system module.
-const fs = require('fs');
+const fs = require('node:fs');
+const path = require('node:path');
 // require the discord.js module
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
-const { gregorid } = require('./config.json');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { gregorId } = require('./config.json');
 const dotenv = require('dotenv');
 dotenv.config();
 //const Booru = require('booru');
@@ -18,7 +19,7 @@ const db = new QuickDB();
 //const dbp = require('./models/index.js');
 
 // create a new Discord client
-const bot = new Client({
+const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
@@ -30,15 +31,31 @@ const bot = new Client({
 	}
 );
 // a class that extend JS's native Map class and include more extensive functionality.
-bot.commands = new Collection();
+client.commands = new Collection();
 
 // will return an array of all the file names in that directory
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const slashPath = path.join(__dirname, 'commslash');
+const slashFiles = fs.readdirSync(slashPath).filter(file => file.endsWith('.js'));
+
+
 //const triggers = fs.readFileSync('./preguntas.txt').toString().split("\n");
+
+// Registering slash commands.
+for (const file of slashFiles) {
+	const filePath = path.join(slashPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection with the key as the command name and the value as the exported module
+	if ('data' in command && 'execute' in command) {
+		console.log(`[ATTENTION] "${file}" was registered as a slash command.`);
+		client.commands.set(command.data.name, command);
+	};
+}
 
 const devMode = false; // >>ATTENTION<<
 
-const wiki = require('wikijs').default;
+//const wiki = require('wikijs').default;
 //var parseInfo = require("infobox-parser");
 
 const activitiesList = [
@@ -162,19 +179,12 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	// set a new item in the Collection
 	// with the key as the command name and the value as the exported module
-	bot.commands.set(command.name, command);
+	client.commands.set(command.name, command);
 }
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
-bot.once('ready', () => {
+client.once('ready', () => {
 	console.log('REDIOOOOOOOOOOS!');
-	// resolve(guildID) and get gregoID
-/*	bot.users.fetch(gregorid).then(myUser => {
-    bot.user.setAvatar(myUser.avatarURL())})
-	.then(() => console.log(myUser))
-	.catch((err) => console.log(`avatarURL:`+err));*/
-	const guildId = process.env.MAIN_GUILD;
-	const myGuild = bot.guilds.cache.get(guildId);
 	// Setting the ammount of nuts.
 	loadData();
 	async function loadData() {
@@ -184,9 +194,13 @@ bot.once('ready', () => {
 		}
 	}
 });
-bot.on('ready', function () {
+
+client.on('ready', function () {
 //	console.log(User); // Some user object.
-	console.log(`${bot.user.tag} has logged in.`);
+	console.log(`${client.user.tag} has logged in.`);
+	const guildId = process.env.MAIN_GUILD;
+	const myGuild = client.guilds.cache.get(guildId);
+	
 	var day = 0;
 	var lockComment = 1;//Start locked to prevent spamming if bot restarted
 
@@ -207,7 +221,7 @@ bot.on('ready', function () {
 								`ALGUIEN UN NOSGOTH?`,
 								`quien apaña un nosgoth?`];
 				day = 5;
-				bot.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
+				client.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
 			/*	try {
 					imgoftheDay();
 				} catch (error) {
@@ -235,6 +249,18 @@ bot.on('ready', function () {
 		function() {
 			db.delete(`booru_cd`);
 			console.log('Se ha reiniciado el cooldown.');
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
+
+	var avtSnatch = new CronJob(
+		'0 0 0 * * *',//“Every day at 00:00 hours.”
+		async function() {
+			getAvatar().then(result => 
+				client.user.setAvatar(`https://cdn.discordapp.com/avatars/${result.id}/${result.avatar}.png`))
+				.catch(err => console.log("No puedo cambiar el avatar: "+err));
 		},
 		null,
 		true,
@@ -299,59 +325,24 @@ bot.on('ready', function () {
 
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
-		bot.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
+		client.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
 		console.log(`El principal ahora se habla de "${topicList[topic]}".`);
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
-        bot.user.setPresence({ activities: [{ name: activitiesList[index] }], status: 'playing' }); // sets bot's activities to one of the phrases in the arraylist.
+        client.user.setPresence({ activities: [{ name: activitiesList[index] }], status: 'playing' }); // sets bot's activities to one of the phrases in the arraylist.
 		console.log(`Ahora jugando a ${activitiesList[index]}`);
     }, 420000); // Runs this every 420 seconds.
 });
-bot.on('interactionCreate', async interaction => {
-	if (!interaction.isSelectMenu()) return;
-	//console.log(interaction.commandName);
-	if (interaction.customId === 'dustloop') {
-		var results = ''
-		var wikiApi = 'http://www.dustloop.com/wiki/api.php'
-		let search = interaction.values;
-		fetchPage(search, results)
-		.then(console.log(results))
-		.catch(err => {
-			console.error(err);
-		});
-		async function fetchPage(msg, results) {
-			msg = msg.toString();
-            results = wiki({
-                apiUrl: wikiApi,
-                origin: null
-            }).page(msg).then(console.log)
-            return results;
-        }
-		try {
-			const infoEmbed = new Discord.EmbedBuilder()
-			.setAuthor({name:'Tech Finder',iconURL:'https://i.imgur.com/ZmtGJgz.png'})
-			.setColor('#E85A5A')
-			.setTitle(interaction.label)
-			.setURL(results.fullurl)
-			.setDescription('overview')
-			.setFooter({text:'dustloop o mizuumi idk'});
-			await interaction.update({ embeds: [infoEmbed], components: [] });
-		} catch(err) {
-			console.log(`Error en interacción de Dustloop: `+err);
-		}
-	/*	let message = interaction.message
-		bot.commands.get('dustloop').execute(message, interaction.values);*/
-	}
-});
+
 //	async member*
-bot.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', member => {
 	let channel = member.guild.channels.cache.find(ch => ch.name === 'principal');
 	if (!channel) return;
     // Assuming we mention someone in the message, this will return the user.
-    if (gregorid) {
+    if (gregorId) {
       // Now we get the member from the user
-      let member = message.guild.members.resolve(gregorid);
+      let member = myGuild.members.resolve(gregorId);
       // If the member is in the guild
       if (member) {
         member
@@ -376,7 +367,8 @@ bot.on('guildMemberAdd', member => {
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
 // If user joins, get #Principal and send a message.
 });
-bot.on('guildMemberUpdate', function(oldMember, newMember){
+
+client.on('guildMemberUpdate', function(oldMember, newMember){
 	if (oldMember.nickname === newMember.nickname) return;
 	console.log(`Nickname antes: ${oldMember.nickname}`);
 	console.log(`Nickname ahora: ${newMember.nickname}`);
@@ -400,10 +392,30 @@ bot.on('guildMemberUpdate', function(oldMember, newMember){
 	}
 	else return console.log(`Usuario no coincide.`);	// for Debugging
 });
-bot.on('unhandledRejection', error => {
+
+client.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
-bot.on('messageCreate', message => {
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
+	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+});
+
+client.on('messageCreate', message => {
 	// If the message starts was sent by a bot, exit early.
 	if (message.author.bot) return;
 	
@@ -564,14 +576,14 @@ bot.on('messageCreate', message => {
 		.catch(() => console.error('Que onda?? No pude mandar la imágen.'));
 	} else if (message.content.startsWith(`<@749824051945537637>`)) {
 		try {
-			bot.commands.get('chat').execute(message)
+			client.commands.get('chat').execute(message)
 		} catch (error) {
 			console.error(error);
 			console.log('No puedo responder.');
 		}
 	} else if (message.content.startsWith(`$tu`)) {
 		try {
-			bot.commands.get('reclamar').execute(message)
+			client.commands.get('reclamar').execute(message)
 		} catch (error) {
 			console.error(error);
 			console.log('No puedo responder.');
@@ -585,21 +597,21 @@ bot.on('messageCreate', message => {
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wish `)||message.content.toLowerCase().startsWith(`$w `)) {
 		try {
-			bot.commands.get('wish').execute(message)
+			client.commands.get('wish').execute(message)
 		} catch (error) {
 			console.error(error);
 			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wishlist`)||message.content.toLowerCase().startsWith(`$wl`)) {
 		try {
-			bot.commands.get('wishlist').execute(message)
+			client.commands.get('wishlist').execute(message)
 		} catch (error) {
 			console.error(error);
 			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 		}
 	} else if (message.content.toLowerCase().startsWith(`$wishremove `)||message.content.toLowerCase().startsWith(`$wr `)) {
 		try {
-			bot.commands.get('wishremove').execute(message)
+			client.commands.get('wishremove').execute(message)
 		} catch (error) {
 			console.error(error);
 			return message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
@@ -694,7 +706,7 @@ bot.on('messageCreate', message => {
 		return message.delete();
     } else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
 		try {
-			bot.commands.get('camiro').execute(message)
+			client.commands.get('camiro').execute(message)
 		} catch (error) {
 			console.error(error);
 			message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
@@ -715,7 +727,7 @@ bot.on('messageCreate', message => {
 			try {
 				db.add(`booru.textCount`, 1);
 			} catch(err) {
-				console.log(`Error en línea 580 de bot.js`);
+				console.log(`Error en línea 730 de bot.js`);
 			};
 			if ((textCounter!== null)&&(textCounter == 20)) {
 				console.log("Están hablando demasiado.");
@@ -777,75 +789,13 @@ bot.on('messageCreate', message => {
 	//.split(/ +/g) will cut any ammount of spaces in between.
 	const commandName = args.shift().toLowerCase();
 	
-	const command = bot.commands.get(commandName) || bot.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
 	if (!command) return;
 
 	if (command.guildOnly && message.channel.type === 'dm') {
 		return message.reply({ content: 'por privado no wn', allowedMentions: { repliedUser: false }});
 	}
-
-	//Screenshot reading with TesseractOCR
-	async function readImage() {
-		await worker.load();
-		await worker.loadLanguage('eng+spa');
-		await worker.initialize('eng+spa');
-		const { data: { text } } = await worker.recognize(attachment);
-		console.log(text);
-		if (text.toLowerCase().includes(`genshin`)) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`juego qlo malo aguante el gears`);
-			}, Number(1550));
-		} else if (text.toLowerCase().includes(`nekopara`)) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`la wea buena`);
-			}, Number(600));
-		} else if (text.toLowerCase().includes(`sopmod`)) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`la wea mala oh`);
-			}, Number(660));
-		} else if (text.toLowerCase().includes(`grego`)) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`<:Grego2:852589102804107264>⁉`);
-			}, Number(360));
-		} else if (text.toLowerCase().includes(`notebook`) || text.toLowerCase().includes(`laptop`)) {
-			message.channel.sendTyping();
-			setTimeout(function(){
-			message.channel.send(`en las mierdas que te gastai la plata`);
-			}, Number(720));
-		};
-		await worker.terminate();
-	}
-
-	async function esperarRespuesta() {
-		let filter = m => m.author.id === message.author.id;
-		message.channel.awaitMessages(filter, {
-			max: 1,
-			time: 22000, // Wait 22 seconds
-			errors: ['time']
-		})
-		.then(message => {
-			message = message.first()
-			if (message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`culear`) || message.content.toLowerCase().includes(`culeo`) || message.content.toLowerCase().includes(`hermano`)) {
-				message.channel.send(`dare cuerpo y alma para que no vuelvas al mudae`)
-			} else if (message.content.toLowerCase().includes(`puta`) || message.content.toLowerCase().includes(`rachel`) || message.content.toLowerCase().includes(`wea mala`) || message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`inculto`) || message.content.toLowerCase().includes(`no cacha`)) {
-				message.channel.send({files: ['./memes/chubis/triste.png']})
-			} else if (message.content.toLowerCase().includes(`culiao`) || message.content.toLowerCase().includes(`qlo`) || message.content.toLowerCase().includes(`conchetumare`) || message.content.toLowerCase().includes(`ctm`) || message.content.toLowerCase().includes(`chupala`)) {
-				message.channel.send({files: ['./memes/chubis/atomar.jpg']})
-			} else if (message.content.toLowerCase().includes(`payaso`) || message.content.toLowerCase().includes(`maricon`) || message.content.toLowerCase().includes(`🤡`) || message.content.toLowerCase().includes(`puto`)) {
-				message.channel.send({files: ['./memes/chubis/avergonzao.jpg']})
-			} else {
-				return console.log('Supongo que no me insultaron...');
-			}
-		})
-		.catch(collected => {
-			return console.log('Se acabó el tiempo, nadie me insultó. Gané.');
-		});
-	};
 
 	//added in order to verify that attachments are images and not videos
 	function attachIsImage(msgAttach) {
@@ -855,12 +805,84 @@ bot.on('messageCreate', message => {
 	}
 
 	try {
-		command.execute(message, args);
+		command.execute(message, args, client);
 	} catch (error) {
 		console.error(error);
 		message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
 	}
 
 });
+
+//Screenshot reading with TesseractOCR
+async function readImage() {
+	await worker.load();
+	await worker.loadLanguage('eng+spa');
+	await worker.initialize('eng+spa');
+	const { data: { text } } = await worker.recognize(attachment);
+	console.log(text);
+	if (text.toLowerCase().includes(`genshin`)) {
+		message.channel.sendTyping();
+		setTimeout(function(){
+		message.channel.send(`juego qlo malo aguante el gears`);
+		}, Number(1550));
+	} else if (text.toLowerCase().includes(`nekopara`)) {
+		message.channel.sendTyping();
+		setTimeout(function(){
+		message.channel.send(`la wea buena`);
+		}, Number(600));
+	} else if (text.toLowerCase().includes(`sopmod`)) {
+		message.channel.sendTyping();
+		setTimeout(function(){
+		message.channel.send(`la wea mala oh`);
+		}, Number(660));
+	} else if (text.toLowerCase().includes(`grego`)) {
+		message.channel.sendTyping();
+		setTimeout(function(){
+		message.channel.send(`<:Grego2:852589102804107264>⁉`);
+		}, Number(360));
+	} else if (text.toLowerCase().includes(`notebook`) || text.toLowerCase().includes(`laptop`)) {
+		message.channel.sendTyping();
+		setTimeout(function(){
+		message.channel.send(`en las mierdas que te gastai la plata`);
+		}, Number(720));
+	};
+	await worker.terminate();
+}
+
+async function esperarRespuesta() {
+	let filter = m => m.author.id === message.author.id;
+	message.channel.awaitMessages(filter, {
+		max: 1,
+		time: 22000, // Wait 22 seconds
+		errors: ['time']
+	})
+	.then(message => {
+		message = message.first()
+		if (message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`culear`) || message.content.toLowerCase().includes(`culeo`) || message.content.toLowerCase().includes(`hermano`)) {
+			message.channel.send(`dare cuerpo y alma para que no vuelvas al mudae`)
+		} else if (message.content.toLowerCase().includes(`puta`) || message.content.toLowerCase().includes(`rachel`) || message.content.toLowerCase().includes(`wea mala`) || message.content.toLowerCase().includes(`mamala`) || message.content.toLowerCase().includes(`inculto`) || message.content.toLowerCase().includes(`no cacha`)) {
+			message.channel.send({files: ['./memes/chubis/triste.png']})
+		} else if (message.content.toLowerCase().includes(`culiao`) || message.content.toLowerCase().includes(`qlo`) || message.content.toLowerCase().includes(`conchetumare`) || message.content.toLowerCase().includes(`ctm`) || message.content.toLowerCase().includes(`chupala`)) {
+			message.channel.send({files: ['./memes/chubis/atomar.jpg']})
+		} else if (message.content.toLowerCase().includes(`payaso`) || message.content.toLowerCase().includes(`maricon`) || message.content.toLowerCase().includes(`🤡`) || message.content.toLowerCase().includes(`puto`)) {
+			message.channel.send({files: ['./memes/chubis/avergonzao.jpg']})
+		} else {
+			return console.log('Supongo que no me insultaron...');
+		}
+	})
+	.catch(collected => {
+		return console.log('Se acabó el tiempo, nadie me insultó. Gané.');
+	});
+};
+
+async function getAvatar () {
+	const response = await fetch(`https://discord.com/api/v9/users/${gregorId}`, {
+		headers: {
+			'Authorization': 'Bot ' + (process.env.BOT_TOKEN)
+		}
+	})
+	return await response.json()
+}
+
 // login to Discord with your app's token
-bot.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN)

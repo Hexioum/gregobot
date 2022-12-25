@@ -1,14 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const bot = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent
-		]
-	}
-);
-bot.commands = new Collection();
+const client = require('../bot.js')
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -22,7 +12,7 @@ module.exports = {
 	description: 'Gregorio volverá en breve.',
 	args: true,
 	usage: 'grego reinicia',
-	execute(message, args) {
+	execute(message, args, client) {
 		let member = message.author;
 		if (member.id === '360892991499665408') {
 			console.log('[Reinicia] El usuario tiene permisos.');
@@ -39,9 +29,9 @@ module.exports = {
 		if (args[0] === "booru") {
 			db.delete(`booru_cd`);
 			db.delete(`booruLastfind`);
-		} else if (args[0] === "booru cooldown") {
+		} else if (args[0] === "booru cd") {
 			db.delete(`booru_cd`);
-		} else if (args[0] === "booru memory") {
+		} else if (args[0] === "booru mem") {
 			db.delete(`booruLastfind`);
 		} else if (args[0] === "wishlists") {
 			db.delete(`wishlists`);
@@ -49,12 +39,10 @@ module.exports = {
 		if (args[0] === "avatar") {
 			try {
 				//client.user.setAvatar(memberGr.avatarURL());
-				console.log(getAvatar());
-				try {
-					return message.react('✅');
-				} catch (err) {
-					return console.log(`No puedo reaccionar: ${err}`);
-				};
+				console.log(client);
+				const avtUrl = getAvatar().then(result => 
+					client.user.setAvatar(`https://cdn.discordapp.com/avatars/${result.id}/${result.avatar}.png`)
+					)
 			} catch(err) {
 				console.log("No puedo cambiar el avatar: "+err)
 				try {
@@ -68,14 +56,14 @@ module.exports = {
 				setTimeout(function(){
 					msg.edit("toc toc!");
 					msg.react('🆗');
-				}, 4000);
+				}, 3000);
 			})
-			.then(bot.destroy())
-			.then(bot.login(process.env.BOT_TOKEN))
+			.then(client.destroy())
+			.then(client.login(process.env.BOT_TOKEN))
 		}
 
-		} catch(e) {
-			message.channel.send(`ERROR: ${e.message}`)
+		} catch(err) {
+			message.channel.send(`ERROR: ${err.message}`)
 		}
 
 		async function getAvatar () {
@@ -84,7 +72,7 @@ module.exports = {
 					'Authorization': 'Bot ' + (process.env.BOT_TOKEN)
 				}
 			})
-			return JSON.stringify(await response.json(), null, 4)
-		}		
+			return await response.json()
+		}
 	}
 }
