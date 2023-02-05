@@ -326,7 +326,7 @@ client.on('ready', function () {
 	setInterval(() => {
 		const topic = Math.floor(Math.random() * (topicList.length - 1) + 1);
 		client.channels.cache.get('438741858018000897').setTopic(`Aquí se habla de ${topicList[topic]}.`)
-		console.log(`El principal ahora se habla de "${topicList[topic]}".`);
+		console.log(`En principal ahora se habla de "${topicList[topic]}".`);
     }, 48960000); // Runs this every 6.8 hours.
 	setInterval(() => {
         const index = Math.floor(Math.random() * (activitiesList.length - 1) + 1);
@@ -335,8 +335,7 @@ client.on('ready', function () {
     }, 480000); // Runs this every 480 seconds.
 });
 
-//	async member*
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async member => {
 	let channel = member.guild.channels.cache.find(ch => ch.name === 'principal');
 	if (!channel) return;
     // Assuming we mention someone in the message, this will return the user.
@@ -364,6 +363,7 @@ client.on('guildMemberAdd', member => {
     } else {
       console.log("You didn't mention the user to kick!");
     }
+	// This is not good.
     member.guild.channels.get('438741858018000897').send("que chucha..."); 
 // If user joins, get #Principal and send a message.
 });
@@ -424,7 +424,7 @@ client.on('messageCreate', message => {
 	// If message channel is #tech or #gallery
 	if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) {
 		console.log('Se ha enviado un mensaje a #tech o #gallery');
-		if ((message.attachments.size > 0)||((message.content.toLowerCase().startsWith(`http://`)||message.content.toLowerCase().startsWith(`https://`))&&(!message.content.toLowerCase().includes('tenor.')))) {
+		if ((message.attachments.size > 0)||((message.content.toLowerCase().includes(`http://`)||message.content.toLowerCase().includes(`https://`))&&(!message.content.toLowerCase().includes('tenor.')))) {
 			console.log('El contenido enviado corresponde.');
 		} else {
 			//var lastMessage = message.channel.messages.fetch({limit: 1})
@@ -448,7 +448,6 @@ client.on('messageCreate', message => {
 		};
     }
 
-	var attachment = 'PIC1.PNG';
 	// If message is an attachment
 	if (message.attachments.size > 0) {
 		if (message.channel.id != 441386860300730378) return console.log('Ví la imágen pero no en el canal adecuado.');
@@ -463,13 +462,6 @@ client.on('messageCreate', message => {
 					message.channel.send('chancho qlo ojala te salga un tumor');
 					esperarRespuesta();
 				};
-				if (message.content.toLowerCase().includes(`w_arknig`)) {
-					try {
-						return message.delete();
-					} catch(err) {
-						console.log("No pude borrar el mensaje.")
-					}
-				}
 			}
 		};
 		if ((message.attachments.first().name.toLowerCase().startsWith(`screenshot`))||(message.attachments.first().name.toLowerCase().startsWith(`unknown`))) {
@@ -507,6 +499,7 @@ client.on('messageCreate', message => {
 			} catch(err) {
 				console.log("No puedo reducir el slowmode "+err);
 			};
+
 			setTimeout(function(){
 			if (random === 0){
 				message.channel.send({files: ['./memes/;momopatas;;roll_of_paper;.png']})
