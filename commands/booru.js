@@ -254,9 +254,9 @@ module.exports = {
                 "rating:e",
                 "rating:q",
                 "rating:s",
-                "uncensored"
+                "rating:explicit"
             ];
-            var randomPo = poison[0]//Math.floor(Math.random() * (poison.length - 1) + 1);
+            var randomPo = 1//Math.floor(Math.random() * (poison.length - 1) + 1);
 
             let imgofDay = [
                 "ass",//cow_print, monster_girl, lolita_fashion
@@ -582,7 +582,7 @@ module.exports = {
                     console.log(`Boorus restantes: `+boorus);
                     await searchBoorus();
                 } catch(err) {
-                    randomPo = poison[retries]
+                    randomPo = retries
                     retries = retries+1;
                     startBooru(boorus,retries);
                     console.log("chucha:"+err+"\nReintentando...");
