@@ -574,7 +574,7 @@ module.exports = {
             } catch(err) {
                 console.log("chucha:"+err+"\nError al borrar base de datos en booru.js");
             };
-            if ((boorus.length > 0)&&(retries < 5)) {
+            if ((boorus.length > 0)&&(retries < 6)) {
                 try {
                     if (disableTyping == false) {
                         message.channel.sendTyping();
@@ -587,7 +587,7 @@ module.exports = {
                     startBooru(boorus,retries);
                     console.log("chucha:"+err+"\nReintentando...");
                 };
-            } else if (retries === 5) {
+            } else if (retries === 9) {//I broke this on purpose since I don't want to delete the code in this part, in case I reimplement GIS.
                 console.log("Buscando en Google Imágenes...");
                 try {
                     await gis(gisOptions, gisResults);
@@ -612,7 +612,7 @@ module.exports = {
                     message.reply("```"+err+"```")
                 };
             } else {
-                db.sub(`booru_cd.${member.id}.rolls`, 1);
+                //db.sub(`booru_cd.${member.id}.rolls`, 1);
                 message.reply(`no encontre niuna wea con *${args[0]}* 🙁`);
                 return console.log("chucha: No encontré nada.");
             };
@@ -787,7 +787,7 @@ module.exports = {
                     try {
                         db.push('booruLastfind', md5(results[Number(random)].url));
                         console.log(`Enviando:\n${results[Number(random)].url}`);
-                        message.channel.send({files: [results[Number(random)].url]});
+                        message.reply({files: [results[Number(random)].url]});
                         db.add(`booru_cd.${member.id}.rolls`, 1);
                     } catch {
                         console.log("No puedo enviar el resultado de Google.");
@@ -873,7 +873,7 @@ module.exports = {
             
             // Please don't show these.
             if ((res.indexOf("abuse") > -1)||(res.indexOf("death") > -1)||(res.indexOf("gore") > -1)||(res.indexOf("guro") > -1)||(res.indexOf("injury") > -1)) {
-                db.sub(`booru_cd.${member.id}.rolls`, 1);
+                //db.sub(`booru_cd.${member.id}.rolls`, 1);
                 return message.reply('resultado omitido por ser demaciado real\n*rollcito reembolsado*');
             };
 
