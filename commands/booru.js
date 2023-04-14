@@ -841,10 +841,10 @@ module.exports = {
                 "cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","clothes_pull","close","clothing_aside","clouds",
                 "coat","collar","collarbone","collared_dress","collared_shirt","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
                 "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","creature","crinoline","crop_top","cropped","cropped_legs","cross","crossed_arms","crown","crying",
-                "cuffs","cum","cum_in_mouth","cum_in_pussy","cum_inflation","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hair","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cup","curtains",
+                "cuffs","cum","cum_in_mouth","cum_in_pussy","cum_inflation","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hair","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cunnilingus","cup","curtains",
                 "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","door","double_bun","doyagao","dress","dress_shirt","drooling","drunk","dutch_angle",
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarrassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
-                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","finger_gun","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
+                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","finger_gun","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fins","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
                 "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_eyes","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
                 "hair_between_eyes","hair_bow","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","halo","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
@@ -870,12 +870,19 @@ module.exports = {
                 "zettai_ryouiki","zoom_layer"
             ],
             res = booruTags.filter(item => !filteredTags.includes(item));
+            if (res.indexOf(args[0]) !== -1) {
+                const index = res.indexOf(args[0]);
+                //res[index] = "**"+res[index]+"**"
+                const removedElement = res.splice(index, 1);
+                res.unshift(removedElement[0]);
+            }
             res = res.slice(0,4).map(chars => capitalize(chars));
+            res[0] = "**"+res[0]+"**"
 
             // Please don't show these.
             if ((res.indexOf("Death") > -1)||(res.indexOf("Gore") > -1)||(res.indexOf("Guro") > -1)||(res.indexOf("Injury") > -1)) {
                 db.sub(`booru_cd.${member.id}.rolls`, 1);
-                return message.reply('resultado omitido por demaciado\n*rollcito reembolsado*');
+                return message.reply('resultado omitido por ser demaciado real\n*rollcito reembolsado*');
             };
             
             // Si es un video...
