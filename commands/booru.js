@@ -609,6 +609,7 @@ module.exports = {
                     retries = retries+1;
                     startBooru(boorus,retries);
                     console.log("chucha:"+err+"\nReintentando...");
+                    message.reply("```"+err+"```")
                 };
             } else {
                 db.sub(`booru_cd.${member.id}.rolls`, 1);
