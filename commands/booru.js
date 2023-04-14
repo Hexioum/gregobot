@@ -870,20 +870,21 @@ module.exports = {
                 "zettai_ryouiki","zoom_layer"
             ],
             res = booruTags.filter(item => !filteredTags.includes(item));
+            
+            // Please don't show these.
+            if ((res.indexOf("death") > -1)||(res.indexOf("gore") > -1)||(res.indexOf("guro") > -1)||(res.indexOf("injury") > -1)) {
+                db.sub(`booru_cd.${member.id}.rolls`, 1);
+                return message.reply('resultado omitido por ser demaciado real\n*rollcito reembolsado*');
+            };
+
             if (res.indexOf(args[0]) !== -1) {
                 const index = res.indexOf(args[0]);
-                //res[index] = "**"+res[index]+"**"
                 const removedElement = res.splice(index, 1);
                 res.unshift(removedElement[0]);
             }
             res = res.slice(0,4).map(chars => capitalize(chars));
             res[0] = "**"+res[0]+"**"
 
-            // Please don't show these.
-            if ((res.indexOf("Death") > -1)||(res.indexOf("Gore") > -1)||(res.indexOf("Guro") > -1)||(res.indexOf("Injury") > -1)) {
-                db.sub(`booru_cd.${member.id}.rolls`, 1);
-                return message.reply('resultado omitido por ser demaciado real\n*rollcito reembolsado*');
-            };
             
             // Si es un video...
             if (res.indexOf("Animated") > -1) {
