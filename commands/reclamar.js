@@ -18,17 +18,7 @@ module.exports = {
         var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)+3600000);
         var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-
-        ¡Puedes reaccionar a kakera en este momento!
-        Poder: 110%
-        Cada reacción de kakera consume 36% de su poder de reacción.
-        Tus personajes con 10+ llaves, consumen la mitad del poder (18%)
-        Capital: 50972:kakera:
-
-        ¡$rt está disponible!
-        Siguiente reinicio de $dk en 8h 48 min.
-        Puedes votar nuevamente en 7h 09 min.
-        => $tuarrange */
+        */
 
         if (message.member.permissions.has('ATTACH_FILES')) {
             try {

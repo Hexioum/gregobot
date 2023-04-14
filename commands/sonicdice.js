@@ -55,6 +55,7 @@ module.exports = {
               mentions[i] = await message.guild.channels.fetch(mentions[i]);
               mentions[i] = "#"+mentions[i].name;
             } else {
+              // Add a handler for users that left the server. Maybe call them [REDACTED]?
               mentions[i] = mentions[i].slice(2, 20);
               mentions[i] = await message.guild.members.fetch(mentions[i]);
               mentions[i] = "@"+mentions[i].nickname;

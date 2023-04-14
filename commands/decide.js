@@ -10,7 +10,7 @@ module.exports = {
 	var oneMatch = args.some(e => oneRegex.test(e));
 	var twoRegex = / peruano+| venezolano+| venaco+| negro+| haitiano+/gi ;
 	var twoMatch = args.some(e => twoRegex.test(e));
-	var trdRegex = / furro+| furry+| foorry+| fursuit+| zoofili+| zoofíli+/gi ;
+	var trdRegex = / furro+| furry+| fursuit+| zoofili+| zoofíli+/gi ;
 	var trdMatch = args.some(e => trdRegex.test(e));
 	setTimeout(function(){
 		let pos = args.indexOf("o")
