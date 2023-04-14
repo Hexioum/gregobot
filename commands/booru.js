@@ -872,7 +872,7 @@ module.exports = {
             res = booruTags.filter(item => !filteredTags.includes(item));
             
             // Please don't show these.
-            if ((res.indexOf("death") > -1)||(res.indexOf("gore") > -1)||(res.indexOf("guro") > -1)||(res.indexOf("injury") > -1)) {
+            if ((res.indexOf("abuse") > -1)||(res.indexOf("death") > -1)||(res.indexOf("gore") > -1)||(res.indexOf("guro") > -1)||(res.indexOf("injury") > -1)) {
                 db.sub(`booru_cd.${member.id}.rolls`, 1);
                 return message.reply('resultado omitido por ser demaciado real\n*rollcito reembolsado*');
             };
