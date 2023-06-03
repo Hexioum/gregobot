@@ -175,12 +175,17 @@ module.exports = {
             //console.log(`Received response: ${data}`);
             search(data[0],data[1],data[2]);
         });
+        const RESULTS_TO_REMEMBER = 10;
 
         async function getDatabase() {
             var cdBooru = await db.add(`booru_cd.${member.id}.rolls`, 0);
             wl = await db.get(`wishlists.${member.id}`);
             rl = await db.get(`booru_cd.${member.id}.rolls`);
             lf = await db.get('booruLastfind');
+            if (typeof lf === "string"){
+                lf = await db.set('booruLastfind', []);
+                console.log("LastFinding var was corrected.")
+            }
             return load = [wl,rl,lf];
         };
 
@@ -191,7 +196,7 @@ module.exports = {
                 if (wishlist.length > 0) {
                     wishlist = wishlist.join();
                     wishlist = wishlist.split(',');
-                    let random = Math.floor(Math.random() * 21);
+                    let random = Math.floor(Math.random() * 22);
                     console.log(`Random: ${random}\nWishlist contiene ${wishlist.length} personajes.`);
                     if (random >= wishlist.length) {
                         console.log("El dado dice que será una búsqueda aleatoria.");
@@ -239,7 +244,6 @@ module.exports = {
             let nameIsflipped = false
             let random = Math.floor(Math.random() * 2);
             var url = "";
-            var fileSize = '';
             let posts = [""]
             var boorus = [
                 "konachan.com",
@@ -257,18 +261,6 @@ module.exports = {
             ];
             var randomPo = 1//Math.floor(Math.random() * (poison.length - 1) + 1);
 
-            let imgofDay = [
-                "ass",//cow_print, monster_girl, lolita_fashion
-                "breasts",//maid
-                "bikini",//heterocromiércoles, wedding_dress, nurse
-                "nipples",//thong thursday, japanese_clothes
-                "pussy",//animal_ears, thong
-                "sex",//demon_girl, succubus, horns
-                "panties"//nun,petite
-            ];
-        
-            let randomTopic = Math.floor(Math.random() * (imgofDay.length - 1) + 1);
-            
             if ((typeof args[0] !== 'undefined')) {
                 if ((args[0].toLowerCase().startsWith('hombres'))||(args[0].length > 32)) {
                     return message.channel.send('meh');
@@ -292,7 +284,6 @@ module.exports = {
             } else {
                 if (random === 0) {
                     args[0] = '-rating:safe';
-                    //args[0] = imgofDay[Number(randomTopic)];
                 } else {
                     args[0] = '-rating:safe';
                 };
@@ -581,10 +572,14 @@ module.exports = {
                     console.log(`Boorus restantes: `+boorus);
                     await searchBoorus();
                 } catch(err) {
-                    randomPo = retries
+                    randomPo = retries;
                     retries = retries+1;
+                    console.log(typeof err)
+                    if (err) {
+                        boorus.shift;
+                    };
+                    console.log("chucha:"+err+" - Reintentando...");
                     startBooru(boorus,retries);
-                    console.log("chucha:"+err+"\nReintentando...");
                 };
             } else if (retries === 9) {//I broke this on purpose since I don't want to delete the code in this part, in case I reimplement GIS.
                 console.log("Buscando en Google Imágenes...");
@@ -623,8 +618,8 @@ module.exports = {
             
             if ((typeof args[0] !== 'undefined')) {
                 // Pone underscores donde en el comando pusieron espacios.
-                imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/[ ]/gi, '_');
-                var tags = [imgofDay[Number(day)-1],poison[Number(randomPo)]];
+                args[0] = args[0].toLowerCase().replace(/[ ]/gi, '_');
+                var tags = [args[0],poison[Number(randomPo)]];
             } else {
                 var tags = [poison[Number(randomPo)]];
             };
@@ -653,9 +648,9 @@ module.exports = {
             } else if (boorus[0] === "gelbooru") {
                 args[0] = args[0].toLowerCase().replace(/nopan+/gi, 'no_panties');
                 args[0] = args[0].toLowerCase().replace(/pantsu+/gi, 'panties');
+                args[0] = args[0].toLowerCase().replace(/highschool_dxd+/gi, `high_school_dxd`);
                 //tags.push('-bara');
                 tags.push('-guro');
-                imgofDay[Number(day)-1] = args[0].toLowerCase().replace(/highschool_dxd+/gi, `high_school_dxd`);
             } else if (boorus[0] === "konachan.com") {
                 if (args[0].startsWith('slime_girl')) {
                     var booruRemoved = boorus.shift();
@@ -670,12 +665,23 @@ module.exports = {
                 args[0] = args[0].toLowerCase().replace(/panties+/gi, 'pantsu');
                 args[0] = args[0].toLowerCase().replace(/school_uniform+/gi, 'seifuku');
             }
-            console.log(tags);
+            //console.log(tags);
             
-            console.log(`Se buscó el tag ${imgofDay[Number(day)-1]} y ${poison[Number(1)]} en ${boorus[Number(0)]}, para representar el día ${day}. Se supone que son las ${dayHours} hrs.`);
+            console.log(`Se buscó ${tags} en ${boorus[0]}. Es el día ${day}, con ${dayHours} hrs.`);
             
+            //Danbooru does not let you search more than 
+            let isDanbooru = [];
+            let toSearch = [];
+            if (boorus[0] == "danbooru") {
+                isDanbooru = [100,false];
+                toSearch = tags[0];
+            } else {
+                isDanbooru = [1,true];
+                toSearch = tags
+            };
+
             // Check if the character exists
-            var posts = await Booru.search(`${boorus[Number(0)]}`, imgofDay[Number(day)-1], { limit: 1, random: true })
+            var posts = await Booru.search(`${boorus[0]}`, toSearch, {limit: isDanbooru[0], random: isDanbooru[1]});
             
             if (lastFound == null) {
                 lastFound = ["empty"];
@@ -683,9 +689,9 @@ module.exports = {
             
             if ((typeof posts[0] === 'undefined')||(lastFound.indexOf(posts[0].id) > -1)) {
                 if (typeof posts[0] === 'undefined') {
-                    console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                    console.log(`No encontré nada en ${boorus[0]}: Reintentando (${retries})...`);
                 } else {
-                    console.log(`Imagen repetida en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                    console.log(`Imagen repetida en ${boorus[0]}: Reintentando (${retries})...`);
                 };
                 if (nameIsflipped === true || !(args[0].includes("_"))) {
                     var booruRemoved = boorus.shift();  // Removes the first booru if the name was already flipped
@@ -713,11 +719,12 @@ module.exports = {
                         return esperarRespuesta();
                     }
                 } else {
-                    let posts = await Booru.search(`${boorus[Number(0)]}`, tags, { limit: 1, random: true });
-                    console.log(`Encontré esto: ${posts[0].fileUrl}\nRating: ${posts[0].rating}`);
+                    let posts = await Booru.search(`${boorus[0]}`, toSearch, {limit: isDanbooru[0], random: isDanbooru[1]});
+                    var random = Math.floor(Math.random() * posts.length)
+                    console.log(`Encontré esto: ${posts[random].fileUrl}\nRating: ${posts[random].rating}`);
 
-                    if (typeof posts[0] === 'undefined') {
-                        console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
+                    if (typeof posts[random] === 'undefined') {
+                        console.log(`No encontré nada en ${boorus[0]}: Reintentando (${retries})...`);
                         var booruRemoved = boorus.shift();  // Removes the first booru
                         retries = retries+1;
                         if (retries < 5) {
@@ -728,7 +735,7 @@ module.exports = {
                         };
                     } else {
                         try {
-                            if ((boorus[0] === "danbooru")&&((posts[0].rating === 's')&&(retries < 3))) {
+                            if ((boorus[0] === "danbooru")&&((posts[random].rating === 's')&&(retries < 3))) {
                                 console.log("Meh, busco otra");
                                 var booruRemoved = boorus.shift();  // Removes the first booru
                                 // Retry without adding to the "retries" counter
@@ -742,11 +749,11 @@ module.exports = {
                                         console.log(`No puedo reaccionar: ${err}`);
                                     };
                                 };*/
-                                url = posts[0].fileUrl;
+                                url = posts[random].fileUrl;
+                                console.log("Previous findings: "+lastFound)
                                 if (typeof lastFound !== 'undefined') {
-                                    if (lastFound.length > 20) {
-                                        let shiftedList = lastFound.shift()
-                                        await db.set('booruLastfind', shiftedList)
+                                    if (lastFound.length > RESULTS_TO_REMEMBER) {
+                                        await db.pull('booruLastfind', lastFound[0])
                                     };
                                 };
                                 db.push('booruLastfind', posts[0].id);
@@ -797,7 +804,7 @@ module.exports = {
             }
         };
         
-        // Si es que excede el límite de subida de discord (8Mb)
+        // Si es que excede el límite de subida de discord (25Mb)
 		async function imgReduce () {
             console.log("Intentando reducir tamaño de archivo.");
 			const imageResponse = await axios({url: url, responseType: 'arraybuffer'});
@@ -833,9 +840,9 @@ module.exports = {
                 "beach","beachball","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belly_chain","belt","bent_over","between_breasts",
                 "big_hair","bike_shorts","bikini","bikini_lift","bikini_top","bird","bisexual","bite_mark",
                 "black_bikini","black_bow","black_bra","black_choker","black_collar","black_dress","black_eyes","black_footwear","black_gloves","black_hair","black_hairband","black_headwear","black_jacket","black_legwear","black_leotard","black_panties","black_pants","black_ribbon","black_skirt","black_socks","black_tank_top","blank_eyes","blazer","blindfold",
-                "blonde_hair","blood","bloomers","blouse","blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers",
+                "blonde_hair","blood","bloomers","blouse","blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_skirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers",
                 "bodysuit","bondage","boots","border","bored","borrowed_character","bottomless","bound","bound_arms","bound_wrists","bow","bow_bra","bowtie",
-                "bra","bra_lift","bra_pull","bra_removed","bracelet","bracer","braid","braided_ponytail","braids","breast_grab","breast_hold","breast_press","breast_squeeze","breasts","breasts_apart","breasts_outside","breath","bridal_gauntlets","broom","brown_dress","brown_eyes","brown_hair","brown_thighhighs","buckle","bunny_ears","bustier","butt_crack","butterfly","buttjob","buttons",
+                "bra","bra_lift","bra_pull","bra_removed","bracelet","bracer","braid","braided_ponytail","braids","breast_grab","breast_hold","breast_pocket","breast_press","breast_squeeze","breasts","breasts_apart","breasts_outside","breath","bridal_gauntlets","broom","brown_dress","brown_eyes","brown_hair","brown_thighhighs","buckle","bunny_ears","bustier","butt_crack","butterfly","buttjob","buttons",
                 "c:","cameltoe","camera","camisole","cape","capelet","car","carrot","cat","cat_cutout","cat_ears","cat_girl","cat_smile","cat_tail","catgirl","censored","chain","chains","chair","cherry","chestnut_mouth","chibi","child_on_child","chocolate","choker","claw_pose","cleavage","cleft_of_venus","clitoris",
                 "cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","clothes_pull","close","clothing_aside","clouds",
                 "coat","collar","collarbone","collared_dress","collared_shirt","colored_skin","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
@@ -843,10 +850,10 @@ module.exports = {
                 "cuffs","cum","cum_in_mouth","cum_in_pussy","cum_inflation","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hair","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cunnilingus","cup","curtains",
                 "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","door","double_bun","doyagao","dress","dress_shirt","drink","drooling","drunk","dutch_angle",
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarrassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
-                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","finger_gun","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fins","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
+                "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","feet_out_of_frame","fellatio","female_focus","female_pubic_hair","ferret_ears","finger_gun","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fins","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
                 "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_eyes","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
-                "hair_between_eyes","hair_bow","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","halo","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
+                "hair_between_eyes","hair_bow","hair_flaps","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","halo","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
                 "high_heels","high_ponytail","highlights","highres","hip_focus","holding","hood","hoop_earrings","horns","horrified","horse_ears","hug","huge_ass","huge_breasts",
                 "in_heat","indoors","interlocked_fingers",
                 "jacket","japanese_clothes","japanese_text","jewelry","jpeg_artifacts",
