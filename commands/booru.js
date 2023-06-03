@@ -6,7 +6,6 @@ dotenv.config();
 
 const gis = require('async-g-i-s');
 //const gis = new GoogleImages('375563de81aaa42ba', process.env.GOOGLE_KEY);
-var md5 = require('md5');
 
 const { QuickDB } = require('quick.db');
 const db = new QuickDB();
@@ -682,7 +681,7 @@ module.exports = {
                 lastFound = ["empty"];
             };
             
-            if ((typeof posts[0] === 'undefined')||(lastFound.indexOf(md5(posts[0].fileUrl)) > -1)) {
+            if ((typeof posts[0] === 'undefined')||(lastFound.indexOf(posts[0].id) > -1)) {
                 if (typeof posts[0] === 'undefined') {
                     console.log(`No encontré nada en ${boorus[Number(0)]}: Reintentando (${retries})...`);
                 } else {
@@ -745,12 +744,12 @@ module.exports = {
                                 };*/
                                 url = posts[0].fileUrl;
                                 if (typeof lastFound !== 'undefined') {
-                                    if (lastFound.length > 80) {
-                                        db.delete('booruLastfind');
-                                        console.log('Se ha reiniciado la lista de imagenes.');
+                                    if (lastFound.length > 20) {
+                                        let shiftedList = lastFound.shift()
+                                        await db.set('booruLastfind', shiftedList)
                                     };
                                 };
-                                db.push('booruLastfind', md5(posts[0].fileUrl));
+                                db.push('booruLastfind', posts[0].id);
                                 //const msg = message.channel.send({files: [posts[0].fileUrl]})
                                 //const msg = message.reply(posts[0].fileUrl)
                                 postEmbed(boorus, posts)
@@ -785,7 +784,7 @@ module.exports = {
                     }
                 } else {
                     try {
-                        db.push('booruLastfind', md5(results[Number(random)].url));
+                        db.push('booruLastfind', results[Number(random)].url);
                         console.log(`Enviando:\n${results[Number(random)].url}`);
                         message.reply({files: [results[Number(random)].url]});
                         db.add(`booru_cd.${member.id}.rolls`, 1);
@@ -829,9 +828,9 @@ module.exports = {
                 "10s","1boy","1girl","2boys","2girls","3:","3boys","3d","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
                 "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_table","against_wall","age_difference","ahoge","aliasing","all_fours","alternate_breast_size","alternate_costume","alternate_hair_color","amulet",
                 "anal","anal_beads","anal_fingering","anal_hair","anal_object_insertion","anal_tail","angel_wings","anilingus","animal","animal_ear_fluff","animal_ears","animal_hands","animal_penis","ankle_boots","anklet","anthropomorphism","anti-gravity","anus","angry","annoyed","apron","aqua_dress","aqua_bikini","aqua_eyes","aqua_hair","aqua_shirt",
-                "arched_back","areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","artist_name","artist_request","artoria_pendragon_(all)","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings","autographed",
+                "arched_back","areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","arthropod_girl","artist_name","artist_request","artoria_pendragon_(all)","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings","autographed",
                 "back-print_panties","backboob","backless_outfit","backlighting","bad_feet","bad_id","bad_pixiv_id","badge","bag","bald","ball","bamboo_broom","bandage","bandages","bandaged_arm","bandaid","bandaids_on_nipples","bang","bangs","bar_censor","bare_arms","bare_legs","bare_shoulders","barefoot","baseball_cap","bat","bathing","bathroom","bdsm",
-                "beach","beachball","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belly_chain","belt","bent_over",
+                "beach","beachball","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belly_chain","belt","bent_over","between_breasts",
                 "big_hair","bike_shorts","bikini","bikini_lift","bikini_top","bird","bisexual","bite_mark",
                 "black_bikini","black_bow","black_bra","black_choker","black_collar","black_dress","black_eyes","black_footwear","black_gloves","black_hair","black_hairband","black_headwear","black_jacket","black_legwear","black_leotard","black_panties","black_pants","black_ribbon","black_skirt","black_socks","black_tank_top","blank_eyes","blazer","blindfold",
                 "blonde_hair","blood","bloomers","blouse","blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers",
@@ -839,10 +838,10 @@ module.exports = {
                 "bra","bra_lift","bra_pull","bra_removed","bracelet","bracer","braid","braided_ponytail","braids","breast_grab","breast_hold","breast_press","breast_squeeze","breasts","breasts_apart","breasts_outside","breath","bridal_gauntlets","broom","brown_dress","brown_eyes","brown_hair","brown_thighhighs","buckle","bunny_ears","bustier","butt_crack","butterfly","buttjob","buttons",
                 "c:","cameltoe","camera","camisole","cape","capelet","car","carrot","cat","cat_cutout","cat_ears","cat_girl","cat_smile","cat_tail","catgirl","censored","chain","chains","chair","cherry","chestnut_mouth","chibi","child_on_child","chocolate","choker","claw_pose","cleavage","cleft_of_venus","clitoris",
                 "cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","clothes_pull","close","clothing_aside","clouds",
-                "coat","collar","collarbone","collared_dress","collared_shirt","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
+                "coat","collar","collarbone","collared_dress","collared_shirt","colored_skin","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
                 "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","creature","crinoline","crop_top","cropped","cropped_legs","cross","crossed_arms","crown","crying",
                 "cuffs","cum","cum_in_mouth","cum_in_pussy","cum_inflation","cum_on_body","cum_on_breasts","cum_on_fingers","cum_on_hair","cum_on_hands","cum_on_mouth","cum_on_pussy","cum_on_upper_body","cumdrip","cunnilingus","cup","curtains",
-                "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","door","double_bun","doyagao","dress","dress_shirt","drooling","drunk","dutch_angle",
+                "d:","dark_skin","dark-skinned_female","dark-skinned_male","day","deletethistag","demon","demon_girl","depressed","detached_sleeves","desk","despair","digital_version","dildo","disdain","disgust","dissapointed","dog","doggystyle","door","double_bun","doyagao","dress","dress_shirt","drink","drooling","drunk","dutch_angle",
                 "ear_biting","ear_grab","ear_pull","earrings","egyptian_clothes","ejaculation","elbow_gloves","embarrassed","empty_eyes","english_commentary","envy","erect_nipples","erection","evil","evil_smile","expressionless","eyebrows_visible_through_hair","eyelashes","eyepatch","eyes_closed",
                 "facepalm","facial","facial_mark","fang","fangs","fat","feather_hair_ornament","feet","fellatio","female_focus","female_pubic_hair","ferret_ears","finger_gun","fingering","fingerless_gloves","fingernails","fingersmile","fingers_to_cheeks","fins","fire","flame","flirting","floating_hair","floor","flower","flowers","flustered",
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
