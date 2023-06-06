@@ -737,7 +737,7 @@ module.exports = {
                         try {
                             if ((boorus[0] === "danbooru")&&((posts[random].rating === 's')&&(retries < 3))) {
                                 console.log("Meh, busco otra");
-                                var booruRemoved = boorus.shift();  // Removes the first booru
+                                boorus.shift();  // Removes the first booru
                                 // Retry without adding to the "retries" counter
                                 startBooru(boorus,retries); // Searches again
                             } else {
@@ -948,6 +948,8 @@ module.exports = {
                         separateWord[i] = '(' + separateWord[i].charAt(1).toUpperCase() +
                         separateWord[i].substring(2);//caps first char of something in parentheses
                     }
+                } else if (separateWord[i] == "ii" || separateWord[i] == "iii") {
+                    separateWord[i] = separateWord[i].toUpperCase();
                 } else if (!Number.isNaN(parseInt(separateWord[i].charAt(0)))&&(separateWord[i].length > 1)) {
                     separateWord[i] = separateWord[i].charAt(0) + separateWord[i].charAt(1).toUpperCase() +
                     separateWord[i].substring(2);
