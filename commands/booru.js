@@ -169,7 +169,7 @@ module.exports = {
         if ((args[0] === 'ayuda')||(args[0] === 'help')||(args[0] === 'info')) {
 			return message.reply({ embeds: [helpEmbed] });
 		};
-		let member = message.author;
+		var member = message.author;
         var isWished = false;
         var load = getDatabase().then((data) => {
             //console.log(`Received response: ${data}`);
@@ -833,17 +833,17 @@ module.exports = {
             filteredTags = [//Removed: "bandaids_on_nipples","dakimakura","undressing","x3"
                 "!?","&gt;_&lt;","+_+",":/",":<",":>",":>=",":3",":c",":d",":i",":o",":p",":q",":t",";)",";<",";>",";3",";d",";o",";p",";q",">_<","@_@","^^^","^_^",
                 "10s","1boy","1girl","2boys","2girls","3:","3boys","3d","3girls","4boys","4girls","5boys","5girls","6+boys","6+girls",
-                "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_table","against_wall","age_difference","ahoge","aliasing","all_fours","alternate_breast_size","alternate_costume","alternate_hair_color","amulet",
+                "abdominals","abs","absurdres","adjusting_bra","adjusting_legwear","adjusting_necktie","adjusting_shorts","adjusting_shoe","adjusting_swimsuit","after_fellatio","after_vaginal","aftersex","against_glass","against_table","against_wall","age_difference","ahoge","aliasing","all_fours","alternate_breast_size","alternate_costume","alternate_hair_color","amulet",
                 "anal","anal_beads","anal_fingering","anal_hair","anal_object_insertion","anal_tail","angel_wings","anilingus","animal","animal_ear_fluff","animal_ears","animal_hands","animal_penis","ankle_boots","anklet","anthropomorphism","anti-gravity","anus","angry","annoyed","apron","aqua_dress","aqua_bikini","aqua_eyes","aqua_hair","aqua_shirt",
                 "arched_back","areola","areolae","arm_garter","arm_grab","arm_guards","arm_support","armlet","armor","armpits","arms_at_sides","arms_behind_back","arms_behind_head","arms_up","arthropod_girl","artist_name","artist_request","artoria_pendragon_(all)","ass","ass_focus","ass_grab","asymmetrical_bangs","asymmetrical_docking","asymmetrical_gloves","asymmetrical_wings","autographed",
-                "back-print_panties","backboob","backless_outfit","backlighting","bad_feet","bad_id","bad_pixiv_id","badge","bag","bald","ball","bamboo_broom","bandage","bandages","bandaged_arm","bandaid","bandaids_on_nipples","bang","bangs","bar_censor","bare_arms","bare_legs","bare_shoulders","barefoot","baseball_cap","bat","bathing","bathroom","bdsm",
+                "back-print_panties","backboob","backless_outfit","backlighting","bad_feet","bad_id","bad_pixiv_id","badge","bag","bald","ball","balloon","balloon_animal","bamboo_broom","bandage","bandages","bandaged_arm","bandaid","bandaids_on_nipples","bang","bangs","bar_censor","bare_arms","bare_legs","bare_shoulders","barefoot","baseball_cap","bat","bathing","bathroom","bdsm",
                 "beach","beachball","bead_necklace","bear_panties","bed","bed_sheet","beer_can","bell","belly_chain","belt","bent_over","between_breasts",
                 "big_hair","bike_shorts","bikini","bikini_lift","bikini_top","bird","bisexual","bite_mark",
                 "black_bikini","black_bow","black_bra","black_choker","black_collar","black_dress","black_eyes","black_footwear","black_gloves","black_hair","black_hairband","black_headwear","black_jacket","black_legwear","black_leotard","black_panties","black_pants","black_ribbon","black_skirt","black_socks","black_tank_top","blank_eyes","blazer","blindfold",
                 "blonde_hair","blood","bloomers","blouse","blue_background","blue_bikini","blue_bow","blue_dress","blue_eyes","blue_gloves","blue_hair","blue_headwear","blue_jacket","blue_legwear","blue_nails","blue_panties","blue_shirt","blue_skirt","blue_swimsuit","blunt_bangs","blur_censor","blurry","blurry_background","blush","blush_stickers",
                 "bodysuit","bondage","boots","border","bored","borrowed_character","bottomless","bound","bound_arms","bound_wrists","bow","bow_bra","bowtie",
                 "bra","bra_lift","bra_pull","bra_removed","bracelet","bracer","braid","braided_ponytail","braids","breast_grab","breast_hold","breast_pocket","breast_press","breast_squeeze","breasts","breasts_apart","breasts_outside","breath","bridal_gauntlets","broom","brown_dress","brown_eyes","brown_hair","brown_thighhighs","buckle","bunny_ears","bustier","butt_crack","butterfly","buttjob","buttons",
-                "c:","cameltoe","camera","camisole","cape","capelet","car","carrot","cat","cat_cutout","cat_ears","cat_girl","cat_smile","cat_tail","catgirl","censored","chain","chains","chair","cherry","chestnut_mouth","chibi","child_on_child","chocolate","choker","claw_pose","cleavage","cleft_of_venus","clitoris",
+                "c:","cameltoe","camera","camisole","cape","capelet","car","carrot","cat","cat_cutout","cat_ears","cat_girl","cat_smile","cat_tail","catgirl","censored","chain","chains","chair","character_request","check_character","cherry","chestnut_mouth","chibi","child_on_child","chocolate","choker","claw_pose","cleavage","cleft_of_venus","clitoris",
                 "cloak","closed_eyes","closed_mouth","clothed_female_nude_male","clothed_sex","clothes","clothes_grab","clothes_lift","clothes_pull","close","clothing_aside","clouds",
                 "coat","collar","collarbone","collared_dress","collared_shirt","colored_skin","comic","commentary","commentary_request","commission","completely_nude","computer_mouse","condom","condom_belt","contemporary","copyright_name","coughing","covered_erect_nipples","covered_navel","covering",
                 "cow_ears","cowboy_shot","cowgirl_position","crazy","crazy_smile","cream","creature","crinoline","crop_top","cropped","cropped_legs","cross","crossed_arms","crown","crying",
@@ -854,7 +854,7 @@ module.exports = {
                 "food","foot_tease","fox_ears","foxgirl","frilled_skirt","frilled_sleeves","frills","frogtie","fruit","frustrated","from_above","from_behind","from_below","full_body","full-package_futanari","furrowed_brow","futanari",
                 "g-string","gag","garter","garter_belt","girl_on_top","glasses","glitch","glitch_censor","gloom_(expression)","gloves","gluteal_fold","goggles","gothic","gradient","gradient_background","grass","gray_eyes","gray_hair","green_dress","green_eyes","green_hair","grey_background","grey_dress","grey_eyes","grey_hair","greyscale","grin","groin","groping","group","gun","gym_uniform",
                 "hair_between_eyes","hair_bow","hair_flaps","hair_ornament","hair_over_one_eye","hair_ribbon","hair_through_headwear","hair_tubes","hairband","hairclip","halo","hand_on_another&#039;s_leg","handjob","hands_on_ground","happy","hat","headband","headphones","heart","heavy_breathing","heels","hetero",
-                "high_heels","high_ponytail","highlights","highres","hip_focus","holding","hood","hoop_earrings","horns","horrified","horse_ears","hug","huge_ass","huge_breasts",
+                "high_heels","high_ponytail","highlights","highres","hip_focus","holding","holding_balloon","hood","hoop_earrings","horns","horrified","horse_ears","hug","huge_ass","huge_breasts",
                 "in_heat","indoors","interlocked_fingers",
                 "jacket","japanese_clothes","japanese_text","jewelry","jpeg_artifacts",
                 "kiss","kneehighs","kneeling","knotted_penis",
@@ -923,9 +923,19 @@ module.exports = {
 
             try {
                 if (isWished === true) {
-                    return message.channel.send({ content: `Deseado por <@${message.author.id}>`, embeds: [booruEmbed] });
+                    message.channel.send({ content: `Deseado por <@${message.author.id}>`, embeds: [booruEmbed] })
+					.then((reply) => deleteMessage(reply))
+					.catch(err => {
+						message.reply(`estoy hecho mierda <@${member.id}>`)
+						console.error(err)
+                    });
                 } else {
-                    return message.channel.send({ embeds: [booruEmbed] });
+                    message.channel.send({ embeds: [booruEmbed] })
+					.then((reply) => deleteMessage(reply,booruEmbed))
+					.catch(err => {
+						message.reply(`estoy hecho mierda <@${member.id}>`)
+						console.error(err)
+                    });
                 }
             } catch(err) {
                 console.log("Error al enviar embed: "+err);
@@ -964,18 +974,44 @@ module.exports = {
     }
         
 		// Interacciones con reacciones.
-		async function emojiMessage(message, validReactions) {
-            for (const reaction of validReactions) await message.react(reaction);
-        const filter = (reaction, user) => validReactions.includes(reaction.emoji.name) && (!user.bot)
+		async function deleteMessage(message, booruEmbed) {
+            message.react('<:KakeraR:877979665132818463>').then(() => message.react('🗑️'));
 
-        return message
-            .awaitReactions(filter, {
-                max: 1,
-                time: 25000
+            const collectorFilter = (reaction, user) => {
+                return ['<:KakeraR:877979665132818463>', '🗑️'].includes(reaction.emoji.name) && user.id === member.id;
+            };
+
+            message.awaitReactions({ filter: collectorFilter, max: 1, time: 20000, errors: ['time'] })
+            .then(collected => {
+                const reaction = collected.first();
+
+                if (reaction.emoji.name === '🗑️') {
+                    if (message.deletable == true) {
+                        console.log("Borrando el mensaje.");
+                        message.delete();
+                    } else {
+                        console.log("No puedo borrar el mensaje");
+                    };
+                } else {
+                    console.log("Kakera reacción.");
+                    booruEmbed.setImage(posts[0].fileUrl)
+                    .setDescription(res.join('\n')+`\n**${posts[0].score}**<:KakeraR:877979665132818463>`)
+                    .setTimestamp()
+                    .setFooter({text:`Pertenece a ${message.author.username}`, iconURL: message.author.avatarURL});
+                    try {
+                        message.reactions.removeAll();
+                    } catch(err) {
+                        console.log("Error al intentar remover los emojis.");
+                    };
+                }
             })
-            .then(collected => collected.first() && collected.first().emoji.name)
-			.then(() => message.reactions.remove(message.author.id))
-			.catch(err => console.log("Oh: "+err));
+            .catch(collected => {
+                try {
+					message.reactions.removeAll();
+				} catch(err) {
+					console.log("Error al intentar remover los emojis.");
+				};
+            });
 		}
 
         async function esperarRespuesta() {
