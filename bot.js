@@ -373,22 +373,50 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 	console.log(`Nickname antes: ${oldMember.nickname}`);
 	console.log(`Nickname ahora: ${newMember.nickname}`);
 	if (oldMember.id == '565330655915933696') {
-		console.log('Usuario coincide.');
-		//	Removes characters outside of A-z and À-ú.
-		var cleanMember = newMember.nickname.toLowerCase().replace(/[^A-zÀ-ú\s]/gi, '')
-		if (typeof cleanMember === "function") {
-		//	Looks for repeated characters.
-			var checkMember = cleanMember.replace(/[^\w\s]|(.)\1/gi, '');
-		};
-		//	Wait 250ms and then check if includes a bad word.
-		setTimeout(function(){
-		if (bannedNames.some(word => newMember.nickname.replace(/[^A-z\s]|(.)\1| +/gi, '').toLowerCase().includes(word))||bannedSymbols.some(word => newMember.nickname.toLowerCase().includes(word))||(newMember.nickname.toLowerCase().startsWith('sp'))) {
-				console.log('Intentando renombrar usuario...');
-				oldMember.setNickname('Furro', ['Bad words.'])
-					.then(() => console.log('Se ha renombrado a alguien.'))
-					.catch(console.error);
-		};
-		}, 250);
+		console.log('Usuario Kan.');
+		var last1 = ""
+		var last2 = ""
+		var last3 = ""
+		var last4 = ""
+		var newName = newMember.nickname
+		if (newName.length > 3) {
+			last4 = newMember.nickname.slice(-4);
+		}
+		if (newName.length > 2) {
+			last3 = newMember.nickname.slice(-3);
+		}
+		if (newName.length > 1) {
+			last2 = newMember.nickname.slice(-2);
+		}
+		if (newName.length > 0) {
+			last1 = newMember.nickname.slice(-1);
+		}
+		if (last2 == "ca" || last2 == "ka" || last2 == "pa" || last2 == "aw" || last2 == "ow") {
+			newName = newMember.nickname+"n"
+		}
+		else if (last1 == "c" || last1 == "f" || last1 == "k" || last1 == "p" || last1 == "v") {
+			newName = newMember.nickname+"an"
+		}
+		else if (last4!= "khan" &&(last3!="can" && last3!="kan" && last3!="lan" && last3!="man" && last3!="san" && last3!="wea")) {
+			newName = newMember.nickname+"kan"
+		}
+		if (newName.length<= 32) {
+			oldMember.setNickname(newName, ["Justo y necesario."])
+		}
+	}
+	else if (oldMember.id == '311225637966708736') {
+		console.log('Usuario More Ira.');
+		var newName1 = newMember.nickname+" (el moreira wn)"
+		var newName2 = newMember.nickname+" (el moreira)"
+		var newName3 = newMember.nickname+" (moreira)"
+		var reason = "Más facil de identificar."
+		if (newName1.length<= 32) {
+			oldMember.setNickname(newName1, [reason])
+		} else if (newName2.length<= 32) {
+			oldMember.setNickname(newName2, [reason])
+		} else if (newName3.length<= 32) {
+			oldMember.setNickname(newName3, [reason])
+		}
 	}
 	else return console.log(`Usuario no coincide.`);	// for Debugging
 });
@@ -424,10 +452,27 @@ client.on('messageCreate', message => {
 	// If message channel is #tech or #gallery
 	if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) {
 		console.log('Se ha enviado un mensaje a #tech o #gallery');
-		if ((message.attachments.size > 0)||((message.content.toLowerCase().includes(`http://`)||message.content.toLowerCase().includes(`https://`))&&(!message.content.toLowerCase().includes('tenor.')))) {
+		if ((message.attachments.size > 0)||((message.content.toLowerCase().includes(`http://`)||message.content.toLowerCase().includes(`https://`))&&(!message.content.toLowerCase().includes('tenor.'))&&(!message.content.toLowerCase().includes('/emojis/')))) {
+			if ((message.attachments.size > 0)&&(message.attachments.first().height > 0)&&(message.attachments.first().height < 320)&&(message.attachments.first().width > 0)&&(message.attachments.first().width < 320)) {
+				try {
+					message.delete();
+					return console.log(`Se ha borrado el mensaje: ${message}`);
+				} catch(err) {
+					return console.log(`No se ha borrado el mensaje: ${message}\nFaltan permisos?`);
+				};
+			}
 			console.log('El contenido enviado corresponde.');
+			message.startThread({
+				name: `Post - ${message.createdTimestamp}`,
+				autoArchiveDuration: 60,
+				type: 'GUILD_PUBLIC_THREAD'
+			});
 		} else {
 			//var lastMessage = message.channel.messages.fetch({limit: 1})
+			if (message.reference!==null) {
+				console.log(`Mensaje era una respuesta.`)
+				//const reply = fetchMessage(message);
+			}
 			try {
 				message.delete();
 				return console.log(`Se ha borrado el mensaje: ${message}`);
@@ -569,7 +614,7 @@ client.on('messageCreate', message => {
 		.catch(() => console.error('Que onda?? No pude mandar la imágen.'));
 	} else if (message.content.startsWith(`<@749824051945537637>`)) {
 		try {
-			client.commands.get('chat').execute(message)
+			client.commands.get('cai').execute(message)
 		} catch (error) {
 			console.error(error);
 			console.log('No puedo responder.');
@@ -868,13 +913,18 @@ async function esperarRespuesta() {
 	});
 };
 
-async function getAvatar () {
+async function getAvatar() {
 	const response = await fetch(`https://discord.com/api/v9/users/${gregorId}`, {
 		headers: {
 			'Authorization': 'Bot ' + (process.env.BOT_TOKEN)
 		}
 	})
 	return await response.json()
+}
+
+async function fetchMessage(message) {
+	const reply = await message.channel.messages.fetch(message.reference.messageId);
+	return reply;
 }
 
 // login to Discord with your app's token
