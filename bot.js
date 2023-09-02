@@ -454,6 +454,8 @@ client.on('messageCreate', message => {
 		console.log('Se ha enviado un mensaje a #tech o #gallery');
 		if ((message.attachments.size > 0)||((message.content.toLowerCase().includes(`http://`)||message.content.toLowerCase().includes(`https://`))&&(!message.content.toLowerCase().includes('tenor.'))&&(!message.content.toLowerCase().includes('/emojis/')))) {
 			if ((message.attachments.size > 0)&&(message.attachments.first().height > 0)&&(message.attachments.first().height < 320)&&(message.attachments.first().width > 0)&&(message.attachments.first().width < 320)) {
+				// Deletes Stickers or fake emotes.
+				console.log("Borrando sticker o emote.")
 				try {
 					message.delete();
 					return console.log(`Se ha borrado el mensaje: ${message}`);
@@ -462,12 +464,14 @@ client.on('messageCreate', message => {
 				};
 			}
 			console.log('El contenido enviado corresponde.');
+			var topic = makeTopic(message);
 			message.startThread({
-				name: `Post - ${message.createdTimestamp}`,
+				name: `${topic} - ${message.createdTimestamp}`,
 				autoArchiveDuration: 60,
 				type: 'GUILD_PUBLIC_THREAD'
 			});
 		} else {
+			console.log("Borrando mensaje.")
 			//var lastMessage = message.channel.messages.fetch({limit: 1})
 			if (message.reference!==null) {
 				console.log(`Mensaje era una respuesta.`)
@@ -925,6 +929,15 @@ async function getAvatar() {
 async function fetchMessage(message) {
 	const reply = await message.channel.messages.fetch(message.reference.messageId);
 	return reply;
+}
+
+function makeTopic(message) {
+	const EMBABLE_VIDEO = [".mov",".mp4",".webm"]
+	var topic = "Post"
+	if (EMBABLE_VIDEO.indexOf(message.content.toLowerCase()) > -1) {
+		var topic = "Video"
+	}
+	return topic;
 }
 
 // login to Discord with your app's token
