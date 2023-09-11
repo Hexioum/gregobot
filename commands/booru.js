@@ -550,6 +550,7 @@ module.exports = {
             args[0] = args[0].toLowerCase().replace(/\(gfl\)+/gi, '(girls_frontline)');
             args[0] = args[0].toLowerCase().replace(/\(gi\)+/gi, '(genshin_impact)');
             args[0] = args[0].toLowerCase().replace(/\(hi\)+/gi, '(honkai_impact)');
+            args[0] = args[0].toLowerCase().replace(/\(hsr\)+/gi, '(honkai:_star_rail)');
             args[0] = args[0].toLowerCase().replace(/\(kc\)+/gi, '(kancolle)');//(kantai_collection)
             args[0] = args[0].toLowerCase().replace(/\(opm\)+/gi, '(one-punch_man)');
             args[0] = args[0].toLowerCase().replace(/\(uni\)+|\(unib\)+|\(unist\)+|\(uniclr\)+/gi, '(under_night_in-birth)');

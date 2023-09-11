@@ -6,7 +6,7 @@ API_URL = 'https://api-inference.huggingface.co/models/hexioum/DialoGPT-small-gr
 const cheerio = require("cheerio");
 module.exports = {
 	name: 'chat',
-	aliases: ['conversemos','cuentame','dime','hablemos'],
+	aliases: ['conversemos','hablemos'],
 	description: 'Gregorio te conversa',
 	execute(message) {
         if ((message.channel.id == 742579461714870353)||(message.channel.id == 743291444672069652)) return;
