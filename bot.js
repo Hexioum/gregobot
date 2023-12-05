@@ -68,30 +68,32 @@ const activitiesList = [
     "OpenOSRS",
 	"Old School RuneScape",
 	"World of Warcraft Classic",
-    "Counter-Strike: Global Offensive",
+    "Counter-Strike 2",
     "Counter-Strike: Kinda Offensive",
     "Tom Clancy's Rainbow Six Siege",
 	"Overwatch 2",
-	"Moira en Overwatch 2",
 	"Paladins",
     "Fortnite",
 	"GUILTY GEAR -STRIVE-",
-    "Mortal Kombat 11",
+    "Mortal Kombat 1",
+    "Mortal Kombat 1",
 	"DRAGON BALL FighterZ",
 	"Borderlands 2",
     "Super Mario 64",
 	"Fall Guys",
-    "Blue Archive",
+	"Lethal Company",
     "Folio Azul",
     "Girls' Frontline",
-	"RAID: Shadow Legends",
+	"Mafia City",
 	"Diablo® Immortal™",
 	"Kung Fu Panda: Showdown of Legendary Legends",
 	"Disc Jam",
 	"Multi Theft Auto",
 	"Grand Theft Auto: San Andreas",
+	"Grand Theft Auto VI",
+	"Sex and the Furry Titty 2: Sins of the City",
 	"Desert Bus",
-	"bailar a lo GTA",
+	"bailar a lo GTA VI",
 	"el 6 y el 7",
 	"estar hecho mierda",
     "Pokémon Hentai",
@@ -122,7 +124,7 @@ const topicList = [
 	"Shin Megami Tensei IV: Apocalypse",
     "EA SPORTS™ FIFA 21",
 	"speedruns de Super Mario 64",
-	"que Nagato es la Linne",
+	"Akatsuki",
 	"frame data",
 	"juegos de mesa",
 	"rollback netcode",
@@ -381,6 +383,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember){
 		var newName = newMember.nickname
 		if (newName.length > 3) {
 			last4 = newMember.nickname.slice(-4);
+			last4 = last4.toLowerCase()
 		}
 		if (newName.length > 2) {
 			last3 = newMember.nickname.slice(-3);
@@ -733,6 +736,13 @@ client.on('messageCreate', message => {
 			.then(() => message.channel.send('mentiroso qlo'))
 			.then(() => message.channel.send({files: ['./memes/;momopatas;.png']}))
 			.catch(() => console.error('Que onda?? No pude responder.'));
+	} else if (message.content.toLowerCase().startsWith(`pongan `)) {
+		try {
+			client.commands.get('pongan').execute(message)
+		} catch (error) {
+			console.error(error);
+			message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
+		}
 	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
@@ -746,14 +756,7 @@ client.on('messageCreate', message => {
 	} else if ((message.content.length > 750)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
 		message.channel.send(`increible`);
 		return message.delete();
-    } else if ((message.content.toLowerCase().includes(`camiroaga`))||(message.content.toLowerCase().includes(`felipito`))) {
-		try {
-			client.commands.get('camiro').execute(message)
-		} catch (error) {
-			console.error(error);
-			message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
-		}
-	}
+    }
 		
 	// If message channel is #monaschinas
 	if (message.channel.id == 441386860300730378) {
