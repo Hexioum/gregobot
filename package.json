@@ -41,6 +41,7 @@
     "winston": "^3.8.2",
     "wrap-text": "^1.0.9",
     "xmlhttprequest": "^1.8.0",
+    "youtube-search-api": "^1.2.1",
     "zlib-sync": "^0.1.7"
   },
   "scripts": {
