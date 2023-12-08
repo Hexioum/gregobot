@@ -22,7 +22,6 @@ module.exports = {
                 })();
                 
                 async function doCommand(wishlist, args) {
-                    var backup = wishlist.join().toLowerCase().split(',');
                     console.log(`Wishlist: ${wishlist}\nRemoviendo: ${args}`);
                     if (wishlist == null) {
                         wishlist = ["undefined"];
@@ -33,7 +32,8 @@ module.exports = {
                             return console.log(`No puedo reaccionar: ${err}`);
                         };
                     } else {
-                        var wishlist = wishlist.join().toLowerCase().split(',').filter( ( excl ) => !args.includes( excl ) );
+                        var backup = wishlist.join().toLowerCase().split(',');
+                        var wishlist = backup.filter( ( excl ) => !args.includes( excl ) );
                         console.log(`Largo de array: `+wishlist.length);
                         if (backup.length >= args.length) {
                             console.log(`Antes: ${backup}\nAhora: ${wishlist}`);

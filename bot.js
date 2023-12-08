@@ -738,10 +738,9 @@ client.on('messageCreate', message => {
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`pongan `)) {
 		try {
-			client.commands.get('pongan').execute(message)
+			client.commands.get('play').execute(message)
 		} catch (error) {
-			console.error(error);
-			message.reply({ content: 'estoy hecho mierda weon!', allowedMentions: { repliedUser: false }});
+			console.log("Error al iniciar comando pongan: "+error);
 		}
 	} else if (message.content.toLowerCase().startsWith(`tu hermana`)) {
 		message.channel.send({files: ['./memes/;momopatas;.png']});
@@ -772,7 +771,7 @@ client.on('messageCreate', message => {
 			try {
 				db.add(`booru.textCount`, 1);
 			} catch(err) {
-				console.log(`Error en línea 730 de bot.js`);
+				console.log(`Error en línea 771 de bot.js`);
 			};
 			if ((textCounter!== null)&&(textCounter == 20)) {
 				console.log("Están hablando demasiado.");
