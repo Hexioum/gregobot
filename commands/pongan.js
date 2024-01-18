@@ -15,22 +15,30 @@ module.exports = {
             if (args.startsWith("crossplay") || args.startsWith("gameplay") || args.startsWith("walkthrough") || args.startsWith("la foto") || args.startsWith("el meme")|| args.startsWith("el gif") || args.startsWith("esa wea") || args.startsWith("esta wea") || args.endsWith(" al menos") || args.endsWith(" aunque sea") || args.endsWith(" en la wea") || args.endsWith(" qwq") || args.endsWith(" u.u")) {
                 return console.log("Saliendo sin buscar nada en YouTube.")
             }
+            args = args.replace(/á'/gi, "a");
+            args = args.replace(/é'/gi, "e");
+            args = args.replace(/í'/gi, "i");
+            args = args.replace(/ó/gi, "o");
+            args = args.replace(/ú/gi, "u");
+            args = args.replace(/ con /gi, " ");
             args = args.replace(/el tema de la /gi, "theme ");
-            args = args.replace(/el tema de/gi, "theme");
+            args = args.replace(/el tema del /gi, "theme");
+            args = args.replace(/el tema de /gi, "theme");
             args = args.replace(/la musica del /gi, "music from ");
             args = args.replace(/musica del /gi, "music from ");
             args = args.replace(/cuando/gi, "when");
             args = args.replace(/ el weon/gi, "");
             args = args.replace(/ la weona/gi, "");
-            args = args.replace(/ matan/gi, "dies");
-            args = args.replace(/se muere/gi, "dies");
+            args = args.replace(/ matan/gi, " dies");
+            args = args.replace(/ se muere/gi, " dies");
+            args = args.replace(/mision /gi, "mission ");
             args = args.replace(/muerte /gi, "death ");
             args = args.replace(/matador de /gi, "killer ");
             args = args.replace(/mata guaguas/gi, "childish killer");
             args = args.replace(/guaguas/gi, "childish");
             args = args.replace(/guagua/gi, "child");
             args = args.replace(/pantalla de carga/gi, "loading screen");
-            args = args.replace(/intro de /gi, "intro of ");
+            args = args.replace(/intro de /gi, "intro ");
             args = args.replace(/opening de /gi, "opening ");
             args = args.replace(/ending de /gi, "ending ");
             args = args.replace(/snuff/gi, "snusk");
