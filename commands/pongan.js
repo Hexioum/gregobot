@@ -30,20 +30,22 @@ module.exports = {
             args = args.replace(/el tema de la /gi, "theme ");
             args = args.replace(/el tema del /gi, "theme ");
             args = args.replace(/el tema de /gi, "theme ");
-            args = args.replace(/la musica del /gi, "music from ");
-            args = args.replace(/musica del /gi, "music from ");
-            args = args.replace(/mision /gi, "mission ");
-            args = args.replace(/muerte /gi, "death ");
-            args = args.replace(/matador de /gi, "killer ");
-            args = args.replace(/mata guaguas/gi, "childish killer");
+            args = args.replace(/ending de /gi, "ending ");
             args = args.replace(/guaguas/gi, "childish");
             args = args.replace(/guagua/gi, "child");
-            args = args.replace(/pantalla de carga/gi, "loading screen");
             args = args.replace(/intro de /gi, "intro ");
+            args = args.replace(/la musica del /gi, "music from ");
+            args = args.replace(/matador de /gi, "killer ");
+            args = args.replace(/mata guaguas/gi, "childish killer");
+            args = args.replace(/mision /gi, "mission ");
+            args = args.replace(/muerte /gi, "death ");
+            args = args.replace(/musica del /gi, "music from ");
             args = args.replace(/opening de /gi, "opening ");
-            args = args.replace(/ending de /gi, "ending ");
+            args = args.replace(/pantalla de carga/gi, "loading screen");
+            args = args.replace(/pornografia/gi, "music");
+            args = args.replace(/pornografico/gi, "porno graffitti");
+            args = args.replace(/pornograffiti/gi, "porno graffitti");
             args = args.replace(/snuff/gi, "snusk");
-            args = args.replace(/porno/gi, "music");
 
             if (args.length<3) {
                 return console.log("Busqueda muy corta, no se intentará.")

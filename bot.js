@@ -750,8 +750,6 @@ client.on('messageCreate', message => {
 		message.channel.send('wena wena')
 			.then(() => message.channel.send('quien su lol?'))
 			.catch(() => console.error('Que onda?? No pude responder.'));
-	} else if (message.content.startsWith(`XD`)) {
-		message.channel.send({files: ['./memes/;momopatas;.png']});
 	} else if ((message.content.length > 750)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
 		message.channel.send(`increible`);
 		return message.delete();

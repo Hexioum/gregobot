@@ -6,11 +6,13 @@ module.exports = {
 	usage: '<opcion1>, <opcion2>',
 	execute(message, args) {
 	message.channel.sendTyping();
-	var oneRegex = / gay+| homo+| lgbt+| maric+| trans+/gi ;
+	// Banned
+	var oneRegex = / homof+| homoph+| nazi+| racist+/gi ;
 	var oneMatch = args.some(e => oneRegex.test(e));
-	var twoRegex = / peruano+| venezolano+| venaco+| negro+| haitiano+/gi ;
+	var twoRegex = / argentino+| boliviano+| peruano+| venezolano+| venaco+| haitiano+/gi ;
 	var twoMatch = args.some(e => twoRegex.test(e));
-	var trdRegex = / furro+| furry+| fursuit+| zoofili+| zoofíli+/gi ;
+	// Not banned, he actually likes these things?
+	var trdRegex = / furro+| furry+| fursona+| fursuit+| zoof+/gi ;
 	var trdMatch = args.some(e => trdRegex.test(e));
 	setTimeout(function(){
 		let pos = args.indexOf("o")
@@ -80,7 +82,7 @@ module.exports = {
 				.catch(() => console.error('Que onda?? No pude responder.'));
 			}
 			else if (oneMatch === true) {
-				message.reply('que asco 😦')
+				message.reply('🤷🏻‍♂️')
 				.catch(() => console.error('Que onda?? No pude responder.'));
 			}
 			//	Removes special symbols.
