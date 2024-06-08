@@ -258,7 +258,7 @@ client.on('ready', function () {
 	);
 
 	var avtSnatch = new CronJob(
-		'0 0 0 * * *',//“Every day at 00:00 hours.”
+		'0 0 3,22 * * *',//“Every day at 03:00 and 22:00 hours.”
 		async function() {
 			getAvatar().then(result => 
 				client.user.setAvatar(`https://cdn.discordapp.com/avatars/${result.id}/${result.avatar}.png`))
