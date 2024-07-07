@@ -12,7 +12,7 @@ module.exports = {
         if (message.content.length > prefix) {
             var args = message.content.toLowerCase().slice(prefix).trim();
             args = args.replace(/\.*$/gm, '');//Remueve los puntos al final del mensaje.
-            if (args.startsWith("crossplay") || args.startsWith("gameplay") || args.startsWith("walkthrough") || args.startsWith("la foto") || args.startsWith("el meme")|| args.startsWith("el gif") || args.startsWith("esa wea") || args.startsWith("esta wea") || args.endsWith(" al menos") || args.endsWith(" aunque sea") || args.endsWith(" en la wea") || args.endsWith(" qwq") || args.endsWith(" u.u")) {
+            if (args.startsWith("a la ") || args.startsWith("crossplay") || args.startsWith("gameplay") || args.startsWith("walkthrough") || args.startsWith("la foto") || args.startsWith("el meme")|| args.startsWith("el gif") || args.startsWith("esa wea") || args.startsWith("esta wea") || args.endsWith(" al menos") || args.endsWith(" aunque sea") || args.endsWith(" en la wea") || args.endsWith(" qwq") || args.endsWith(" u.u")) {
                 return console.log("Saliendo sin buscar nada en YouTube.")
             }
             args = args.replace(/á'/gi, "a");
