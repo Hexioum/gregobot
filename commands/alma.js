@@ -1,5 +1,5 @@
 // const { gregorid } = require('../config.json');
-let gifreaction = 'https://thumbs.gfycat.com/VioletAcrobaticHound-size_restricted.gif'
+let gifreaction = 'https://tenor.com/view/mortal-kombat-gif-14312557'
 module.exports = {
 	name: 'alma',
 	aliases: ['soul','mudae'],

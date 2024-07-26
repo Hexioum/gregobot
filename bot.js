@@ -158,8 +158,6 @@ const bannedSymbols = [
     ]; // Shorter version
 const responseObject = {
 	"$rtu": "¡$rt no está disponible!",
-	"grego?": "que wea",
-	"Grego?": "Que wea",
 	"gregO?": "que weA",
 	"gReGo?": "qUe wEa",
 	"GrEgO?": "QuE WeA",
@@ -174,7 +172,7 @@ const responseObject = {
 	"grEgO?": "quE WeA",
 	"grEGO?": "quE WEA",
 	"gREGO?": "qUE WEA",
-	"GREGO?": "QUE WEA"
+	"GREGO?": "..."
 };
 
 for (const file of commandFiles) {
@@ -692,8 +690,8 @@ client.on('messageCreate', message => {
 	} else if (message.content.toLowerCase().startsWith(`buena grego`) || message.content.toLowerCase().startsWith(`hola grego`)) {
 		message.channel.send('wena');
 	} else if (message.content.toLowerCase().startsWith(`cierto grego`)) {
-		let replies = ["<:grOhshit:718343364721901638>:droplet:", "<:perroHm:739735108314988554>", "<:Grego2:852589102804107264>", "<:Grego2:852589102804107264>:interrobang:", "Si.", "se wn"];
-		let random = Math.floor(Math.random() * 6);
+		let replies = ["cual grego?", "_¿Quizás quisiste decir Grugo?_", "_Aquí no hay nadie con ese nombre._", "_¿No querrás decir Grusar?_", "..."];
+		let random = Math.floor(Math.random() * replies.length);
 		message.channel.sendTyping();
 		setTimeout(function(){
 			message.channel.send(replies[random]);
@@ -821,7 +819,7 @@ client.on('messageCreate', message => {
 		};
 	}
 	
-	const prefixes = ['Grego ', 'grego ', 'Gr ', 'gr ', 'GREGO '];
+	const prefixes = ['Ego ', 'ego ', 'grigo ', 'grugo ', 'gergo ', 'grusar ', 'lausar '];
 	const prefix = prefixes.find(p => message.content.startsWith(p));
 //	if (!prefix) return;
 	
@@ -877,11 +875,6 @@ async function readImage() {
 		setTimeout(function(){
 		message.channel.send(`la wea mala oh`);
 		}, Number(660));
-	} else if (text.toLowerCase().includes(`grego`)) {
-		message.channel.sendTyping();
-		setTimeout(function(){
-		message.channel.send(`<:Grego2:852589102804107264>⁉`);
-		}, Number(360));
 	} else if (text.toLowerCase().includes(`notebook`) || text.toLowerCase().includes(`laptop`)) {
 		message.channel.sendTyping();
 		setTimeout(function(){
