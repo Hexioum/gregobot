@@ -207,19 +207,15 @@ client.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*15);
-			let randomComment = Math.floor(Math.random()*8);
+			let randomChance = Math.floor(Math.random()*15);//https://www.youtube.com/watch?v=NJeLm771oJo
+			let jobsFri = [ `https://www.youtube.com/watch?v=DtFP6kYph48`,
+							`https://www.youtube.com/watch?v=DtFP6kYph48`,
+							`https://www.youtube.com/watch?v=DtFP6kYph48`,
+							`https://www.youtube.com/watch?v=DtFP6kYph48`];
+			let randomComment = Math.floor(Math.random()*jobsFri.length);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
 				lockComment = 1
-				let jobsFri = [ `entonces nadie alguna wea?`,
-								`weon un viernes y no hay niun weon?`,
-								`quien un jugo?`,
-								`quien un lol?`,
-								`quien un nosgoth?`,
-								`alguien un nosgoth?`,
-								`ALGUIEN UN NOSGOTH?`,
-								`quien apaña un nosgoth?`];
 				day = 5;
 				client.channels.cache.get('438741858018000897').send(`${jobsFri[Number(randomComment)]}`);// Sends a message to #principal
 			/*	try {
