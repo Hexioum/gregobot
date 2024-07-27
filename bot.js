@@ -208,10 +208,10 @@ client.on('ready', function () {
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
 			let randomChance = Math.floor(Math.random()*15);//https://www.youtube.com/watch?v=NJeLm771oJo
-			let jobsFri = [ `https://www.youtube.com/watch?v=DtFP6kYph48`,
-							`https://www.youtube.com/watch?v=DtFP6kYph48`,
-							`https://www.youtube.com/watch?v=DtFP6kYph48`,
-							`https://www.youtube.com/watch?v=DtFP6kYph48`];
+			let jobsFri = [ `https://www.youtube.com/watch?v=NJeLm771oJo`,
+							`https://www.youtube.com/watch?v=NJeLm771oJo`,
+							`https://www.youtube.com/watch?v=NJeLm771oJo`,
+							`https://www.youtube.com/watch?v=NJeLm771oJo`];
 			let randomComment = Math.floor(Math.random()*jobsFri.length);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
@@ -684,7 +684,7 @@ client.on('messageCreate', message => {
 				.catch(() => console.error('Que onda?? No pude responder.'));
 		};
 	} else if (message.content.toLowerCase().startsWith(`buena grego`) || message.content.toLowerCase().startsWith(`hola grego`)) {
-		message.channel.send('wena');
+		message.channel.send('...');
 	} else if (message.content.toLowerCase().startsWith(`cierto grego`)) {
 		let replies = ["cual grego?", "_¿Quizás quisiste decir Grugo?_", "_Aquí no hay nadie con ese nombre._", "_¿No querrás decir Grusar?_", "..."];
 		let random = Math.floor(Math.random() * replies.length);
@@ -697,7 +697,7 @@ client.on('messageCreate', message => {
 	} else if (message.content.toLowerCase().includes(`fue el grego`)) {
 		let replies = ["fue el esteban", "fue el nacho", "fue el luxo", "fue el mati", "fue el octavio", "fue el moreira wn"];
 		let random = Math.floor(Math.random() * 6);
-		message.channel.send('loco yo no fui')
+		message.channel.send('no tienen pruebas')
 			.then(() => message.channel.send(replies[random]))
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if (message.content.toLowerCase().startsWith(`fue el `)) {
@@ -741,7 +741,7 @@ client.on('messageCreate', message => {
 	} else if (message.content.toLowerCase().startsWith(`weon ese `)) {
 		message.channel.send('Si.');
 	} else if (message.content.toLowerCase().startsWith(`wena grego`)) {
-		message.channel.send('wena wena')
+		message.channel.send('...')
 			.then(() => message.channel.send('quien su lol?'))
 			.catch(() => console.error('Que onda?? No pude responder.'));
 	} else if ((message.content.length > 750)&&(message.content.toLowerCase().includes(`es cuando molestan`))) {
