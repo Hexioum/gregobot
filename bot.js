@@ -207,11 +207,16 @@ client.on('ready', function () {
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
-			let randomChance = Math.floor(Math.random()*15);//https://www.youtube.com/watch?v=NJeLm771oJo
-			let jobsFri = [ `https://www.youtube.com/watch?v=NJeLm771oJo`,
-							`https://www.youtube.com/watch?v=NJeLm771oJo`,
-							`https://www.youtube.com/watch?v=NJeLm771oJo`,
-							`https://www.youtube.com/watch?v=NJeLm771oJo`];
+			let randomChance = Math.floor(Math.random()*15);
+			let jobsFri = [ `ALGUIEN UN NOSGOTH?`,
+							`quien un cs?`,
+							`alguien un lol?`
+							`quien un lol?`,
+							`quien pa un lol?`,
+							`weon un viernes y no hay niun weon?`,
+							`<@311225637966708736> su lol??`,
+							`<@565330655915933696> SU CS?`
+						];
 			let randomComment = Math.floor(Math.random()*jobsFri.length);
 			if ((lockComment === 0)&&(randomChance === 2)) {
 				console.log('Este mensaje aparecerá entre las 22 a 23 horas los viernes.');
@@ -815,8 +820,8 @@ client.on('messageCreate', message => {
 		};
 	}
 	
-	const prefixes = ['Ego ', 'ego ', 'grigo ', 'grugo ', 'gergo ', 'grusar ', 'lausar '];
-	const prefix = prefixes.find(p => message.content.startsWith(p));
+	const prefixes = ['ego ', 'gr ', 'grigo ', 'grugo ', 'gergo ', 'grusar '];
+	const prefix = prefixes.find(p => message.content.toLowerCase.startsWith(p));
 //	if (!prefix) return;
 	
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
