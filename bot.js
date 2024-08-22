@@ -821,7 +821,7 @@ client.on('messageCreate', message => {
 	}
 	
 	const prefixes = ['ego ', 'gr ', 'grigo ', 'grugo ', 'gergo ', 'grusar '];
-	const prefix = prefixes.find(p => message.content.toLowerCase.startsWith(p));
+	const prefix = prefixes.find(p => message.content.toLowerCase().startsWith(p));
 //	if (!prefix) return;
 	
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
