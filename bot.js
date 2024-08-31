@@ -158,6 +158,7 @@ const bannedSymbols = [
     ]; // Shorter version
 const responseObject = {
 	"$rtu": "¡$rt no está disponible!",
+	"grausar?": "ES KRAUSAR AWEONAO",
 	"gregO?": "que weA",
 	"gReGo?": "qUe wEa",
 	"GrEgO?": "QuE WeA",
@@ -172,7 +173,8 @@ const responseObject = {
 	"grEgO?": "quE WeA",
 	"grEGO?": "quE WEA",
 	"gREGO?": "qUE WEA",
-	"GREGO?": "..."
+	"GREGO?": "...",
+	"krausar?": "que wea"
 };
 
 for (const file of commandFiles) {
@@ -210,7 +212,7 @@ client.on('ready', function () {
 			let randomChance = Math.floor(Math.random()*15);
 			let jobsFri = [ `ALGUIEN UN NOSGOTH?`,
 							`quien un cs?`,
-							`alguien un lol?`
+							`alguien un lol?`,
 							`quien un lol?`,
 							`quien pa un lol?`,
 							`weon un viernes y no hay niun weon?`,
