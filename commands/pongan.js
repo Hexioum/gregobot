@@ -20,13 +20,16 @@ module.exports = {
             args = args.replace(/í'/gi, "i");
             args = args.replace(/ó/gi, "o");
             args = args.replace(/ú/gi, "u");
-            args = args.replace(/ con /gi, " ");
             args = args.replace(/ asalto al /gi, " mission ");
+            args = args.replace(/ con /gi, " ");
             args = args.replace(/ cuando/gi, " when");
             args = args.replace(/ el weon/gi, "");
+            args = args.replace(/ jefe /gi, " boss ");
             args = args.replace(/ la weona/gi, "");
             args = args.replace(/ matan/gi, " dies");
             args = args.replace(/ se muere/gi, " dies");
+            args = args.replace(/bd2/gi, "borderlands 2");
+            args = args.replace(/bl2/gi, "borderlands 2");
             args = args.replace(/el tema de la /gi, "theme ");
             args = args.replace(/el tema del /gi, "theme ");
             args = args.replace(/el tema de /gi, "theme ");
@@ -45,7 +48,10 @@ module.exports = {
             args = args.replace(/pornografia/gi, "music");
             args = args.replace(/pornografico/gi, "porno graffitti");
             args = args.replace(/pornograffiti/gi, "porno graffitti");
+            args = args.replace(/primer /gi, "first ");
+            args = args.replace(/segundo /gi, "second ");
             args = args.replace(/snuff/gi, "snusk");
+            args = args.replace(/tercer /gi, "third ");
 
             if (args.length<3) {
                 return console.log("Busqueda muy corta, no se intentará.")
