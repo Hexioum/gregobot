@@ -61,7 +61,7 @@ const devMode = false; // >>ATTENTION<<
 const activitiesList = [
     "League of Legends",
     "League of Legends",
-    "Warframe",
+    "Umamusume: Pretty Derby",
     "Warframe",
 	"Spacewar",
 	"Cube Racer",
@@ -87,6 +87,7 @@ const activitiesList = [
 	"Mafia City",
 	"Diablo® Immortal™",
 	"Kung Fu Panda: Showdown of Legendary Legends",
+	"Krunker Strike FRVR",
 	"Disc Jam",
 	"Multi Theft Auto",
 	"Grand Theft Auto: San Andreas",
@@ -96,8 +97,8 @@ const activitiesList = [
 	"bailar a lo GTA VI",
 	"el 6 y el 7",
 	"estar hecho mierda",
-    "Pokémon Hentai",
-	"Orc Massage"
+	"una fragua",
+    "Pokémon Hentai"
     ];
 const topicList = [
     "Guilty Gear XX Λ Core Plus R",
@@ -123,6 +124,8 @@ const topicList = [
 	"Shrek Super Slam",
 	"Shin Megami Tensei IV: Apocalypse",
     "EA SPORTS™ FIFA 21",
+	"Farm Merge Valley",
+	"el valle inquetante",
 	"speedruns de Super Mario 64",
 	"Akatsuki",
 	"frame data",
@@ -133,6 +136,7 @@ const topicList = [
 	"la paranoia y la venganza",
 	"ricas recetas de cocina",
 	"su nosgoth",
+	"horsegirl gacha",
     "estrategias para el Mudae"
     ];
 const react1List = [
@@ -151,7 +155,7 @@ const bannedNames = [
     "arknights","pleche","wlech"
     ]; // Don't ever say them out loud.
 const bannedWords = [
-    "borra este mensaje","dompos","hupt","hup tao"
+    "borra este mensaje","dompos","sopmod"
     ]; // Shorter version
 const bannedSymbols = [
     "sᴏᴘᴍᴏᴅ", "ⓢⓞⓟⓜⓞⓓ", "🅢🅞🅟🅜🅞🅓", "⒮⒪⒫⒨⒪⒟", "s⃝o⃝p⃝m⃝o⃝d⃝", "ˢᵒᵖᵐᵒᵈ", "𝔖𝔬𝔭𝔪𝔬𝔡", "𝕾𝖔𝖕𝖒𝖔𝖉", "𝔰𝔬𝔭𝔪𝔬𝔡", "𝔖𝔒𝔓𝔐𝔒𝔇", "𝕾𝕺𝕻𝕸𝕺𝕯", "丂口尸从口刀"
@@ -206,6 +210,15 @@ client.on('ready', function () {
 	var day = 0;
 	var lockComment = 1;//Start locked to prevent spamming if bot restarted
 
+	var jobMon = new CronJob(
+		'0 0 0 * * *',//“Every Monday at 00:00.”
+		function() {
+			client.commands.get('warlord').execute(client)
+		},
+		null,
+		true,
+		'America/Santiago'
+	);
 	var jobFri = new CronJob(
 		'34 */6 21-23 * * 5',//“At every 6th minute past every hour from 22 through 23 on Friday.”
 		function() {
